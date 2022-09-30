@@ -24,14 +24,14 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          npm run build --prod
+          npm run test
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: ./dist/velzon
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,6 +51,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'gestionexamenescheck'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8A004C5C893D47D3B840ACAB0719A707 }}
-          package: .
+          package: ./dist/velzon
