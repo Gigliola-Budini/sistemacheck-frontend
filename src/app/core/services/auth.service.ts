@@ -17,9 +17,9 @@ const ENV = environment;
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        "Authorization": "Basic " + btoa("main:main")
+        "Authorization": "Basic " + btoa("1:main")
     })
-    };
+};
 
 // const httpOptions = {
 //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -96,7 +96,13 @@ export class AuthenticationService {
           }, httpOptions);
     }
     login(rut: string, password: string) {
-        return this.http.post(ENV.api_url + 'login' ,{ rut } , httpOptions);
+        const httpOptions2 = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                "Authorization": "Basic " + btoa(`${rut}:${password}`)
+            })
+        };
+        return this.http.post(ENV.api_url + 'login' ,{ rut } , httpOptions2);
     }
 
     /**

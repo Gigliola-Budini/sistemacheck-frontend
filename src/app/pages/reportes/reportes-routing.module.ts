@@ -8,6 +8,10 @@ import { ReportePersonalizadoComponent } from "./reporte-personalizado/reporte-p
 
 const routes: Routes = [
   {
+    path: "",
+    component: ReporteMinsalComponent
+  },
+  {
     path: "minsal",
     component: ReporteMinsalComponent
   },
