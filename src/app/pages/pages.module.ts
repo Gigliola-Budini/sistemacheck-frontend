@@ -29,8 +29,6 @@ import { WidgetModule } from '../shared/widget/widget.module';
 import { DashboardComponent } from './dashboards/dashboard/dashboard.component';
 import { ToastsContainer } from './dashboards/dashboard/toasts-container.component';
 import { DashboardsModule } from "./dashboards/dashboards.module";
-import { AppsModule } from "./apps/apps.module";
-import { EcommerceModule } from "./ecommerce/ecommerce.module";
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -57,9 +55,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     WidgetModule,
     SwiperModule,
     LightboxModule,
-    DashboardsModule,
-    AppsModule,
-    EcommerceModule
+    DashboardsModule
   ],
   providers: [
     {
