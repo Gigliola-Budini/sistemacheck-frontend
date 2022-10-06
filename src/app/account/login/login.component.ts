@@ -47,17 +47,17 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    // this.authenticationService.register('17952673-5','Gigliola','2').subscribe({
-    //   next: (res)=>{
-    //     console.log(res);
+    this.authenticationService.register2('11111111-1','Laura Gajardo','2','12345','5').subscribe({
+      next: (res)=>{
+        console.log(res);
         
-    //   }
-    // })
+      }
+    })
     /**
      * Form Validatyion
      */
      this.loginForm = this.formBuilder.group({
-      rut: ['admin@themesbrand.com', [Validators.required]],
+      rut: ['11111111-1', [Validators.required]],
       pass: ['123456', [Validators.required]],
     });
     // get return url from route parameters or default to '/'
@@ -83,10 +83,13 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.f['rut'].value, this.f['pass'].value).subscribe((res:any) => {      
       console.log(res);
       
-      if(res.completeAccess){
+      if(res.token){
         localStorage.setItem('toast', 'true');
         localStorage.setItem('currentUser', JSON.stringify(res.nombre));
         localStorage.setItem('token', res.token);
+        // let token2 = decodeURIComponent(escape(window.atob( res.token.replace('./g','') )))
+        // console.log("token ",token2);
+        
         this.router.navigate(['/']);
       } else {
         this.toastService.show(res.data, { classname: 'bg-danger text-white', delay: 15000 });
