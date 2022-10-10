@@ -154,10 +154,10 @@
             </div> -->
             <!--end col-->
             <div class="col-xxl-3 col-lg-6">
-                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Seleccione inicio" id="iniFecha">
+                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [locale]="'esp'" placeholder="Seleccione fecha de inicio" id="iniFecha">
             </div>
             <div class="col-xxl-3 col-lg-6">
-                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Seleccione fecha" id="finFecha">
+                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Seleccione fecha de fin" id="finFecha">
             </div>
             <div class="col-xxl-4 col-lg-4">
                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default2"
@@ -288,11 +288,12 @@
                                     </ul>
                                 </div>
                               </td> -->
-                              <td ></td>
-                              <td>{{data.nombreHospital}}</td>
+                              <td >{{data.nombreHospital}}</td>
+                              <td></td>
                               <td>{{data.semana}}</td>
                               <td>{{data.VRS.total}}</td>
-                              <td>{{data.FLUA.total + data.FLUB.total}}</td>
+                              <td>{{data.FLUA.total }}</td>
+                              <td>{{data.FLUB.total}}</td>
                               <td>{{data.ADV.total}}</td>
                               <td></td>
                               <td></td>
@@ -393,7 +394,6 @@
                               <td></td>
                               <td></td>
                               <td></td>
-
                             </tr>
                           </tbody>
                       </table>
@@ -436,7 +436,7 @@
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">VRS</th>
-                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(8,19)">{{header}}</th>
+                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(9,20)">{{header}}</th>
                             </tr>
                         </thead>
                         <tbody class="list form-check-all">
@@ -446,8 +446,8 @@
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
                             </th>
-                            <td></td>
                             <td>{{data.nombreHospital}}</td>
+                            <td></td>
                             <td>{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;">{{data.VRS.total}}</td>
                             <td >{{data.VRS.rangoEdadM["_1"]}}</td>
@@ -505,7 +505,7 @@
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">FLU A</th>
-                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(20,32)">{{header}}</th>
+                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(21,33)">{{header}}</th>
                             </tr>
                         </thead>
                         <tbody class="list form-check-all">
@@ -516,8 +516,8 @@
                               </div>
                             </th>
                            
-                            <td style="padding-right: 1.5rem;"></td>
-                            <td>{{data.nombreHospital}}</td>
+                            <td style="padding-right: 1.5rem;">{{data.nombreHospital}}</td>
+                            <td></td>
                             <td>{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;">{{data.FLUA.total}}</td>
                             <td >{{data.FLUA.rangoEdadM["_1"]}}</td>
@@ -543,7 +543,7 @@
                       <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                           Mostrando
                           {{service.startIndex}} a
-                          {{service.endIndex}} de {{service.totalRecords}}
+                          {{service.endIndex}} de {{examenes.length}}
                           registros
                       </div>
                   </div>
@@ -576,7 +576,7 @@
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">FLU B</th>
-                              <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(33,44)">{{header}}</th>
+                              <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(34,45)">{{header}}</th>
                           </tr>
                       </thead>
                       <tbody class="list form-check-all">
@@ -587,8 +587,8 @@
                             </div>
                           </th>
                          
-                          <td ></td>
-                            <td>{{data.nombreHospital}}</td>
+                          <td >{{data.nombreHospital}}</td>
+                            <td></td>
                             <td>{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;">{{data.FLUB.total}}</td>
                             <td >{{data.FLUB.rangoEdadM["_1"]}}</td>
@@ -614,7 +614,7 @@
                     <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                         Mostrando
                         {{service.startIndex}} a
-                        {{service.endIndex}} de {{service.totalRecords}}
+                        {{service.endIndex}} de {{examenes.length}}
                         registros
                     </div>
                 </div>
@@ -648,7 +648,7 @@
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">ADV</th>
-                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(45,56)">{{header}}</th>
+                                <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList.slice(46,57)">{{header}}</th>
                             </tr>
                         </thead>
                         <tbody class="list form-check-all">
@@ -658,8 +658,8 @@
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
                             </th>
-                            <td ></td>
-                            <td>{{data.nombreHospital}}</td>
+                            <td >{{data.nombreHospital}}</td>
+                            <td></td>
                             <td>{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;">{{data.ADV.total}}</td>
                             <td >{{data.ADV.rangoEdadM["_1"]}}</td>
@@ -687,7 +687,7 @@
                       <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                           Mostrando
                           {{service.startIndex}} a
-                          {{service.endIndex}} de {{service.totalRecords}}
+                          {{service.endIndex}} de {{examenes.length}}
                           registros
                       </div>
                   </div>
