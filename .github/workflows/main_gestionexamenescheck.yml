@@ -51,4 +51,4 @@ jobs:
         with:
           app-name: 'gestionexamenescheck'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8A004C5C893D47D3B840ACAB0719A707 }}
-          package: ./dist/velzon
+          package: ./dist/check
