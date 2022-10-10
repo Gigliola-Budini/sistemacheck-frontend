@@ -47,18 +47,18 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.authenticationService.register2('11111111-1','Laura Gajardo','2','12345','5').subscribe({
-      next: (res)=>{
-        console.log(res);
+    // this.authenticationService.register2('11111111-1','Laura Gajardo','2','12345','5').subscribe({
+    //   next: (res)=>{
+    //     console.log(res);
         
-      }
-    })
+    //   }
+    // })
     /**
      * Form Validatyion
      */
      this.loginForm = this.formBuilder.group({
       rut: ['11111111-1', [Validators.required]],
-      pass: ['123456', [Validators.required]],
+      pass: ['12345', [Validators.required]],
     });
     // get return url from route parameters or default to '/'
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -80,21 +80,27 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     // Login Api
-    this.authenticationService.login(this.f['rut'].value, this.f['pass'].value).subscribe((res:any) => {      
-      console.log(res);
-      
-      if(res.token){
-        localStorage.setItem('toast', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(res.nombre));
-        localStorage.setItem('token', res.token);
-        // let token2 = decodeURIComponent(escape(window.atob( res.token.replace('./g','') )))
-        // console.log("token ",token2);
+    this.authenticationService.login(this.f['rut'].value, this.f['pass'].value).subscribe({
+      next:(res:any) => {      
+        console.log(res);
         
-        this.router.navigate(['/']);
-      } else {
-        this.toastService.show(res.data, { classname: 'bg-danger text-white', delay: 15000 });
+        if(res.token){
+          localStorage.setItem('toast', 'true');
+          localStorage.setItem('currentUser', JSON.stringify(res.nombre));
+          localStorage.setItem('token', res.token);
+          // let token2 = decodeURIComponent(escape(window.atob( res.token.replace('./g','') )))
+          // console.log("token ",token2);
+          
+          this.router.navigate(['/']);
+        } else {
+          this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
+        }
+      },error: (error)=>{
+        console.log(error);
+        localStorage.setItem('toast', 'true');
+        this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
       }
-    });
+  });
 
     // this.authenticationService.login2(this.f['rut'].value, this.f['pass'].value).subscribe((res:any) => {      
     //   console.log();

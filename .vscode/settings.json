@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/f0097885-4aa5-462b-a73d-a7b8ec0c30ce/AppServices/subscriptions/f0097885-4aa5-462b-a73d-a7b8ec0c30ce/resourceGroups/sistemacheck_group/providers/Microsoft.Web/sites/gestionexamenescheckdev",
+    "appService.deploySubpath": "dist/check"
+}

@@ -1233,37 +1233,37 @@ export const MENU: MenuItem[] = [
   //     },
   //   ]
   // },
-  {
-    id: 1,
-    label: 'Usuarios',
-    icon: 'ri-account-circle-line',
-    subItems: [
-      {
-        id: 2,
-        label: 'Crear',
-        link: '/reportes/minsal',
-        parentId: 1
-      },
-      {
-        id: 3,
-        label: 'Listado',
-        link: '/reportes/personalizado',
-        parentId: 1
-      },
-      {
-        id: 4,
-        label: 'Crear Capacitación',
-        link: '/reportes/personalizado',
-        parentId: 1
-      },
-      {
-        id: 5,
-        label: 'Capacitaciones',
-        link: '/reportes/personalizado',
-        parentId: 1
-      }
-    ]
-  },
+  // {
+  //   id: 1,
+  //   label: 'Usuarios',
+  //   icon: 'ri-account-circle-line',
+  //   subItems: [
+  //     {
+  //       id: 2,
+  //       label: 'Crear',
+  //       link: '/reportes/minsal',
+  //       parentId: 1
+  //     },
+  //     {
+  //       id: 3,
+  //       label: 'Listado',
+  //       link: '/reportes/personalizado',
+  //       parentId: 1
+  //     },
+  //     {
+  //       id: 4,
+  //       label: 'Crear Capacitación',
+  //       link: '/reportes/personalizado',
+  //       parentId: 1
+  //     },
+  //     {
+  //       id: 5,
+  //       label: 'Capacitaciones',
+  //       link: '/reportes/personalizado',
+  //       parentId: 1
+  //     }
+  //   ]
+  // },
   {
     id: 184,
     label: 'Reportes',

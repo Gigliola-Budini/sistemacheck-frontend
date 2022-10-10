@@ -61,7 +61,7 @@ export class ReporteMinsalComponent implements OnInit {
    constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe) {
      this.invoicesList = service.countries$;
      this.total = service.total$;
-     this.headersList = ["Establecimiento","Responsable de notificacion","Semana epidemiológica","VRS","FLUA FLUB", "ADV",	"PARAFLU 1"	,"MPV",	"VRS H < 1 año",	"VRS H 1 - 4 años",	"VRS H 5 - 14 años",	"VRS H 15 -54 años",
+     this.headersList = ["Establecimiento","Responsable de notificacion","Semana epidemiológica","VRS","FLUA ","FLUB", "ADV",	"PARAFLU 1"	,"MPV",	"VRS H < 1 año",	"VRS H 1 - 4 años",	"VRS H 5 - 14 años",	"VRS H 15 -54 años",
       "VRS H 55 - 64 años","VRS H > 65 años","VRS M < 1 año",	"VRS M  1 - 4 años",	"VRS M  5 - 14 años",	"VRS M 15 -54 años ",	"VRS M  55 - 64 años",	"VRS M  > 65 años",	"FLU A H < 1 año",	"FLU A H 1 - 4 años",
      	"FLU A H 5 - 14 años",	"FLU A H 15-54 años", 	"FLU A H 56 - 64 años", "FLU A H > 65 años",	"FLU A M < 1 año",	"FLU A M 1- 4 años",	"FLU A M 5- 14 años",
     	"FLU A M 15 -54 años", 	"FLU A M 55 - 64 años",	"FLU A M > 65 años",	"FLU B H < 1 año",	"FLU B H 1 - 4 años",
