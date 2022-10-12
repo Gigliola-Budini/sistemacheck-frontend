@@ -38,12 +38,12 @@
                             </div>
                             <div class="p-2 mt-4">
                                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  
                                     <div class="mb-3">
                                         <label for="rut" class="form-label">RUT</label>
                                         <input type="text" class="form-control" id="rut" placeholder="Ingresar Rut" formControlName="rut" [ngClass]="{ 'is-invalid': submitted && f['rut'].errors }">
                                         <div *ngIf="submitted && f['rut'].errors" class="invalid-feedback" align="left">
                                           <div *ngIf="f['rut'].errors['required']">El Rut es obligatorio</div>
+                                          <div *ngIf="f['rut'].errors['notValid']">El Rut es invalido</div>
                                         </div>
                                     </div>
   
@@ -61,8 +61,8 @@
                                               <span *ngIf="f['pass'].errors['required']">La contraseña es obligatoria</span>
                                             </div>
                                         </div>
+                                        
                                     </div>
-  
                                     <!-- <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
                                         <label class="form-check-label" for="auth-remember-check">Recordarme</label>
@@ -70,6 +70,9 @@
   
                                     <div class="mt-4">
                                         <button class="btn btn-primary w-100" type="submit">Acceder</button>
+                                        <!-- <div *ngIf="errorLogin" class="mt-3" style="width: 100%; margin-top: 0.25rem;font-size: 0.875em;  color: #f06548;">
+                                            <div >Las credenciales no son válidas.</div>
+                                        </div> -->
                                     </div>
   
                                     <!-- <div class="mt-4 text-center">
@@ -116,5 +119,6 @@
     </footer>
     <!-- end Footer -->
   </div>
+  <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
   <!-- end auth-page-wrapper -->
   

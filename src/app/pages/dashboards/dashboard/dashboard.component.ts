@@ -38,12 +38,12 @@ export class DashboardComponent implements OnInit {
      * BreadCrumb
      */
      this.breadCrumbItems = [
-      { label: 'Dashboards' },
-      { label: 'Dashboard', active: true }
+      { label: 'Inicio' },
+      { label: 'Indicadores', active: true }
     ];
     
     if(localStorage.getItem('toast')){
-      this.toastService.show('Login Was Successfully.', { classname: 'bg-success text-center text-white', delay: 5000 });
+      this.toastService.show('Inicio de sesión exitoso!', { classname: 'bg-success text-center text-white', delay: 5000 });
       localStorage.removeItem('toast');
     }    
 

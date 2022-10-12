@@ -32,11 +32,12 @@ export class RestApiCheckService {
   getNameVirus(code:any){
     const httpOptions2 = {
       headers: new HttpHeaders({
-          'Content-Type': 'text/html',
-          "Authorization": "Basic " + btoa("usercheck:check2022")
+          'Content-Type': 'application/json',
+          // "Authorization": "Basic " + btoa("usercheck:check2022")
+          "Authorization": "Basic dXNlcmNoZWNrOmNoZWNrMjAyMg=="
       })
     };
-    return this.http.get(`https://fhir.loinc.org/CodeSystem/$lookup?system=http://loinc.org&code=${code}`,httpOptions2)
+    return this.http.get(`${ENV.api_loinc}${code}`,httpOptions2)
   }
 
   //Crear Hospital

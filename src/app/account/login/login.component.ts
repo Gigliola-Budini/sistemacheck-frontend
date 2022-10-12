@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,TemplateRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   returnUrl!: string;
 
   toast!: false;
+  errorLogin = false;
 
   // set the current year
   year: number = new Date().getFullYear();
@@ -46,7 +47,11 @@ export class LoginComponent implements OnInit {
     if(localStorage.getItem('currentUser')) {
       this.router.navigate(['/']);
     }
-
+    if(localStorage.getItem('toast')){
+      // this.errorLogin = true;
+      this.toastService.show('Las credenciales no son válidas', { classname: 'bg-danger text-white', delay: 5000 });
+      // localStorage.setItem('toast', 'false');
+    }    
     // this.authenticationService.register2('11111111-1','Laura Gajardo','2','12345','5').subscribe({
     //   next: (res)=>{
     //     console.log(res);
@@ -72,12 +77,14 @@ export class LoginComponent implements OnInit {
    */
    onSubmit() {
     let valid = this.validatorSerice.validarRut(this.f['rut'].value);
+    this.submitted = true;
     if (!valid) {
       console.log(valid);
-      
+      this.f['rut'].setErrors({notValid: true})
       this.toastService.show('El Rut no es válido', { classname: 'bg-danger text-white', delay: 15000 });
+      return;
     }
-    this.submitted = true;
+    
 
     // Login Api
     this.authenticationService.login(this.f['rut'].value, this.f['pass'].value).subscribe({
@@ -88,17 +95,16 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('toast', 'true');
           localStorage.setItem('currentUser', JSON.stringify(res.nombre));
           localStorage.setItem('token', res.token);
-          // let token2 = decodeURIComponent(escape(window.atob( res.token.replace('./g','') )))
-          // console.log("token ",token2);
           
           this.router.navigate(['/']);
         } else {
           this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
         }
       },error: (error)=>{
+        this.errorLogin = true;
         console.log(error);
-        localStorage.setItem('toast', 'true');
         this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
+        localStorage.setItem('toast', 'true');
       }
   });
 

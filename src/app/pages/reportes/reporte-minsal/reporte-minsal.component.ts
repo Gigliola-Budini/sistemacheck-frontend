@@ -57,7 +57,50 @@ export class ReporteMinsalComponent implements OnInit {
    {codigo:'',nombre:'VIRUS SICICIAL',columNombre:'VRS',tipo:1}
 
   ]
- 
+  fechaInicio:any;
+  fechaFin:any;
+  fila:any= {
+    semana:'',
+    FLUA:{
+      total:0,
+      rangoEdadM:{},
+      rangoEdadF:{}
+    },
+    FLUB: {
+      total:0,
+      rangoEdadM:{},
+      rangoEdadF:{}
+    },
+    ADV:{
+      total:0,
+      rangoEdadM:{},
+      rangoEdadF:{_1: 0,
+        "_1-4": 0,
+        "_15-54": 0,
+        "_5-14": 0,
+        "_55-64": 0,
+        _65: 0,
+        total: 0}
+    },
+    VRS:{
+      total:0,
+      rangoEdadM:{_1: 0,
+        "_1-4": 0,
+        "_15-54": 0,
+        "_5-14": 0,
+        "_55-64": 0,
+        _65: 0,
+        total: 0},
+      rangoEdadF:{_1: 0,
+        "_1-4": 0,
+        "_15-54": 0,
+        "_5-14": 0,
+        "_55-64": 0,
+        _65: 0,
+        total: 0}
+    },
+    nombreHospital:''
+  }
    constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe) {
      this.invoicesList = service.countries$;
      this.total = service.total$;
@@ -94,105 +137,8 @@ export class ReporteMinsalComponent implements OnInit {
        this.invoices =  Object.assign([], x);   
      });
 
-     this.reporteService.getReporteMinsal('01/01/2022','30/12/2022').subscribe({
-      next: async (res:any)=>{
-        console.log(res);
-        let resp:any = res;
-        let fila:any = {
-          semana:'',
-          FLUA:{
-            total:0,
-            rangoEdadM:{},
-            rangoEdadF:{}
-          },
-          FLUB: {
-            total:0,
-            rangoEdadM:{},
-            rangoEdadF:{}
-          },
-          ADV:{
-            total:0,
-            rangoEdadM:{},
-            rangoEdadF:{_1: 0,
-              "_1-4": 0,
-              "_15-54": 0,
-              "_5-14": 0,
-              "_55-64": 0,
-              _65: 0,
-              total: 0}
-          },
-          VRS:{
-            total:0,
-            rangoEdadM:{_1: 0,
-              "_1-4": 0,
-              "_15-54": 0,
-              "_5-14": 0,
-              "_55-64": 0,
-              _65: 0,
-              total: 0},
-            rangoEdadF:{_1: 0,
-              "_1-4": 0,
-              "_15-54": 0,
-              "_5-14": 0,
-              "_55-64": 0,
-              _65: 0,
-              total: 0}
-          },
-          nombreHospital:''
-        }
-       
-        for (const elem in resp) {
-          // console.log(elem);
-          
-          fila.semana = elem.replace('_','')
-          // console.log(resp[elem]);
-          let examen:any = {}
-          for (const key in resp[elem][0]) {
-            if (Object.prototype.hasOwnProperty.call(resp[elem][0], key)) {
-              const element = resp[elem][0][key];
-              console.log(element,key);
-              let resulVirus= {}
-              let genero = key.substring(key.length-1,key.length)
-              let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
-              // console.log(typeof(element));
-              
-              if(typeof(element) != 'string'){
-                if (this.virus[i].tipo = 1) {
-                  if (genero == 'M') {
-                    fila[this.virus[i].columNombre].rangoEdadM = element
-                    fila[this.virus[i].columNombre].total = parseInt(fila[this.virus[i].columNombre].total) + parseInt(element.total)
-                  }else{
-                    fila[this.virus[i].columNombre].rangoEdadF = element
-                    fila[this.virus[i].columNombre].total =parseInt(fila[this.virus[i].columNombre].total) + parseInt(element.total)
-                  }
-                }else{
-                  fila[this.virus[i].columNombre].total =parseInt(fila[this.virus[i].columNombre].total) + parseInt(element.total)
-                }
-              }else{
-                fila.nombreHospital = element
-              }
-              
-              console.log(fila);
-              
-              // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
-              //   next: (res:any)=>{
-              //     console.log(res);
-                  
-              //     if(key == 'LA19020-9'){
-              //       if(genero = 'M'){
-
-              //       }
-              //     }
-              //   }
-              // })
-              
-            }
-          }
-           this.examenes?.push(fila);
-        }
-      },
-      error:this.handleError.bind(this)
-     })
+    this.consultaReporteMinsal('2022/01/01', '2022/12/30')
+    // this.consultaReporteMinsal('01/01/2022', '30/12/2022')
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
     //   next: (res:any)=>{
     //     console.log(res);
@@ -203,12 +149,90 @@ export class ReporteMinsalComponent implements OnInit {
     //  })
    }
 
+   consultaReporteMinsal(fechaInicio:string, fechaFin:string){
+      console.log(fechaInicio,fechaFin);
+      let fechaInicioAux = this.formatFecha(fechaInicio);
+      let fechaFinAux= this.formatFecha(fechaFin);
+      if(fechaFin< fechaInicio){
+        alert('La fecha de termino debe ser mayor a la fecha de inicio');
+        return;
+      }
+    this.reporteService.getReporteMinsal(fechaInicioAux,fechaFinAux).subscribe({
+      next: async (res:any)=>{
+        console.log(res);
+        let resp:any = res;
+        let filaAux:any = this.fila
+        this.examenes = []
+        if(Object.keys(res).length === 0){
+          
+          alert('No se encontraron resultados')
+        }else{
+          for (const elem in resp) {
+            // console.log(elem);
+            
+            filaAux.semana = elem.replace('_','')
+            // console.log(resp[elem]);
+            let examen:any = {}
+            for (const key in resp[elem][0]) {
+              if (Object.prototype.hasOwnProperty.call(resp[elem][0], key)) {
+                const element = resp[elem][0][key];
+                console.log(element,key);
+                let resulVirus= {}
+                let genero = key.substring(key.length-1,key.length)
+                let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
+                // console.log(typeof(element));
+                
+                if(typeof(element) != 'string'){
+                  if (this.virus[i].tipo = 1) {
+                    if (genero == 'M') {
+                      filaAux[this.virus[i].columNombre].rangoEdadM = element
+                      filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                    }else{
+                      filaAux[this.virus[i].columNombre].rangoEdadF = element
+                      filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                    }
+                  }else{
+                    filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                  }
+                }else{
+                  filaAux.nombreHospital = element
+                }
+                
+                console.log(filaAux);
+                
+                // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
+                //   next: (res:any)=>{
+                //     console.log(res);
+                    
+                //     if(key == 'LA19020-9'){
+                //       if(genero = 'M'){
+  
+                //       }
+                //     }
+                //   }
+                // })
+                
+              }
+            }
+             this.examenes?.push(filaAux);
+          }
+        }
+       
+      },
+      error:this.handleError.bind(this)
+     })
+   }
    handleError(error:any){
     console.log(error);
     
    }
  
-   
+   formatFecha(fecha:any){
+      fecha = fecha.toString().replace(/\-/g,'/')
+      let fechaAux = fecha.split('/')
+      let fechaRes: string = fechaAux[2] +'/'+fechaAux[1]+'/'+fechaAux[0]
+      return fechaRes
+   }
     /**
     * Confirmation mail model
     */

@@ -8,10 +8,10 @@ import { ReportesModule } from './reportes/reportes.module';
 const routes: Routes = [
     {
         path: "",
-        component: ReportesModule
+        component: DashboardComponent
     },
     {
-      path: '', loadChildren: () => import('./reportes/reportes.module').then(m => m.ReportesModule)
+      path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
     },
     {
       path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule)
