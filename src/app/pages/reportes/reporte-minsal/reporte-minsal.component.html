@@ -153,16 +153,21 @@
                 </div>
             </div> -->
             <!--end col-->
-            <div class="col-xxl-3 col-lg-6">
-                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [locale]="'esp'" placeholder="Seleccione fecha de inicio" id="iniFecha">
+            <div class="col-xxl-3 col-lg-3 col-sm-6">
+              <label class="text-muted" for="">Seleccione fecha de inicio</label>
+              <input class="form-control" type="date"   placeholder="Seleccione fecha de inicio" id="iniFecha" [(ngModel)]="fechaInicio">
+                <!-- <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [locale]="'esp'" placeholder="Seleccione fecha de inicio" id="iniFecha"> -->
             </div>
-            <div class="col-xxl-3 col-lg-6">
-                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Seleccione fecha de fin" id="finFecha">
+            <div class="col-xxl-3 col-lg-3 col-sm-6">
+              <label class="text-muted" for="">Seleccione fecha de fin</label>
+              <input class="form-control" type="date"   placeholder="Seleccione fecha de fin" id="finFecha" [(ngModel)]="fechaFin">
+                <!-- <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Seleccione fecha de fin" id="finFecha"> -->
             </div>
-            <div class="col-xxl-4 col-lg-4">
+            <div class="col-xxl-4 col-lg-4 col-sm-6">
+               <label class="text-muted" for="">Seleccione Hospital</label>
                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default2"
                     id="choices-single-default2">
-                    <option value="" >Seleccione Hospital</option>
+                    <!-- <option value="">Seleccione</option> -->
                     <option value="hospital.idHospital" *ngFor="let hospital of hospitales">{{hospital.nombre}}</option>
                 </select>
             </div>
@@ -179,8 +184,9 @@
                 </select>
             </div> -->
             <!--end col-->
-            <div class="col-xxl-2 col-lg-4">
-                <button class="btn btn-primary w-200" style="margin: auto;display: inherit;" (click)="SearchData();"><i class="ri-search-line align-bottom "></i> Buscar</button>
+            <div class="col-xxl-2 col-lg-2 col-sm-6">
+              <label for=""></label>
+                <button class="btn btn-primary w-200" style="margin: auto;display: inherit;" (click)="consultaReporteMinsal(fechaInicio,fechaFin);"><i class="ri-search-line align-bottom "></i> Buscar</button>
             </div>
         </div><!--end row-->
     </div>
@@ -422,7 +428,8 @@
 
 
               <div class="mt-xl-3">
-                <label style="margin-bottom: 1.5rem !important; font-size: 14px; color: #1721C3;">Resultados VRS - VIRUS SINCICIAL RESPIRATORIO</label>
+                <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados VRS <small class="text-muted">- VIRUS SINCICIAL RESPIRATORIO</small></h6>
+                <!-- <label class="mb-4"style=" font-size: 14px; color: #1721C3;">Resultados VRS - VIRUS SINCICIAL RESPIRATORIO</label> -->
                 <div class="table-responsive table-card">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
@@ -472,7 +479,7 @@
                   <div class="col col-sm-6">
                       <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                           Mostrando
-                          {{service.startIndex}} a
+                          {{examenes.length}} a
                           {{service.endIndex}} de {{examenes.length}}
                           registros
                       </div>
@@ -491,7 +498,8 @@
 
 
             <div class="mt-xl-3">
-              <label style="margin-bottom: 1.5rem  !important;font-size: 14px;  color: #1721C3; margin-top: 1.5rem;">Resultados FLU A - INFLUENZA A</label>
+              <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU A  <small class="text-muted"> - INFLUENZA A</small></h6>
+              <!-- <label style="margin-bottom: 1.5rem  !important;font-size: 14px;  color: #1721C3; margin-top: 1.5rem;">Resultados FLU A - INFLUENZA A</label> -->
                 <div class="table-responsive table-card">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
@@ -542,7 +550,7 @@
                   <div class="col col-sm-6">
                       <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                           Mostrando
-                          {{service.startIndex}} a
+                          {{examenes.length}} a
                           {{service.endIndex}} de {{examenes.length}}
                           registros
                       </div>
@@ -559,10 +567,11 @@
                 </div>
             </div>
             <div class="mt-xl-3">
-              <label style="margin-bottom: 1.5rem  !important;
+              <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU B  <small class="text-muted"> - INFLUENZA B</small></h6>
+              <!-- <label style="margin-bottom: 1.5rem  !important;
               font-size: 14px;
               color: #1721C3;
-              margin-top: 1.5rem;">Resultados FLU B - INFLUENZA B</label>
+              margin-top: 1.5rem;">Resultados FLU B - INFLUENZA B</label> -->
               <div class="table-responsive table-card">
                   <table class="table align-middle table-nowrap"  >
                       <thead class="text-muted">
@@ -613,7 +622,7 @@
                 <div class="col col-sm-6">
                     <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                         Mostrando
-                        {{service.startIndex}} a
+                        {{examenes.length}} a
                         {{service.endIndex}} de {{examenes.length}}
                         registros
                     </div>
@@ -631,10 +640,11 @@
           </div>
 
             <div class="mt-xl-3">
-              <label style="margin-bottom: 1.5rem;
+              <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados ADV  <small class="text-muted"> - ADENOVIRUS</small></h6>
+              <!-- <label style="margin-bottom: 1.5rem;
               font-size: 14px;
               color: #1721C3;
-              margin-top: 1.5rem;">Resultados ADV - ADENOVIRUS</label>
+              margin-top: 1.5rem;">Resultados ADV - ADENOVIRUS</label> -->
                 <div class="table-responsive table-card">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
@@ -686,7 +696,7 @@
                   <div class="col col-sm-6">
                       <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                           Mostrando
-                          {{service.startIndex}} a
+                          {{examenes.length}} a
                           {{service.endIndex}} de {{examenes.length}}
                           registros
                       </div>
