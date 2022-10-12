@@ -37,7 +37,7 @@ export class RestApiCheckService {
           "Authorization": "Basic dXNlcmNoZWNrOmNoZWNrMjAyMg=="
       })
     };
-    return this.http.get(`${ENV.api_loinc}${code}`,httpOptions2)
+    return this.http.get(`https://fhir.loinc.org/CodeSystem/$lookup?system=http://loinc.org&code=${code}`,httpOptions2)
   }
 
   //Crear Hospital
