@@ -160,8 +160,6 @@ export class ReporteMinsalComponent implements OnInit {
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
     //   next: (res:any)=>{
     //     console.log(res);
-        
-        
     //   },
     //   error:this.handleError.bind(this)
     //  })
