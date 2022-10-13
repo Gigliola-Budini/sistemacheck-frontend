@@ -51,10 +51,14 @@ export class ReporteMinsalComponent implements OnInit {
    headersListFLUV?: string[];
    hospitales?: any[];
    examenes: any[]= [];
-   virus:any[] = [{codigo:'LA19020-9',nombre:'Influenza B virus negative',columNombre:'FLUB',tipo:0},
+   virus:any[] = [
+    {codigo:'LA19020-9',nombre:'Influenza B virus negative',columNombre:'FLUB',tipo:0},
    {codigo:'LA19017-5',nombre:'Influenza A virus positive',columNombre:'FLUA',tipo:1},
-   {codigo:'LP14061-3',nombre:'Adenovirus',columNombre:'ADV',tipo:1},
-   {codigo:'',nombre:'VIRUS SICICIAL',columNombre:'VRS',tipo:1}
+   {codigo:'LA6576-8',nombre:'Adenovirus',columNombre:'ADV',tipo:1},
+   {codigo:'LA19020-9',nombre:'VIRUS SINCICIAL',columNombre:'VRS',tipo:1},
+   {codigo:'LA6577-6',nombre:'Adenovirus',columNombre:'ADV',tipo:0},
+
+   
 
   ]
   fechaInicio:any;
@@ -73,7 +77,13 @@ export class ReporteMinsalComponent implements OnInit {
     },
     ADV:{
       total:0,
-      rangoEdadM:{},
+      rangoEdadM:{_1: 0,
+        "_1-4": 0,
+        "_15-54": 0,
+        "_5-14": 0,
+        "_55-64": 0,
+        _65: 0,
+        total: 0},
       rangoEdadF:{_1: 0,
         "_1-4": 0,
         "_15-54": 0,
@@ -101,6 +111,14 @@ export class ReporteMinsalComponent implements OnInit {
     },
     nombreHospital:''
   }
+
+  objectPrototipe: any = {_1: 0,
+    "_1-4": 0,
+    "_15-54": 0,
+    "_5-14": 0,
+    "_55-64": 0,
+    _65: 0,
+    total: 0}
    constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe) {
      this.invoicesList = service.countries$;
      this.total = service.total$;
@@ -182,23 +200,25 @@ export class ReporteMinsalComponent implements OnInit {
                 let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
                 // console.log(typeof(element));
                 
-                if(typeof(element) != 'string'){
-                  if (this.virus[i].tipo = 1) {
-                    if (genero == 'M') {
-                      filaAux[this.virus[i].columNombre].rangoEdadM = element
-                      filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+               if(i != -1){ 
+                  if(typeof(element) != 'string'){
+                    if (this.virus[i].tipo = 1) {
+                      if (genero == 'M') {
+                        filaAux[this.virus[i].columNombre].rangoEdadM = element
+                        filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                      }else{
+                        filaAux[this.virus[i].columNombre].rangoEdadF = element
+                        filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                      }
                     }else{
-                      filaAux[this.virus[i].columNombre].rangoEdadF = element
                       filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
                     }
                   }else{
-                    filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+                    filaAux.nombreHospital = element
                   }
-                }else{
-                  filaAux.nombreHospital = element
-                }
-                
-                console.log(filaAux);
+                  
+                  console.log(filaAux);
+                  }
                 
                 // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
                 //   next: (res:any)=>{
