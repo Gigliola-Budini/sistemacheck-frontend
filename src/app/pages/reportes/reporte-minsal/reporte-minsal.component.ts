@@ -196,12 +196,15 @@ export class ReporteMinsalComponent implements OnInit {
                 const element = resp[elem][0][key];
                 console.log(element,key);
                 let resulVirus= {}
+                if (key == "nombreHospital") {
+                  filaAux.nombreHospital = element
+                }
                 let genero = key.substring(key.length-1,key.length)
                 let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
                 // console.log(typeof(element));
                 
                if(i != -1){ 
-                  if(typeof(element) != 'string'){
+                  if(typeof(element) != 'string' || key != "nombreHospital"){
                     if (this.virus[i].tipo = 1) {
                       if (genero == 'M') {
                         filaAux[this.virus[i].columNombre].rangoEdadM = element
