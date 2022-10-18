@@ -47,9 +47,10 @@ export class LoginComponent implements OnInit {
     if(localStorage.getItem('currentUser')) {
       this.router.navigate(['/']);
     }
-    if(localStorage.getItem('toast')){
+    if(localStorage.getItem('errorLogin')){
       // this.errorLogin = true;
-      this.toastService.show('Las credenciales no son válidas', { classname: 'bg-danger text-white', delay: 5000 });
+      this.errorLogin = true
+      // this.toastService.show('Las credenciales no son válidas', { classname: 'bg-danger text-white', delay: 5000 });
       // localStorage.setItem('toast', 'false');
     }    
     // this.authenticationService.register2('11111111-1','Laura Gajardo','2','12345','5').subscribe({
@@ -78,33 +79,36 @@ export class LoginComponent implements OnInit {
    onSubmit() {
     let valid = this.validatorSerice.validarRut(this.f['rut'].value);
     this.submitted = true;
-    if (!valid) {
+    if (!valid && this.f['rut'].value > 0) {
       console.log(valid);
       this.f['rut'].setErrors({notValid: true})
-      this.toastService.show('El Rut no es válido', { classname: 'bg-danger text-white', delay: 15000 });
+      // this.toastService.show('El Rut no es válido', { classname: 'bg-danger text-white', delay: 15000 });
       return;
     }
     
-
+    if(!this.loginForm.valid ){
+      return;
+    }
     // Login Api
     this.authenticationService.login(this.f['rut'].value, this.f['pass'].value).subscribe({
       next:(res:any) => {      
         console.log(res);
         
         if(res.token){
-          localStorage.setItem('toast', 'true');
+          // localStorage.setItem('toast', 'true');
           localStorage.setItem('currentUser', JSON.stringify(res.nombre));
           localStorage.setItem('token', res.token);
           
           this.router.navigate(['/']);
         } else {
-          this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
+          // this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
         }
       },error: (error)=>{
         this.errorLogin = true;
         console.log(error);
-        this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
-        localStorage.setItem('toast', 'true');
+
+        // this.toastService.show('No se encontro el usuario', { classname: 'bg-danger text-white', delay: 15000 });
+        localStorage.setItem('errorLogin', 'true');
       }
   });
 
