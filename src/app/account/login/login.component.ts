@@ -96,7 +96,12 @@ export class LoginComponent implements OnInit {
         
         if(res.token){
           // localStorage.setItem('toast', 'true');
-          localStorage.setItem('currentUser', JSON.stringify(res.nombre));
+          let usuario = {
+            nombre:res.nombre,
+            rut: res.rut,
+            hospital:res.Hospital
+          }
+          localStorage.setItem('currentUser', JSON.stringify(usuario));
           localStorage.setItem('token', res.token);
           
           this.router.navigate(['/']);

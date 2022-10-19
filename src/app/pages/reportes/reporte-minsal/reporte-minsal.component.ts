@@ -89,6 +89,7 @@ export class ReporteMinsalComponent implements OnInit {
       }
    
     }
+    cargando:any = false;
   // dataEx:any[]=[
   //     {
   //       "annio": 2022, 
@@ -229,6 +230,7 @@ export class ReporteMinsalComponent implements OnInit {
     //  })
    }
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
+      this.cargando = true;
       console.log(fechaInicio,fechaFin);
       let fechaInicioAux = this.formatFecha(fechaInicio);
       let fechaFinAux= this.formatFecha(fechaFin);
@@ -246,10 +248,12 @@ export class ReporteMinsalComponent implements OnInit {
           this.examenes = this.formatearDatos(res.data)
           // this.examenes = this.formatearDatos(this.dataEx)
         }
-        if(Object.keys(res).length === 0){
+        this.cargando = false;
+        // else{
           
-          alert('No se encontraron resultados')
-        }else{
+        //   alert('No se encontraron resultados')
+        // }
+        //else{
         //   for (const elem in resp) {
         //     // console.log(elem);
             
@@ -304,7 +308,7 @@ export class ReporteMinsalComponent implements OnInit {
         //     }
         //      this.examenes?.push(filaAux);
         //   }
-        }
+       // }
        
       },
       error:this.handleError.bind(this)
@@ -350,7 +354,7 @@ export class ReporteMinsalComponent implements OnInit {
       let nombreExamen = elem.estado.split('^')
       let iVirus;
       if (elem.resultado == '72365-0') {
-        let tipo = nombreExamen.indexOf('A')
+        let tipo = nombreExamen[1].indexOf('A')
         if(tipo != -1){
           iVirus = this.virus.findIndex((object)=> object.codigo == elem.resultado && object.tipo == 1)
         }else{
@@ -371,16 +375,13 @@ export class ReporteMinsalComponent implements OnInit {
           resul =true;
         }
         if (ind != -1) {
-            
             if(resul){
               if(elem.genero == 'M'){
                 dataAux[ind].examenes[column].rangoEdadM[iEdad] ++;
               } else {
-                
                 dataAux[ind].examenes[column].rangoEdadF[iEdad] ++;
               }
-              console.log(dataAux[ind].examenes[column].rangoEdadF[iEdad]);
-              
+              console.log(dataAux[ind].examenes[column].rangoEdadF[iEdad]); 
             }
             dataAux[ind].examenes[column].total ++;
         }else{
@@ -388,7 +389,6 @@ export class ReporteMinsalComponent implements OnInit {
           filaAux.semana = elem.semana;
           if(resul){
             if(elem.genero == 'M'){
-              
               filaAux.examenes[column].rangoEdadM[iEdad] ++;
             } else {
               let iEdad = this.validarEdad(edad)
@@ -424,7 +424,7 @@ export class ReporteMinsalComponent implements OnInit {
    }
    handleError(error:any){
     console.log(error);
-    
+    this.cargando = false;
    }
  
    formatFecha(fecha:any){

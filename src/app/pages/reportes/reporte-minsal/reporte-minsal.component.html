@@ -235,6 +235,32 @@
           </div> -->
 
           <div class="card-body" >
+            <!-- Info Alert -->
+              <div *ngIf="examenes.length == 0 && !cargando " class="alert alert-info alert-border-left alert-dismissible fade show" role="alert">
+                <i class="ri-airplay-line me-3 align-middle"></i> <strong>No se encontraron resultados</strong>  para el rango de fechas seleccionado
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+              </div>
+              <!-- Secondary Alert -->
+              <!-- <div *ngIf="cargando" class="alert alert-secondary alert-border-left alert-dismissible fade show" role="alert">
+                <i class="ri-check-double-line me-3 align-middle"></i> <strong>Cargando datos ...</strong> - espere un momento, por favor.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div> -->
+              <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0"><b class="text-secondary"></b> Generando Reporte...</h6>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <!-- <h6 class="mb-0">1 min left</h6> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="progress bg-soft-secondary rounded-0">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
               <div hidden>
                   <div class="table-responsive table-card">
                       <table class="table align-middle table-nowrap" id="invoiceTable" #asTablaMinsal>
@@ -426,7 +452,7 @@
 
 
 
-              <div class="mt-xl-3">
+              <div class="mt-xl-3" *ngIf="examenes.length > 0">
                 <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados VRS <small class="text-muted">- VIRUS SINCICIAL RESPIRATORIO</small></h6>
                 <!-- <label class="mb-4"style=" font-size: 14px; color: #1721C3;">Resultados VRS - VIRUS SINCICIAL RESPIRATORIO</label> -->
                 <div class="table-responsive table-card">
@@ -496,7 +522,7 @@
             </div>
 
 
-            <div class="mt-xl-3">
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU A  <small class="text-muted"> - INFLUENZA A</small></h6>
               <!-- <label style="margin-bottom: 1.5rem  !important;font-size: 14px;  color: #1721C3; margin-top: 1.5rem;">Resultados FLU A - INFLUENZA A</label> -->
                 <div class="table-responsive table-card">
@@ -564,7 +590,9 @@
                   <!-- End Pagination -->
                 </div>
             </div>
-            <div class="mt-xl-3">
+
+
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU B  <small class="text-muted"> - INFLUENZA B</small></h6>
               <!-- <label style="margin-bottom: 1.5rem  !important;
               font-size: 14px;
@@ -637,7 +665,7 @@
               </div>
           </div>
 
-            <div class="mt-xl-3">
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados ADV  <small class="text-muted"> - ADENOVIRUS</small></h6>
               <!-- <label style="margin-bottom: 1.5rem;
               font-size: 14px;

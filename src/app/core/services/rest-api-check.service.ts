@@ -11,14 +11,17 @@ var httpOptions={};
 })
 export class RestApiCheckService {
   currentUserValue: any;
-
+  user:any;
   private currentUserSubject: BehaviorSubject<any>;
   constructor(private http:HttpClient) {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.user = JSON.parse(localStorage.getItem('currentUser')!)
+    console.log(this.currentUserSubject);
+    
     httpOptions = {
       headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          "Authorization": "Basic " + btoa("1111111-1:HospitalSanFernando")
+          "Authorization": "Basic " + btoa(`${this.user.rut}:12345`)
       })
     };
    }
