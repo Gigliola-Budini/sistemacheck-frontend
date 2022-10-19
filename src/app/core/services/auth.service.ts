@@ -102,7 +102,7 @@ export class AuthenticationService {
                 "Authorization": "Basic " + btoa(`${rut}:${password}`)
             })
         };
-        return this.http.post(ENV.api_url + 'login' ,{ rut } , httpOptions2);
+        return this.http.post(ENV.api_url + 'login',{}, httpOptions2);
     }
 
     /**
