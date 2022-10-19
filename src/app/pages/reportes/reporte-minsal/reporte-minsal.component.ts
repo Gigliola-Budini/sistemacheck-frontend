@@ -14,6 +14,7 @@ import {DatePipe} from '@angular/common';
 import {ListModel} from './list.model';
 import { Orders } from './data';
 import { ListService } from './list.service';
+import { Examen } from './examen.model';
 import { NgbdListSortableHeader, SortEvent } from './list-sortable.directive';
 
 // Rest Api Service
@@ -52,73 +53,136 @@ export class ReporteMinsalComponent implements OnInit {
    hospitales?: any[];
    examenes: any[]= [];
    virus:any[] = [
-    {codigo:'LA19020-9',nombre:'Influenza B virus negative',columNombre:'FLUB',tipo:0},
-   {codigo:'LA19017-5',nombre:'Influenza A virus positive',columNombre:'FLUA',tipo:1},
-   {codigo:'LA6576-8',nombre:'Adenovirus',columNombre:'ADV',tipo:1},
-   {codigo:'LA19020-9',nombre:'VIRUS SINCICIAL',columNombre:'VRS',tipo:1},
-   {codigo:'LA6577-6',nombre:'Adenovirus',columNombre:'ADV',tipo:0},
-
-   
-
+   {codigo:'72365-0',nombre:'Influenza A',columNombre:'FLUA',tipo:1},
+   {codigo:'72365-0',nombre:'Influenza B',columNombre:'FLUB',tipo:0},
+   {codigo:'SDB-0480',nombre:'Adenovirus',columNombre:'ADV',tipo:1},
+   {codigo:'77390-3',nombre:'VIRUS SINCICIAL',columNombre:'VRS',tipo:1},
   ]
+
   fechaInicio:any;
   fechaFin:any;
   fila:any= {
-    semana:'',
-    FLUA:{
-      total:0,
-      rangoEdadM:{},
-      rangoEdadF:{}
-    },
-    FLUB: {
-      total:0,
-      rangoEdadM:{},
-      rangoEdadF:{}
-    },
-    ADV:{
-      total:0,
-      rangoEdadM:{_1: 0,
-        "_1-4": 0,
-        "_15-54": 0,
-        "_5-14": 0,
-        "_55-64": 0,
-        _65: 0,
-        total: 0},
-      rangoEdadF:{_1: 0,
-        "_1-4": 0,
-        "_15-54": 0,
-        "_5-14": 0,
-        "_55-64": 0,
-        _65: 0,
-        total: 0}
-    },
-    VRS:{
-      total:0,
-      rangoEdadM:{_1: 0,
-        "_1-4": 0,
-        "_15-54": 0,
-        "_5-14": 0,
-        "_55-64": 0,
-        _65: 0,
-        total: 0},
-      rangoEdadF:{_1: 0,
-        "_1-4": 0,
-        "_15-54": 0,
-        "_5-14": 0,
-        "_55-64": 0,
-        _65: 0,
-        total: 0}
-    },
-    nombreHospital:''
-  }
-
-  objectPrototipe: any = {_1: 0,
-    "_1-4": 0,
-    "_15-54": 0,
-    "_5-14": 0,
-    "_55-64": 0,
-    _65: 0,
-    total: 0}
+    anio: '',
+      semana:'',
+      examenes:{
+        FLUA:{
+          total:0,
+          rangoEdadM:[0,0,0,0,0,0,0],
+          rangoEdadF:[0,0,0,0,0,0,0]
+        },
+        FLUB: {
+          total:0,
+          rangoEdadM:[0,0,0,0,0,0,0],
+          rangoEdadF:[0,0,0,0,0,0,0]
+        },
+        ADV:{
+          total:0,
+          rangoEdadM:[0,0,0,0,0,0,0],
+          rangoEdadF:[0,0,0,0,0,0,0]
+        },
+        VRS:{
+          total:0,
+          rangoEdadM:[0,0,0,0,0,0,0],
+          rangoEdadF:[0,0,0,0,0,0,0]
+        },
+        nombreHospital:''
+      }
+   
+    }
+  // dataEx:any[]=[
+  //     {
+  //       "annio": 2022, 
+  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
+  //       "edad": "0", 
+  //       "estado": "LA19020-9^Influenza B virusnegative^LN", 
+  //       "genero": "M", 
+  //       "pid": 151089, 
+  //       "resultado": "72365-0", 
+  //       "semana": 34, 
+  //       "tipoExamen": "CWE", 
+  //       "valides": "F", 
+  //       "valor": "0.04"
+  //     }, 
+  //     {
+  //       "annio": 2022, 
+  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
+  //       "edad": "0", 
+  //       "estado": "LA19017-5^Influenza A viruspositive^LN", 
+  //       "genero": "M", 
+  //       "pid": 151089, 
+  //       "resultado": "72365-0", 
+  //       "semana": 34, 
+  //       "tipoExamen": "CWE", 
+  //       "valides": "F", 
+  //       "valor": "238.74\n"
+  //     }, 
+  //     {
+  //       "annio": 2022, 
+  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
+  //       "edad": "1", 
+  //       "estado": "N", 
+  //       "genero": "M", 
+  //       "pid": 111111193, 
+  //       "resultado": "77390-3", 
+  //       "semana": 34, 
+  //       "tipoExamen": "", 
+  //       "valides": "F", 
+  //       "valor": "0.03"
+  //     }, 
+  //     {
+  //       "annio": 2023, 
+  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
+  //       "edad": "32", 
+  //       "estado": "A", 
+  //       "genero": "F", 
+  //       "pid": 111111193, 
+  //       "resultado": "77390-3", 
+  //       "semana": 34, 
+  //       "tipoExamen": "", 
+  //       "valides": "F", 
+  //       "valor": "0.03"
+  //     }, 
+  //     {
+  //       "annio": 2023, 
+  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
+  //       "edad": "67", 
+  //       "estado": "A", 
+  //       "genero": "F", 
+  //       "pid": 111111193, 
+  //       "resultado": "77390-3", 
+  //       "semana": 35, 
+  //       "tipoExamen": "", 
+  //       "valides": "F", 
+  //       "valor": "0.03"
+  //     }, 
+  //     {
+  //       "annio": 2022, 
+  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
+  //       "edad": "15", 
+  //       "estado": "A", 
+  //       "genero": "M", 
+  //       "pid": 111111193, 
+  //       "resultado": "77390-3", 
+  //       "semana": 37, 
+  //       "tipoExamen": "", 
+  //       "valides": "F", 
+  //       "valor": "0.03"
+  //     },
+  //     {
+  //       "annio": 2022, 
+  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
+  //       "edad": "5", 
+  //       "estado": "LA19017-5^Influenza A viruspositive^LN", 
+  //       "genero": "F", 
+  //       "pid": 151089, 
+  //       "resultado": "72365-0", 
+  //       "semana": 32, 
+  //       "tipoExamen": "CWE", 
+  //       "valides": "F", 
+  //       "valor": "238.74\n"
+  //     }, 
+  //   ]
+  
    constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe) {
      this.invoicesList = service.countries$;
      this.total = service.total$;
@@ -164,7 +228,6 @@ export class ReporteMinsalComponent implements OnInit {
     //   error:this.handleError.bind(this)
     //  })
    }
-
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
       console.log(fechaInicio,fechaFin);
       let fechaInicioAux = this.formatFecha(fechaInicio);
@@ -179,69 +242,185 @@ export class ReporteMinsalComponent implements OnInit {
         let resp:any = res;
         let filaAux:any = this.fila
         this.examenes = []
+        if(res.data.length > 0){
+          this.examenes = this.formatearDatos(res.data)
+          // this.examenes = this.formatearDatos(this.dataEx)
+        }
         if(Object.keys(res).length === 0){
           
           alert('No se encontraron resultados')
         }else{
-          for (const elem in resp) {
-            // console.log(elem);
+        //   for (const elem in resp) {
+        //     // console.log(elem);
             
-            filaAux.semana = elem.replace('_','')
-            // console.log(resp[elem]);
-            let examen:any = {}
-            for (const key in resp[elem][0]) {
-              if (Object.prototype.hasOwnProperty.call(resp[elem][0], key)) {
-                const element = resp[elem][0][key];
-                console.log(element,key);
-                let resulVirus= {}
-                if (key == "nombreHospital") {
-                  filaAux.nombreHospital = element
-                }
-                let genero = key.substring(key.length-1,key.length)
-                let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
-                // console.log(typeof(element));
+        //     filaAux.semana = elem.replace('_','')
+        //     // console.log(resp[elem]);
+        //     let examen:any = {}
+        //     for (const key in resp[elem][0]) {
+        //       if (Object.prototype.hasOwnProperty.call(resp[elem][0], key)) {
+        //         const element = resp[elem][0][key];
+        //         console.log(element,key);
+        //         let resulVirus= {}
+        //         if (key == "nombreHospital") {
+        //           filaAux.nombreHospital = element
+        //         }
+        //         let genero = key.substring(key.length-1,key.length)
+        //         let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
+        //         // console.log(typeof(element));
                 
-               if(i != -1){ 
-                  if(typeof(element) != 'string' || key != "nombreHospital"){
-                    if (this.virus[i].tipo = 1) {
-                      if (genero == 'M') {
-                        filaAux[this.virus[i].columNombre].rangoEdadM = element
-                        filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-                      }else{
-                        filaAux[this.virus[i].columNombre].rangoEdadF = element
-                        filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-                      }
-                    }else{
-                      filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-                    }
-                  }else{
-                    filaAux.nombreHospital = element
-                  }
+        //        if(i != -1){ 
+        //           if(typeof(element) != 'string' || key != "nombreHospital"){
+        //             if (this.virus[i].tipo = 1) {
+        //               if (genero == 'M') {
+        //                 filaAux[this.virus[i].columNombre].rangoEdadM = element
+        //                 filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+        //               }else{
+        //                 filaAux[this.virus[i].columNombre].rangoEdadF = element
+        //                 filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+        //               }
+        //             }else{
+        //               filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
+        //             }
+        //           }else{
+        //             filaAux.nombreHospital = element
+        //           }
                   
-                  console.log(filaAux);
-                  }
+        //           console.log(filaAux);
+        //           }
                 
-                // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
-                //   next: (res:any)=>{
-                //     console.log(res);
+        //         // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
+        //         //   next: (res:any)=>{
+        //         //     console.log(res);
                     
-                //     if(key == 'LA19020-9'){
-                //       if(genero = 'M'){
+        //         //     if(key == 'LA19020-9'){
+        //         //       if(genero = 'M'){
   
-                //       }
-                //     }
-                //   }
-                // })
+        //         //       }
+        //         //     }
+        //         //   }
+        //         // })
                 
-              }
-            }
-             this.examenes?.push(filaAux);
-          }
+        //       }
+        //     }
+        //      this.examenes?.push(filaAux);
+        //   }
         }
        
       },
       error:this.handleError.bind(this)
      })
+   }
+
+   formatearDatos(data:Examen[]){
+    console.log(data);
+    let dataAux:any[] = []
+    
+    data.forEach((elem,i)=>{
+      let filaAux:any = {}
+       filaAux = { 
+        hospital: 'Hospital de San Fernando',
+        anio: '',
+       semana:'',
+       examenes:{
+         FLUA:{
+           total:0,
+           rangoEdadM:[0,0,0,0,0,0,0],
+           rangoEdadF:[0,0,0,0,0,0,0]
+         },
+         FLUB: {
+           total:0,
+           rangoEdadM:[0,0,0,0,0,0,0],
+           rangoEdadF:[0,0,0,0,0,0,0]
+         },
+         ADV:{
+           total:0,
+           rangoEdadM:[0,0,0,0,0,0,0],
+           rangoEdadF:[0,0,0,0,0,0,0]
+         },
+         VRS:{
+           total:0,
+           rangoEdadM:[0,0,0,0,0,0,0],
+           rangoEdadF:[0,0,0,0,0,0,0]
+         },
+         nombreHospital:''
+       }
+    }
+
+      let ind = dataAux.findIndex((item)=> { return item.anio == elem.annio && item.semana == elem.semana} )
+      let nombreExamen = elem.estado.split('^')
+      let iVirus;
+      if (elem.resultado == '72365-0') {
+        let tipo = nombreExamen.indexOf('A')
+        if(tipo != -1){
+          iVirus = this.virus.findIndex((object)=> object.codigo == elem.resultado && object.tipo == 1)
+        }else{
+          iVirus = this.virus.findIndex((object)=> object.codigo == elem.resultado && object.tipo == 0)
+        }
+      }else{
+        iVirus = this.virus.findIndex((object)=> object.codigo == elem.resultado)
+      }
+       
+      let column = '';
+      let edad = parseInt(elem.edad)
+      let resul = false;
+      let iEdad = this.validarEdad(edad)
+      if (iVirus != -1) {
+        let column = this.virus[iVirus].columNombre
+
+        if((elem.tipoExamen == "CWE" && elem.estado.indexOf('positive')!= -1)|| (elem.tipoExamen.length == 0 && elem.estado== "A")){
+          resul =true;
+        }
+        if (ind != -1) {
+            
+            if(resul){
+              if(elem.genero == 'M'){
+                dataAux[ind].examenes[column].rangoEdadM[iEdad] ++;
+              } else {
+                
+                dataAux[ind].examenes[column].rangoEdadF[iEdad] ++;
+              }
+              console.log(dataAux[ind].examenes[column].rangoEdadF[iEdad]);
+              
+            }
+            dataAux[ind].examenes[column].total ++;
+        }else{
+          filaAux.anio = elem.annio;
+          filaAux.semana = elem.semana;
+          if(resul){
+            if(elem.genero == 'M'){
+              
+              filaAux.examenes[column].rangoEdadM[iEdad] ++;
+            } else {
+              let iEdad = this.validarEdad(edad)
+              filaAux.examenes[column].rangoEdadF[iEdad] ++;
+            }
+          }
+          filaAux.examenes[column].total ++;
+          dataAux.push(filaAux)
+        }
+      }
+      
+    })
+    console.log(dataAux);
+    
+    return dataAux
+   }
+   validarEdad(edad:number){
+    let i= 0;
+    if(edad == 0){
+      i = 0
+    }else if (edad > 0 && edad < 5) {
+      i = 1
+    } else if (edad > 4 && edad < 15) {
+      i = 2
+    } else if (edad > 14 && edad < 55) {
+      i = 3
+    } else if (edad > 54 && edad < 65) {
+      i = 4
+    } else if (edad > 64) {
+      i = 5
+    }
+    return i
    }
    handleError(error:any){
     console.log(error);
