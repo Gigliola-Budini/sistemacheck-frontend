@@ -1265,6 +1265,19 @@ export const MENU: MenuItem[] = [
   //   ]
   // },
   {
+    id: 1,
+    label: 'Exámenes',
+    icon: 'bx bx-injection',
+    subItems: [
+      {
+        id: 2,
+        label: 'Listado',
+        link: '/examenes/listado',
+        parentId: 1
+      }
+    ]
+  },
+  {
     id: 184,
     label: 'Reportes',
     icon: 'bx bxs-report ',
@@ -1282,6 +1295,7 @@ export const MENU: MenuItem[] = [
         parentId: 184
       }
     ]
-  }
+  },
+  
 
 ];

@@ -215,10 +215,10 @@ export class ReporteMinsalComponent implements OnInit {
      /**
       * fetches data
       */
-      this.invoicesList.subscribe(x => {
-       this.content = this.invoices;
-       this.invoices =  Object.assign([], x);   
-     });
+    //   this.invoicesList.subscribe(x => {
+    //    this.content = this.invoices;
+    //    this.invoices =  Object.assign([], x);   
+    //  });
 
     this.consultaReporteMinsal('2022/01/01', '2022/12/30')
     // this.consultaReporteMinsal('01/01/2022', '30/12/2022')

@@ -21,7 +21,7 @@ export class RestApiCheckService {
     httpOptions = {
       headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          "Authorization": "Basic " + btoa(`${this.user.rut}:12345`)
+          "Authorization": `Basic  ${this.user.basic}`
       })
     };
    }
@@ -40,7 +40,11 @@ export class RestApiCheckService {
           "Authorization": "Basic dXNlcmNoZWNrOmNoZWNrMjAyMg=="
       })
     };
-    return this.http.get(`https://fhir.loinc.org/CodeSystem/$lookup?system=http://loinc.org&code=${code}`,httpOptions2)
+    return this.http.get(`https://fhir.loinc.org/CodeSystem/$lookup?system=http://loinc.org&code=${code}`,httpOptions)
+  }
+
+  getExamenes(fechaInicio:string, fechaTermino:string){
+    return this.http.get(`${ENV.api_url}TestConsultas`,httpOptions)
   }
 
   //Crear Hospital
