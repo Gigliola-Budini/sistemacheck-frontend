@@ -44,7 +44,10 @@ export class RestApiCheckService {
   }
 
   getExamenes(fechaInicio:string, fechaTermino:string){
-    return this.http.get(`${ENV.api_url}TestConsultas`,httpOptions)
+    // /Casos/fecha?fechaDesde=03/10/2022&fechaHasta=09/10/2022
+    // return this.http.get(`${ENV.api_url}Casos/fecha?fechaDesde=${fechaInicio}&fechaHasta=${fechaTermino}`,httpOptions)
+    return this.http.get(`${ENV.api_url}Casos/fecha?fechaDesde=03/10/2022&fechaHasta=31/10/2022`,httpOptions)
+    //return this.http.get(`${ENV.api_url}TestConsultas`,httpOptions)
   }
 
   //Crear Hospital
