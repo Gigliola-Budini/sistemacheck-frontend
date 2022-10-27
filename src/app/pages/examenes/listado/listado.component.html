@@ -16,15 +16,15 @@
           </div>
           <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
                   <div class="row g-3">
-                      <div class="col-xxl-3 col-sm-6">
+                      <div class="col-xxl-3 col-sm-3">
                         <label class="text-muted" for="">Seleccione fecha de inicio</label>
-                          <input class="form-control" type="date" name="" id="">
+                          <input class="form-control" type="date" name="" id="" [(ngModel)]="fechaInicio">
                       </div>
                       <!--end col-->
-                      <div class="col-xxl-3 col-sm-6">
-                        <label class="text-muted" for="">Seleccione fecha de termino</label>
+                      <div class="col-xxl-3 col-sm-3">
+                        <label class="text-muted" for="">Seleccione fecha de fin</label>
                         <!-- <input class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="Select date" id="isDate" > -->
-                        <input class="form-control" type="date" name="" id="">
+                        <input class="form-control" type="date" name="" id="" [(ngModel)]="fechaFin">
                       </div>
                       <!--end col-->
                        <div class="col-xxl-4 col-sm-4">
@@ -40,10 +40,10 @@
                       </div> 
                       <!--end col-->
 
-                      <div class="col-xxl-2 col-sm-2">
+                      <div class="col-xxl-2 col-sm-2" style="display: grid;">
                         <label for=""></label>
-                          <button type="button" class="btn btn-primary w-100" >
-                              <i class="ri-equalizer-fill me-1 align-bottom"></i> Filtrar
+                          <button type="button" class="btn btn-primary w-100" style="align-self: end;" (click)="obtenerExamenesFecha(fechaInicio, fechaFin)">
+                              <i class="ri-search-line mt-3 me-1 align-bottom" ></i> Buscar
                           </button>
                       </div>
                       <!--end col-->
@@ -52,17 +52,37 @@
           </div>
           <div class="card-body">
               <div>
-                  <div class="table-responsive table-card">
+                <div *ngIf="examenes.length == 0 && !cargando " class="alert alert-info alert-border-left alert-dismissible fade show" role="alert">
+                  <i class="ri-airplay-line me-3 align-middle"></i> <strong>No se encontraron resultados</strong>  para el rango de fechas seleccionado.
+                  <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+                </div>
+                <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                  <div class="card-body">
+                      <div class="d-flex">
+                          <div class="flex-grow-1">
+                              <h6 class="mb-0"><b class="text-secondary"></b> Cargando datos...</h6>
+                          </div>
+                          <div class="flex-shrink-0">
+                              <!-- <h6 class="mb-0">1 min left</h6> -->
+                          </div>
+                      </div>
+                  </div>
+                  <div class="progress bg-soft-secondary rounded-0">
+                      <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+              </div>
+                  <div *ngIf="examenes.length > 0"class="table-responsive table-card">
                       <table #asTablaExamenes class="table table-gridjs align-middle table-nowrap" id="invoiceTable">
                           <thead class="text-muted">
                               <tr>
                                   <th scope="col" style="width: 50px;">
-                                    <div class="form-check">
+                                    <!-- <div class="form-check">
                                       <input class="form-check-input" type="checkbox" id="checkAll" value="option" >
-                                    </div>
+                                    </div> -->
                                   </th>
                                   <th class="sort text-uppercase" data-sort="invoice_id">PID</th>
                                   <th class="sort text-uppercase" data-sort="customer_name">RUT</th>
+                                  <th class="sort text-uppercase" data-sort="customer_name">NOMBRE</th>
                                   <th class="sort text-uppercase" data-sort="email">SEXO</th>
                                   <th class="sort text-uppercase" data-sort="country">EDAD</th>
                                   <th class="sort text-uppercase" data-sort="date">FECHA MUESTRA</th>
@@ -78,6 +98,7 @@
                               </th>
                               <td>{{data.pid}}</td>
                               <td>{{data.rut}}</td>
+                              <td>{{data.nombres + ' '+ data.apellidos}}</td>
                               <td>{{data.sexo}}</td>
                               <td>{{data.edad}}</td>
                               <td>{{data.fechaMuestra}}</td>
@@ -134,10 +155,10 @@
                   <div class="row justify-content-md-between align-items-md-center mt-3">
                     <div class="col col-sm-6">
                         <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
-                            Showing
+                            <!-- Showing -->
                             <!-- {{service.startIndex}} to
                             {{service.endIndex}} of {{service.totalRecords}} -->
-                            entries
+                            <!-- entries -->
                         </div>
                     </div>
                     <!-- Pagination -->
@@ -179,9 +200,9 @@
      <tbody>
       <tr *ngFor="let elem of detalleExamen.muestras">
         <td>{{getNombre(elem.examen, elem.resultado)}}</td>
-        <td></td>
+        <td>{{(elem.validez=="F")? 'Válido': 'Inválido'}}</td>
         <td>{{getResult(elem.resultado)}}</td>
-        <td></td>
+        <td>{{elem.value}}</td>
       </tr>
      </tbody>
     </table>

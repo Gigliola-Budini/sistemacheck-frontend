@@ -6,6 +6,8 @@ export interface Muestra{
     {
         examen: string;
         resultado: string;
+        validez:string;
+        value:string;
     }[];
     nombres: string;
     pid: number;

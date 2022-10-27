@@ -58,7 +58,7 @@ export class ReporteMinsalComponent implements OnInit {
    {codigo:'SDB-0480',nombre:'Adenovirus',columNombre:'ADV',tipo:1},
    {codigo:'77390-3',nombre:'VIRUS SINCICIAL',columNombre:'VRS',tipo:1},
   ]
-
+  today:Date= new Date();
   fechaInicio:any;
   fechaFin:any;
   fila:any= {
@@ -200,7 +200,10 @@ export class ReporteMinsalComponent implements OnInit {
       	"P3 M  15 -54 años",	"P3 M  55 - 64 años", 	"P3 M  > 65 años",	"MPV H < 1 año",	"MPV H  1 - 4 años", 	"P3 H 5 - 14 años",	"MPV H 15 -54 años",  	"MPV H  55 - 64 años", "	MPV H > 65 años", "MPV M < 1 año",	
         "MPV M  1 - 4 años",	"MPV M  5 - 14 años", 	"MPV M  15 -54 años",	"MPV M 55 - 64 años", 	"MPV M  > 65 años" ];
       this.hospitales = [{idHospital:'2',nombre:'San Fernando'}]  
-
+      this.fechaFin = this.changeDate(this.today);
+      let fechaAux = new Date()
+      fechaAux.setDate(this.today.getDate()-30)
+      this.fechaInicio = this.changeDate(fechaAux);
    }
  
    ngOnInit(): void {
@@ -220,7 +223,7 @@ export class ReporteMinsalComponent implements OnInit {
     //    this.invoices =  Object.assign([], x);   
     //  });
 
-    this.consultaReporteMinsal('2022/01/01', '2022/12/30')
+    this.consultaReporteMinsal(this.fechaInicio, this.fechaFin)
     // this.consultaReporteMinsal('01/01/2022', '30/12/2022')
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
     //   next: (res:any)=>{
@@ -230,7 +233,7 @@ export class ReporteMinsalComponent implements OnInit {
     //  })
    }
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
-      this.cargando = true;
+      
       console.log(fechaInicio,fechaFin);
       let fechaInicioAux = this.formatFecha(fechaInicio);
       let fechaFinAux= this.formatFecha(fechaFin);
@@ -238,6 +241,11 @@ export class ReporteMinsalComponent implements OnInit {
         alert('La fecha de termino debe ser mayor a la fecha de inicio');
         return;
       }
+      if ( this.fechaInicio == '' ||this.fechaFin == '') {
+        alert("las fechas no son válidas.")
+        return
+      }
+      this.cargando = true;
     this.reporteService.getReporteMinsal(fechaInicioAux,fechaFinAux).subscribe({
       next: async (res:any)=>{
         console.log(res);
@@ -433,6 +441,13 @@ export class ReporteMinsalComponent implements OnInit {
       let fechaRes: string = fechaAux[2] +'/'+fechaAux[1]+'/'+fechaAux[0]
       return fechaRes
    }
+
+   changeDate(date:Date){
+    let dia = (date.getDate()<10)? '0'+date.getDate(): date.getDate();
+    let mes = ((date.getMonth()+1)<10)? '0'+(date.getMonth()+1): date.getMonth()+1;
+    let anio = date.getFullYear()
+    return anio+'-'+mes+'-'+dia
+  }
     /**
     * Confirmation mail model
     */

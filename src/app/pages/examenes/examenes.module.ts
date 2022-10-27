@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ExamenesRoutingModule } from "./examenes-routing.module";
 import { ListadoComponent } from "./listado/listado.component";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Counter
 import { CountToModule } from 'angular-count-to';
@@ -26,7 +27,9 @@ import lottie from 'lottie-web';
     ExamenesRoutingModule,
     CountToModule,
     FeatherModule.pick(allIcons),
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

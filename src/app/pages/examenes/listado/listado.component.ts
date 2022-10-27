@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { RestApiCheckService } from "src/app/core/services/rest-api-check.service";
 
+import { UntypedFormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { data } from "./../data";
 import {Muestra} from "./examen.model"
+import { Examen } from '../../reportes/reporte-minsal/examen.model';
 
 @Component({
   selector: 'app-listado',
@@ -17,14 +19,23 @@ export class ListadoComponent implements OnInit {
   @ViewChild('astablaExamenes') tablaExamenes: ElementRef;
   breadCrumbItems!: Array<{}>;
   date:Date = new Date();
-  today?:string ;
-  examenes?: Muestra[];
+  examenes?: Muestra[] =[];
+  today:Date= new Date();
+  fechaInicio:any ;
+  fechaFin:any;
+  cargando:any= false;
+
   virus:any[]= [{ codigo:'72365-0',nombre:'Influenza'},
   { codigo:'77390-3',nombre:'Sincicial'},
   { codigo:'SDB-0480',nombre:'Adenovirus'}
 ]
   constructor(private restApiService:RestApiCheckService,private renderer: Renderer2,private modalService: NgbModal) { 
-    this.today = this.date.getDate()+'/'+this.date.getMonth+'/'+this.date.getFullYear();
+    this.fechaFin = this.formatDate(this.today);
+    let fechaAux = new Date()
+    fechaAux.setDate(this.today.getDate()-7)
+    this.fechaInicio = this.formatDate(fechaAux);
+    console.log(this.fechaInicio, this.fechaFin);
+    
   }
 
   detalleExamen?: Muestra;
@@ -35,26 +46,44 @@ export class ListadoComponent implements OnInit {
       { label: 'Listado', active: true }
     ];
     
-    this.obtenerExamenesFecha('01/01'+this.date.getFullYear(),this.today)
+    this.obtenerExamenesFecha(this.fechaInicio,this.fechaFin)
     
     console.log(this.examenes);
-    
   }
 
+  formatDate(date:Date){
+    let dia = (date.getDate()<10)? '0'+date.getDate(): date.getDate();
+    let mes = ((date.getMonth()+1)<10)? '0'+(date.getMonth()+1): date.getMonth()+1;
+    let anio = date.getFullYear()
+    return anio+'-'+mes+'-'+dia
+  }
+
+  cambiarFecha(date:string){
+    let fechaAux = date.split('-')
+    return fechaAux[2] +'/'+fechaAux[1] +'/'+fechaAux[0]
+  }
+
+
   obtenerExamenesFecha(inicio:any, fin:any){
-    this.restApiService.getExamenes(inicio,fin).subscribe({
-      next:(res:any)=>{
+    console.log(inicio,fin);
+    if(this.fechaInicio > this.fechaFin || this.fechaInicio == '' ||this.fechaFin == ''){
+      alert("Rango de fechas no válido");
+      return;
+    }
+    this.cargando = true;
+    this.restApiService.getExamenes(this.cambiarFecha(inicio),this.cambiarFecha(fin)).subscribe({
+      next:(res:Muestra[])=>{
         console.log(res);
         if(res.length > 0){
-          this.examenes = data;
+          this.examenes = res;
         }else{
           this.examenes = []
         }
-
+        this.cargando= false;
       },
     error:(err)=>{
       console.log(err);
-      
+      this.cargando= false;
 
     }})
   }
