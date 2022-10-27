@@ -223,8 +223,8 @@ export class ReporteMinsalComponent implements OnInit {
     //    this.invoices =  Object.assign([], x);   
     //  });
 
-    this.consultaReporteMinsal(this.fechaInicio, this.fechaFin)
-    // this.consultaReporteMinsal('01/01/2022', '30/12/2022')
+    // this.consultaReporteMinsal(this.fechaInicio, this.fechaFin)
+    this.consultaReporteMinsal('24/10/2022', '30/10/2022')
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
     //   next: (res:any)=>{
     //     console.log(res);
