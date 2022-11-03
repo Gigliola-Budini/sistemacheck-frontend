@@ -1278,24 +1278,43 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
-    id: 184,
+    id: 3,
     label: 'Reportes',
     icon: 'bx bxs-report ',
     subItems: [
       {
-        id: 185,
+        id: 4,
         label: 'MINSAL',
         link: '/reportes/minsal',
-        parentId: 184
+        parentId: 3
       },
       {
-        id: 186,
+        id: 5,
         label: 'Personalizado',
         link: '/reportes/personalizado',
-        parentId: 184
+        parentId: 3
       }
     ]
   },
+  {
+    id: 6,
+    label: 'Usuarios',
+    icon: 'ri-group-line',
+    subItems: [
+      {
+        id: 7,
+        label: 'Crear Nuevo Usuario',
+        link: '/usuarios/crear',
+        parentId: 6
+      },
+      {
+        id: 8,
+        label: 'Listado',
+        link: '/usuarios/crear',
+        parentId: 6
+      }
+    ]
+  }
   
 
 ];

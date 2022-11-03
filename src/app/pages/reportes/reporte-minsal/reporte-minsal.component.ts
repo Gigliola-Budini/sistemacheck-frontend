@@ -17,6 +17,8 @@ import { ListService } from './list.service';
 import { Examen } from './examen.model';
 import { NgbdListSortableHeader, SortEvent } from './list-sortable.directive';
 
+import { DatesService } from "src/app/core/services/dates.service";
+
 // Rest Api Service
 // import { ProductService } from "../../../core/services/rest-api.service";
 import { RestApiCheckService } from "src/app/core/services/rest-api-check.service";
@@ -184,7 +186,7 @@ export class ReporteMinsalComponent implements OnInit {
   //     }, 
   //   ]
   
-   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe) {
+   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe, private datesServices:DatesService) {
      this.invoicesList = service.countries$;
      this.total = service.total$;
      this.headersList = ["Establecimiento","Responsable de notificacion","Semana epidemiológica","VRS","FLUA ","FLUB", "ADV",	"PARAFLU 1"	,"MPV",	"VRS H < 1 año",	"VRS H 1 - 4 años",	"VRS H 5 - 14 años",	"VRS H 15 -54 años",
@@ -200,12 +202,11 @@ export class ReporteMinsalComponent implements OnInit {
       	"P3 M  15 -54 años",	"P3 M  55 - 64 años", 	"P3 M  > 65 años",	"MPV H < 1 año",	"MPV H  1 - 4 años", 	"P3 H 5 - 14 años",	"MPV H 15 -54 años",  	"MPV H  55 - 64 años", "	MPV H > 65 años", "MPV M < 1 año",	
         "MPV M  1 - 4 años",	"MPV M  5 - 14 años", 	"MPV M  15 -54 años",	"MPV M 55 - 64 años", 	"MPV M  > 65 años" ];
       this.hospitales = [{idHospital:'2',nombre:'San Fernando'}]  
-      // this.fechaFin = this.changeDate(this.today);
-      // let fechaAux = new Date()
-      // fechaAux.setDate(this.today.getDate()-30)
-      // this.fechaInicio = this.changeDate(fechaAux);
-      this.fechaFin = '2022/10/30'
-      this.fechaInicio = '2022/10/24'
+      this.fechaFin = this.changeDate(this.today);
+      let fechaAux = this.datesServices.getMondayOfCurrentWeek(new Date())
+      this.fechaInicio = this.changeDate(fechaAux);
+      // this.fechaFin = '2022/10/30'
+      // this.fechaInicio = '2022/10/24'
    }
  
    ngOnInit(): void {
@@ -234,8 +235,8 @@ export class ReporteMinsalComponent implements OnInit {
     //   error:this.handleError.bind(this)
     //  })
    }
+
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
-      
       console.log(fechaInicio,fechaFin);
       let fechaInicioAux = this.formatFecha(fechaInicio);
       let fechaFinAux= this.formatFecha(fechaFin);
