@@ -8,6 +8,33 @@ import { data } from "./../data";
 import {Muestra} from "./examen.model"
 import { Examen } from '../../reportes/reporte-minsal/examen.model';
 
+interface SearchResult {
+  examenes: Examen[];
+  total: number;
+}
+
+interface State {
+  page: number;
+  pageSize: number;
+  searchTerm: string;
+  sortColumn: '';
+  sortDirection: '';
+  startIndex: number;
+  endIndex: number;
+  totalRecords: number;
+}
+const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+
+function sort(countries: Muestra[], column: any, direction: string): any[] {
+  if (direction === '' || column === '') {
+    return countries;
+  } else {
+    return [...countries].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
+  }
+}
 @Component({
   selector: 'app-listado',
   templateUrl: './listado.component.html',
@@ -20,6 +47,7 @@ export class ListadoComponent implements OnInit {
   breadCrumbItems!: Array<{}>;
   date:Date = new Date();
   examenes?: Muestra[] =[];
+  dataExamenes?: Muestra[] =[];
   today:Date= new Date();
   fechaInicio:any ;
   fechaFin:any;
@@ -29,6 +57,25 @@ export class ListadoComponent implements OnInit {
   { codigo:'77390-3',nombre:'Sincicial'},
   { codigo:'SDB-0480',nombre:'Adenovirus'}
 ]
+  state: State = {
+    page: 1,
+    pageSize: 5,
+    searchTerm: '',
+    sortColumn: '',
+    sortDirection: '',
+    startIndex: 0,
+    endIndex: 9,
+    totalRecords: 0
+  };
+  total$ = 0
+  loading = false;
+  page= this.state.page
+  pageSize= this.state.pageSize
+  searchTerm=this.state.searchTerm
+  startIndex=this.state.startIndex
+  endIndex=this.state.endIndex
+  totalRecords = this.state.totalRecords
+
   constructor(private restApiService:RestApiCheckService,private renderer: Renderer2,private modalService: NgbModal) { 
     this.fechaFin = this.formatDate(this.today);
     let fechaAux = new Date()
@@ -76,6 +123,7 @@ export class ListadoComponent implements OnInit {
         console.log(res);
         if(res.length > 0){
           this.examenes = res;
+          // this.examenes = this.search(this.dataExamenes)
         }else{
           this.examenes = []
         }
@@ -118,6 +166,28 @@ export class ListadoComponent implements OnInit {
     }else{
       return 'Negativo'
     }
+  }
+
+  search(examenes){
+    const {sortColumn, sortDirection, pageSize, page, searchTerm} = this.state;
+
+    // 1. sort
+    let examenesArr = sort(examenes, sortColumn, sortDirection);
+
+    // 2. filter
+    // countries = countries.filter(country => matches(country, searchTerm, this.pipe));
+    const total = examenesArr.length;
+
+    // 3. paginate
+    this.totalRecords = examenesArr.length;
+    this.state.startIndex = (page - 1) * this.pageSize + 1;
+    this.state.endIndex = (page - 1) * this.pageSize + this.pageSize;
+    if (this.endIndex > this.totalRecords) {
+        this.endIndex = this.totalRecords;
+    }
+    examenesArr = examenesArr.slice(this.state.startIndex - 1, this.state.endIndex);
+    // return ({examenesArr, total});
+    return examenesArr;
   }
 
 }

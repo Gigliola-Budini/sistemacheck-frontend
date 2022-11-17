@@ -16,7 +16,7 @@ export const environment = {
     measurementId: ''
   },
   api_url: 'https://apidiagnochile.azurewebsites.net/',
-  //api_url: 'http://127.0.0.1:8000/',
+  // api_url: 'http://127.0.0.1:8000/',
   api_loinc: 'https://fhir.loinc.org/CodeSystem/$lookup?system=http://loinc.org&code=',
   // api_url:'https://apidiagnochile.azurewebsites.net/',
   auth:'login',

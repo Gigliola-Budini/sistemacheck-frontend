@@ -10,4 +10,6 @@ export interface Examen{
     tipoExamen: string; 
     valides: string; 
     valor: string;
+    nombreServicioSalud: string;
+    nombreHospital:string;
 }
