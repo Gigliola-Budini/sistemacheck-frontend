@@ -17,6 +17,7 @@ import { SharedModule } from '../../shared/shared.module';
 // Load Icons
 import { defineLordIconElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
+import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
@@ -29,8 +30,8 @@ import lottie from 'lottie-web';
     FeatherModule.pick(allIcons),
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    DataTablesModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
