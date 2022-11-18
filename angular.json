@@ -42,10 +42,13 @@
               "src/assets/scss/config/default/bootstrap.scss",
               "src/assets/scss/config/default/app.scss",
               "src/assets/scss/icons.scss"
+             
             ],
-            "scripts":
-            [
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js"
             ]
+            
           },
           "configurations": {
             "production": {

@@ -16,6 +16,9 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: 'clave', loadChildren: () => import('./auth/crear-pass/crear-pass.module').then(m => m.CrearPassModule)
   }
 
 ];

@@ -257,6 +257,8 @@ export class ReporteMinsalComponent implements OnInit {
         this.examenes = []
         if(res.data.length > 0){
           this.examenes = this.formatearDatos(res.data)
+
+          
           // this.examenes = this.formatearDatos(this.dataEx)
         }
         this.cargando = false;
@@ -333,7 +335,8 @@ export class ReporteMinsalComponent implements OnInit {
     data.forEach((elem,i)=>{
       let filaAux:any = {}
        filaAux = { 
-        hospital: 'Hospital de San Fernando',
+        hospital: elem.nombreHospital,
+        servicioSalud:elem.nombreServicioSalud,
         anio: '',
        semana:'',
        examenes:{
