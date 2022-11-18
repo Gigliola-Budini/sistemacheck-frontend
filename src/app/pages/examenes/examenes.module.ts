@@ -19,7 +19,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { defineLordIconElement } from 'lord-icon-element';
 import { DataTablesModule } from "angular-datatables";
 import lottie from 'lottie-web';
-import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
