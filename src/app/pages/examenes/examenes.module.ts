@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ExamenesRoutingModule } from "./examenes-routing.module";
 import { ListadoComponent } from "./listado/listado.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbDropdownModule, NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Counter
 import { CountToModule } from 'angular-count-to';
@@ -16,6 +17,7 @@ import { SharedModule } from '../../shared/shared.module';
 
 // Load Icons
 import { defineLordIconElement } from 'lord-icon-element';
+import { DataTablesModule } from "angular-datatables";
 import lottie from 'lottie-web';
 import { DataTablesModule } from "angular-datatables";
 
@@ -31,6 +33,9 @@ import { DataTablesModule } from "angular-datatables";
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbDropdownModule,
+    NgbPaginationModule,
+    NgbTypeaheadModule,
     DataTablesModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
