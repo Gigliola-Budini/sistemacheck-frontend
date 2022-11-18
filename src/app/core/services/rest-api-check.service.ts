@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from "src/environments/environment";
+import { Thumbs } from 'swiper';
 
 const ENV = environment;
 var httpOptions={};
@@ -18,8 +19,6 @@ export class RestApiCheckService {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = JSON.parse(localStorage.getItem('currentUser')!)
     this.token = localStorage.getItem('token')
-    console.log("token ",this.token);
-    
     console.log(this.currentUserSubject);
     
     httpOptions = {

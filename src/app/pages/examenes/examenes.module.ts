@@ -19,6 +19,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { defineLordIconElement } from 'lord-icon-element';
 import { DataTablesModule } from "angular-datatables";
 import lottie from 'lottie-web';
+import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,6 @@ import lottie from 'lottie-web';
     NgbPaginationModule,
     NgbTypeaheadModule,
     DataTablesModule
-
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
