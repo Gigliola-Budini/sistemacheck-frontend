@@ -9,3 +9,7 @@ th, td {
     border: 1px solid var(--vz-border-color) !important;
     padding: 0.75rem 0.6rem !important;
   }
+
+.dataTables_length>label{
+    font-weight: normal !important;
+}

@@ -72,7 +72,7 @@
                   </div>
               </div>
                   <div *ngIf="examenes.length > 0"class="table-responsive table-card">
-                      <table #asTablaExamenes datatable class="table align-middle table-nowrap" id="invoiceTable">
+                      <table #asTablaExamenes datatable [dtOptions]="dataOptions" class="table align-middle table-nowrap" id="invoiceTable">
                           <thead class="text-muted">
                               <tr>
                                   <th scope="col" style="width: 50px;">

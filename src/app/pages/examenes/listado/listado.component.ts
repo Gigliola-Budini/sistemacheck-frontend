@@ -44,6 +44,7 @@ export class ListadoComponent implements OnInit {
   // bread crumb items
   @ViewChild('asDetalle') detalle: ElementRef;
   @ViewChild('astablaExamenes') tablaExamenes: ElementRef;
+  dataOptions: DataTables.Settings;
   breadCrumbItems!: Array<{}>;
   date:Date = new Date();
   examenes?: Muestra[] =[];
@@ -93,6 +94,25 @@ export class ListadoComponent implements OnInit {
       { label: 'Listado', active: true }
     ];
     
+    this.dataOptions = {
+     
+      language: {
+        "lengthMenu": "Mostrar _MENU_ registros por página",
+        "zeroRecords": "No se encontraron resultados - lo sentimos",
+        "info": "Mostrando página _PAGE_ de _PAGES_",
+        "infoEmpty": "No hay registros disponibles",
+        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+        "paginate": {
+          "first":"Primera",
+          "next": "Siguiente",
+          last:"Última",
+          previous:"Anterior",
+        
+        },
+        "search":"Buscar"     
+        
+      }
+    };
     this.obtenerExamenesFecha(this.fechaInicio,this.fechaFin)
     
     console.log(this.examenes);
