@@ -33,7 +33,7 @@
                     
                         <div class="card-body p-4"> 
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">Crear Contraseña Nueva</h5>
+                                <h5 class="text-primary">Crear Contraseña</h5>
                                 <p class="text-muted"></p>
                             </div>
 
@@ -57,7 +57,7 @@
                                     <div class="mb-3">
                                         <label class="form-label" for="confirm-password-input">Confirmar Contraseña</label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
-                                            <input [type]="confirmField ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Confirm password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="confirm-password-input" required formControlName="cpassword"
+                                            <input [type]="confirmField ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Confirmar contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="confirm-password-input" required formControlName="cpassword"
                                             [ngClass]="{ 'is-invalid': submitted && f['cpassword'].errors }">
                                             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
                                             }" (click)="toggleconfirmField()"></i></button>
@@ -68,11 +68,11 @@
                                     </div>
 
                                     <div id="password-contain" class="p-3 bg-light mb-2 rounded">
-                                        <h5 class="fs-13">Password must contain:</h5>
-                                        <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
+                                        <!-- <h5 class="fs-13">Password must contain:</h5>
+                                        <p id="pass-length" class="invalid fs-12 mb-2">Mínimo <b>6 carácteres</b></p>
                                         <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b> letter (a-z)</p>
                                         <p id="pass-upper" class="invalid fs-12 mb-2">At least <b>uppercase</b> letter (A-Z)</p>
-                                        <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p>
+                                        <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p> -->
                                     </div>
                                     
                                     <!-- <div class="form-check">
