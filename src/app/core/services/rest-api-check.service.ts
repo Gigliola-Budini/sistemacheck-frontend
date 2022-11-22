@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from "src/environments/environment";
+import { Thumbs } from 'swiper';
 
 const ENV = environment;
 var httpOptions={};
@@ -12,10 +13,12 @@ var httpOptions={};
 export class RestApiCheckService {
   currentUserValue: any;
   user:any;
+  token:any;
   private currentUserSubject: BehaviorSubject<any>;
   constructor(private http:HttpClient) {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = JSON.parse(localStorage.getItem('currentUser')!)
+    this.token = localStorage.getItem('token')
     console.log(this.currentUserSubject);
     
     httpOptions = {
@@ -29,7 +32,7 @@ export class RestApiCheckService {
   //Reportes
   getReporteMinsal(desde:string, hasta:string){
     // reporte?fechaDesde=01/01/2022&fechaHasta=30/12/2022
-    return this.http.get(`${ENV.api_url}reporte?fechaDesde=${desde}&fechaHasta=${hasta}`,httpOptions);
+    return this.http.get(`${ENV.api_url}reporte?fechaDesde=${desde}&fechaHasta=${hasta}&token=${this.token}`,httpOptions);
   }
 
   getNameVirus(code:any){
@@ -45,7 +48,7 @@ export class RestApiCheckService {
 
   getExamenes(fechaInicio:string, fechaTermino:string){
     // /Casos/fecha?fechaDesde=03/10/2022&fechaHasta=09/10/2022
-    return this.http.get(`${ENV.api_url}Casos/fecha?fechaDesde=${fechaInicio}&fechaHasta=${fechaTermino}`,httpOptions)
+    return this.http.get(`${ENV.api_url}Casos/fecha?fechaDesde=${fechaInicio}&fechaHasta=${fechaTermino}&token=${this.token}`,httpOptions)
     
   }
 
