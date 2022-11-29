@@ -11,7 +11,7 @@ export const environment = {
     appId: '',
     measurementId: ''
   },
-  api_url: 'https://apidiagnochile.azurewebsites.net/',
+  api_url: 'https://apidiagnochiledes.azurewebsites.net/',
   auth:'login',
   key_encript:'',
   headerToken : {'Authorization': `Bearer ${localStorage.getItem('token')}`},
