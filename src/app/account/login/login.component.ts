@@ -100,9 +100,12 @@ export class LoginComponent implements OnInit {
             nombre:res.nombre,
             rut: res.rut,
             hospital:res.Hospital,
+            rol:res.nombreRol,
+            email:res.email,
             basic: btoa(this.f['rut'].value+':'+this.f['pass'].value)
           }
           localStorage.setItem('currentUser', JSON.stringify(usuario));
+          localStorage.setItem('rol', JSON.stringify(res.permisos));
           localStorage.setItem('token', res.token);
           // localStorage.setItem('nombre', btoa(this.f['rut'].value+':'+this.f['pass'].value));
           

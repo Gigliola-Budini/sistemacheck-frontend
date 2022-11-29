@@ -6,83 +6,143 @@
   <div class="col-lg-12">
       <div class="card">
           <div class="card-body">
-            <div class="row">
+            <form action="" [formGroup]="userForm" (ngSubmit)="crearUsuario()">
+            <div class="row">  
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
-                        <label class="form-label" for="rut-input">Rut</label>
-                        <input type="text" class="form-control" id="rut-input"
-                            placeholder="Ingrese el RUT">
+                        <label class="form-label" for="rut-inp">Rut <i class="text-muted"> - sin puntos y con guión</i></label>
+                        <input formControlName="rut" type="text" class="form-control" id="rut-inp" placeholder="Ingrese el RUT ej 11111111-1"[ngClass]="{ 'is-invalid':  f['rut'].invalid  && (f['rut'].dirty || f['rut'].touched)}" required>
+                            <div *ngIf="f['rut'].invalid && (f['rut'].dirty || f['rut'].touched)" class="invalid-feedback">
+                        
+                                <div *ngIf="rut.errors?.['required']">
+                                     Debe completar el rut
+                                </div>
+                                <div *ngIf="f['rut'].errors['notValid'] || f['rut'].errors['minlength']">
+                                    El Rut es no es válido
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4 ">
                     <div class="mb-3">
                         <label class="form-label" for="project-title-input">Nombre</label>
-                        <input type="text" class="form-control" id="project-title-input"
-                            placeholder="Ingrese el nombre">
+                        <input formControlName="nombre" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el nombre" [ngClass]="{ 'is-invalid':  f['nombre'].invalid  && (f['nombre'].dirty || f['nombre'].touched)}">
+                        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+                            <div *ngIf="f['nombre'].errors['required']">
+                                    Debe completar el nombre
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
                         <label class="form-label" for="project-title-input">Primer Apellido </label>
-                        <input type="text" class="form-control" id="project-title-input"
-                            placeholder="Ingrese el primer apellido">
+                        <input formControlName="primerApellido" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el primer apellido" [ngClass]="{ 'is-invalid':  primerApellido.invalid  && (primerApellido.dirty || primerApellido.touched)}">
+                        <div *ngIf="primerApellido.invalid && (primerApellido.dirty || primerApellido.touched)" class="invalid-feedback">
+                            <div *ngIf="primerApellido.errors?.['required']" >
+                                    Debe completar el primer apellido
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
                         <label class="form-label" for="project-title-input">Segundo Apellido</label>
-                        <input type="text" class="form-control" id="project-title-input"
-                            placeholder="Ingrese el segundo apellido">
+                        <input formControlName="segundoApellido" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el segundo apellido" [ngClass]="{ 'is-invalid':  segundoApellido.invalid  && (segundoApellido.dirty || segundoApellido.touched)}">
+                            <div *ngIf="segundoApellido.invalid && (segundoApellido.dirty || segundoApellido.touched)" class="invalid-feedback">
+                                <div *ngIf="segundoApellido.errors?.['required']">
+                                        Debe completar el segundo apellido
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
-                        <label class="form-label" for="project-title-input">Email</label>
-                        <input type="text" class="form-control" id="project-title-input"
-                            placeholder="Ingrese el email">
+                        <label class="form-label" for="project-title-input">Correo</label>
+                        <input formControlName="correo" type="email" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el correo" [ngClass]="{ 'is-invalid':  correo.invalid  && (correo.dirty || correo.touched)}"
+                            email="true">
+                            <div *ngIf="correo.invalid && (correo.dirty || correo.touched)" class="invalid-feedback">
+                                <div *ngIf="correo.errors?.['required']">
+                                        Debe completar el correo
+                                </div>
+                                <div *ngIf="correo.errors?.['email']">
+                                    El formato del correo no es válido
+                            </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
                         <label class="form-label" for="project-title-input">Confirmar Email</label>
-                        <input type="text" class="form-control" id="project-title-input"
-                            placeholder="Confirme email">
+                        <input formControlName="confirmarCorreo" type="email" class="form-control" id="project-title-input"
+                            placeholder="Confirme correo" [ngClass]="{ 'is-invalid':  confirmarCorreo.invalid  && (confirmarCorreo.dirty || confirmarCorreo.touched)}">
+                            <div *ngIf="confirmarCorreo.invalid && (confirmarCorreo.dirty || confirmarCorreo.touched)" class="invalid-feedback">
+                                <div *ngIf="confirmarCorreo.errors?.['required']">
+                                        Debe confirmar el correo
+                                </div>
+                                <div *ngIf="confirmarCorreo.errors?.['email']">
+                                    El formato del correo no es válido
+                            </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Región</label>
-                        <select class="form-select"
+                        <select formControlName="region" class="form-select" [ngClass]="{ 'is-invalid':  region.invalid  && (region.dirty || region.touched)}"
                            >
-                            <option value="High" selected>Seleccione</option>
+                           <option value="-1" selected>Seleccione</option>
+                           <option *ngFor="let item of regiones" [value]="item.id">{{item.nombre}}</option>
                            
                         </select>
+                        <div *ngIf="region.invalid && (region.dirty || region.touched)" class="invalid-feedback">
+                            <div *ngIf="region.errors?.['required']">
+                                    Debe completar la región
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Centro de Salud</label>
-                        <select class="form-select"
+                        <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
                            >
-                           <option value="High" selected>Seleccione</option>
+                           <option value="-1" selected>Seleccione</option>
+                           <option *ngFor="let item of serviciosSalud" [value]="item.id" >{{item.nombre}}</option>
                         </select>
+                        <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
+                            <div *ngIf="idHospital.errors?.['required']">
+                                    Debe completar el centro de salud
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Cargo</label>
-                        <select class="form-select"
+                        <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}"
                            >
-                           <option value="High" selected>Seleccione</option>
+                           <option value="-1" selected>Seleccione</option>
+                           <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
                         </select>
+                        <div *ngIf="idRol.invalid && (idRol.dirty || idRol.touched)" class="invalid-feedback">
+                            <div *ngIf="idRol.errors?.['required']">
+                                    Debe completar el cargo
+                            </div>
+                        </div>
                     </div>
                 </div>
+            
             </div>
             <div class="row">
                 <div class="col-3 offset-3">
                     <div class="text-center m-5">    
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary w-sm">Crear Usuario</button>
+                            <button type="submit" class="btn btn-primary w-sm" [disabled]="!userForm.valid">Crear Usuario</button>
                         </div>
                       </div>
                 </div> 
@@ -91,7 +151,7 @@
                         
                         <div class="d-grid gap-2 ">
                         
-                          <button type="submit" class="btn btn-danger w-sm">Cancelar</button>
+                          <button type="button" class="btn btn-danger w-sm">Cancelar</button>
                           
                         </div>
                       </div>
@@ -99,6 +159,8 @@
                
             </div>
 
+
+        </form>
             
 
               

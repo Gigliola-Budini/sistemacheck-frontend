@@ -17,10 +17,15 @@ import { SharedModule } from '../../shared/shared.module';
 // Load Icons
 import { defineLordIconElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
+import Swal from 'sweetalert2';
+import { EditarComponent } from './editar/editar.component';
+import { ListarComponent } from './listar/listar.component';
 
 @NgModule({
   declarations: [
-    CrearComponent
+    CrearComponent,
+    EditarComponent,
+    ListarComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +35,6 @@ import lottie from 'lottie-web';
     SharedModule,
     FormsModule,
     ReactiveFormsModule
-
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

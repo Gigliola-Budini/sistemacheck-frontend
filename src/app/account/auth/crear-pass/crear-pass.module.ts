@@ -25,4 +25,7 @@ export class CrearPassModule {
   constructor() {
     defineLordIconElement(lottie.loadAnimation);
   }
+
+
+  
 }

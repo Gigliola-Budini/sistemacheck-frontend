@@ -56,4 +56,12 @@ export class RestApiCheckService {
   createHospital(nombreHospital:string){
     return this.http.post(`${ENV.api_url}hospital`,{nombre: nombreHospital},httpOptions);
   }
+
+  getHospitales(){
+    return this.http.get(`${ENV.api_url}ServicioSalud`,httpOptions);
+  }
+  
+  getRoles(){
+    return this.http.get(`${ENV.api_url}roles`,httpOptions);
+  }
 }

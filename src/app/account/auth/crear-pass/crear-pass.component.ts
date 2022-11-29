@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+
+import { UsuarioService } from "src/app/core/services/usuario.service";
 
 @Component({
   selector: 'app-crear-pass',
@@ -19,17 +21,17 @@ export class CrearPassComponent implements OnInit {
    returnUrl!: string;
    // set the current year
    year: number = new Date().getFullYear();
+   notMatch = false
  
-   constructor(private route: ActivatedRoute,private formBuilder: UntypedFormBuilder) { }
+   constructor(private route: ActivatedRoute,private formBuilder: UntypedFormBuilder, private router: Router, private usuarioService:UsuarioService) { }
  
    ngOnInit(): void {
      /**
       * Form Validatyion
       */
-      this.route.params.subscribe(params => {
-        this.token = params['id'];
-      });
-      
+      this.token = this.route.snapshot.paramMap.get('token');
+      console.log("token ",this.token);
+
       this.passresetForm = this.formBuilder.group({
        password: ['', [Validators.required]],
        cpassword: ['', [Validators.required]]
@@ -37,6 +39,7 @@ export class CrearPassComponent implements OnInit {
 
       // Password Validation set
       var myInput = document.getElementById("password-input") as HTMLInputElement;
+      var myInputCf = document.getElementById("confirm-password-input") as HTMLInputElement;
       var letter = document.getElementById("pass-lower");
       var capital = document.getElementById("pass-upper");
       var number = document.getElementById("pass-number");
@@ -57,7 +60,7 @@ export class CrearPassComponent implements OnInit {
       // When the user starts to type something inside the password field
       myInput.onkeyup = function () {
         // Validate lowercase letters
-        var lowerCaseLetters = /[a-z]/g;
+        var lowerCaseLetters = /[a-zA-Z]/g;
         if (myInput.value.match(lowerCaseLetters)) {
             letter?.classList.remove("invalid");
             letter?.classList.add("valid");
@@ -67,14 +70,14 @@ export class CrearPassComponent implements OnInit {
         }
 
         // Validate capital letters
-        var upperCaseLetters = /[A-Z]/g;
-        if (myInput.value.match(upperCaseLetters)) {
-            capital?.classList.remove("invalid");
-            capital?.classList.add("valid");
-        } else {
-            capital?.classList.remove("valid");
-            capital?.classList.add("invalid");
-        }
+        // var upperCaseLetters = /[A-Z]/g;
+        // if (myInput.value.match(upperCaseLetters)) {
+        //     capital?.classList.remove("invalid");
+        //     capital?.classList.add("valid");
+        // } else {
+        //     capital?.classList.remove("valid");
+        //     capital?.classList.add("invalid");
+        // }
 
         // Validate numbers
         var numbers = /[0-9]/g;
@@ -87,7 +90,7 @@ export class CrearPassComponent implements OnInit {
         }
 
         // Validate length
-        if (myInput.value.length >= 8) {
+        if (myInput.value.length >= 6) {
             length?.classList.remove("invalid");
             length?.classList.add("valid");
         } else {
@@ -95,7 +98,21 @@ export class CrearPassComponent implements OnInit {
             length?.classList.add("invalid");
         }
       };
+      myInputCf.onkeyup = () =>{
+        if(myInputCf.value !== myInput.value){
+          this.f['cpassword'].setErrors({'notValid':true})
+        }else{
+          this.f['cpassword'].reset
+        }
+      }
 
+      let valid = this.usuarioService.verifyChangePass(this.token)
+      if(valid){
+        console.log('se puede cambiar la pass');
+        
+      }else{
+        this.router.navigate(['/']);
+      }
    }
  
    // convenience getter for easy access to form fields
@@ -126,6 +143,12 @@ export class CrearPassComponent implements OnInit {
     toggleconfirmField() {
       this.confirmField = !this.confirmField;
     }
+    cambiarClaveUsuario(){
 
+    }
+  
+    validarCambioClave(id){
+      let valid = this.usuarioService.verifyChangePass(id)
+    }
 
 }
