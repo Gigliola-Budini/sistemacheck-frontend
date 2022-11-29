@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { UsuarioService } from "src/app/core/services/usuario.service";
+import { PassService } from "src/app/core/services/pass.service";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-pass',
@@ -23,14 +24,14 @@ export class CrearPassComponent implements OnInit {
    year: number = new Date().getFullYear();
    notMatch = false
  
-   constructor(private route: ActivatedRoute,private formBuilder: UntypedFormBuilder, private router: Router, private usuarioService:UsuarioService) { }
+   constructor(private route: ActivatedRoute,private formBuilder: UntypedFormBuilder, private router: Router, private passService:PassService) { }
  
    ngOnInit(): void {
      /**
       * Form Validatyion
       */
       this.token = this.route.snapshot.paramMap.get('token');
-      console.log("token ",this.token);
+      // console.log("token ",this.token);
 
       this.passresetForm = this.formBuilder.group({
        password: ['', [Validators.required]],
@@ -105,14 +106,8 @@ export class CrearPassComponent implements OnInit {
           this.f['cpassword'].reset
         }
       }
-
-      let valid = this.usuarioService.verifyChangePass(this.token)
-      if(valid){
-        console.log('se puede cambiar la pass');
-        
-      }else{
-        this.router.navigate(['/']);
-      }
+      this.validarCambioClave();
+      
    }
  
    // convenience getter for easy access to form fields
@@ -128,6 +123,21 @@ export class CrearPassComponent implements OnInit {
      if (this.passresetForm.invalid) {
        return;
      }
+
+     this.passService.changePass(this.f['password'].value, this.token).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res){
+          this.successmsg('Contraseña creada', '')
+        }
+        
+      },
+      error:(err)=>{
+        this.modelTitle()
+        console.log(err);
+        
+      }
+     })
    }
 
    /**
@@ -147,8 +157,39 @@ export class CrearPassComponent implements OnInit {
 
     }
   
-    validarCambioClave(id){
-      let valid = this.usuarioService.verifyChangePass(id)
+    validarCambioClave(){
+      console.log('bhvh');
+      
+      let valid = this.passService.verifyChangePass(this.token)
+      if(valid){
+        // console.log('se puede cambiar la pass'); t
+      }else{
+    
+         this.router.navigate(['/auth/login']);
+      }
+    }
+    successmsg(title, mes) {
+      Swal.fire({
+        title: title,
+        text: mes,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#1721C3',
+        cancelButtonColor: 'rgb(243, 78, 78)',
+        confirmButtonText: 'OK'
+      });
+    }
+  
+    modelTitle() {
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo crear la contraseña',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#364574',
+        cancelButtonColor: 'rgb(243, 78, 78)',
+        confirmButtonText: 'Yes, delete it!'
+      });
     }
 
 }
