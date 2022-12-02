@@ -39,18 +39,8 @@ export class UsuarioService {
     return this.http.put(`${ENV.api_url}user/password/cambiar`,{"secret":id,"password":pass},this.httpOptions);
   }
 
-  verifyChangePass( id){
-    return this.http.get(`${ENV.api_url}user/password/cambiar?secret=${id}`).toPromise().then((res:any)=>{
-      console.log(res);
-      if(res.status == 200 && res == 'OK'){
-        return true
-      }
-      return false
-    }).catch((err)=>{
-      console.log(err);
-      return false;
-      
-    });
+  verifyChangePass(id){
+    return this.http.get(`${ENV.api_url}user/password/cambiar?secret=${id}`);
   }
 
   // {
@@ -61,4 +51,8 @@ export class UsuarioService {
   sendEmailPass(usuario){
     return this.http.post(`${ENV.api_url}/user/password/habilitar?token=${this.token}`,usuario,this.httpOptions);
   }
+  getUsuariosHospital(idHospital){
+    return this.http.get(`${ENV.api_url}/user/hospital?token=${this.token}&hospital=${idHospital}`,this.httpOptions);
+  }
+ 
 }

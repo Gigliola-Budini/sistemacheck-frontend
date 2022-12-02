@@ -9,6 +9,7 @@ export class ValidatorService {
 
   validarRut(rut: string){
 	console.log(rut);
+	rut = rut.toString().trim()
 	if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rut ))
 			return false;
 		var tmp 	= rut.split('-');

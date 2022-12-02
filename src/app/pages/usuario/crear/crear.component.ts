@@ -185,11 +185,10 @@ export class CrearComponent implements OnInit {
     Swal.fire({
       title: 'Error',
       text: 'No se pudo crear el usuario',
-      icon: 'warning',
-      showCancelButton: true,
+      icon: 'error',
+      showCancelButton: false,
       confirmButtonColor: '#364574',
-      cancelButtonColor: 'rgb(243, 78, 78)',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Ok'
     });
   }
 

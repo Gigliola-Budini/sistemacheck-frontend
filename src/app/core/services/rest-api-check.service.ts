@@ -62,6 +62,6 @@ export class RestApiCheckService {
   }
   
   getRoles(){
-    return this.http.get(`${ENV.api_url}roles`,httpOptions);
+    return this.http.get(`${ENV.api_url}rol/permiso`,httpOptions);
   }
 }

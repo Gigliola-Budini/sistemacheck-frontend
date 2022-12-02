@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 import { PassService } from "src/app/core/services/pass.service";
 import Swal from 'sweetalert2';
@@ -24,7 +25,11 @@ export class CrearPassComponent implements OnInit {
    year: number = new Date().getFullYear();
    notMatch = false
  
-   constructor(private route: ActivatedRoute,private formBuilder: UntypedFormBuilder, private router: Router, private passService:PassService) { }
+   constructor(private route: ActivatedRoute,
+    private formBuilder: UntypedFormBuilder,
+     private router: Router, 
+     private passService:PassService, 
+     private authService: AuthenticationService) { }
  
    ngOnInit(): void {
      /**
@@ -127,13 +132,13 @@ export class CrearPassComponent implements OnInit {
      this.passService.changePass(this.f['password'].value, this.token).subscribe({
       next:(res:any)=>{
         console.log(res);
-        if(res){
+        if(res == 'OK'){
           this.successmsg('Contraseña creada', '')
         }
         
       },
       error:(err)=>{
-        this.modelTitle()
+        this.modelTitle('Error', 'Ocurrió un problema al crear la contraseña')
         console.log(err);
         
       }
@@ -159,14 +164,15 @@ export class CrearPassComponent implements OnInit {
   
     validarCambioClave(){
       console.log('bhvh');
-      
-      let valid = this.passService.verifyChangePass(this.token)
-      if(valid){
-        // console.log('se puede cambiar la pass'); t
-      }else{
-    
-         this.router.navigate(['/auth/login']);
-      }
+      this.authService.logout();
+      this.passService.verifyChangePass(this.token).subscribe({next:(res:any)=>{
+        if(res!= 'OK'){
+          this.modelTitle('El link esta expirado','redirigiendo al inicio')
+          this.authService.logout();
+          this.router.navigate(['/']);
+        }
+      }})
+     
     }
     successmsg(title, mes) {
       Swal.fire({
@@ -180,15 +186,15 @@ export class CrearPassComponent implements OnInit {
       });
     }
   
-    modelTitle() {
+    modelTitle(title, msg) {
       Swal.fire({
-        title: 'Error',
-        text: 'No se pudo crear la contraseña',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#364574',
+        title: title,
+        text: msg,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#1721C3',
         cancelButtonColor: 'rgb(243, 78, 78)',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Ok'
       });
     }
 

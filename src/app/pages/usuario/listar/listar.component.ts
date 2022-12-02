@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Usuario } from "../usuario.model";
+
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { RestApiCheckService } from 'src/app/core/services/rest-api-check.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { DataTablesModule } from "angular-datatables";
 
 @Component({
   selector: 'app-listar',
@@ -6,10 +12,74 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./listar.component.scss']
 })
 export class ListarComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  dtOptions: DataTables.Settings;
+  breadCrumbItems!: Array<{}>;
+  cargando:any= false;
+  usuarios:Usuario[] =[];
+  isAdmin:boolean = false;
+  currentUser :any
+  serviciosSalud: any[]; 
+  idHospital : any;
+  constructor(private tokenService: TokenStorageService,private restApiService:RestApiCheckService,private usuarioService:UsuarioService) { 
+    let currentUser = this.tokenService.getUser()
+    if(currentUser.rol == 'Encargado de DiagnoChile'){
+      this.isAdmin = true
+    }
   }
 
+  ngOnInit(): void {
+    
+    this.breadCrumbItems = [
+      { label: 'Usuarios' },
+      { label: 'Listado', active: true }
+    ];
+    this.obtenerServiciosSalud()
+    this.obtenerUsuarios()
+    
+    this.dtOptions = {
+     
+      language: {
+        "lengthMenu": "Mostrar _MENU_ registros por página",
+        "zeroRecords": "No se encontraron resultados - lo sentimos",
+        "info": "Mostrando página _PAGE_ de _PAGES_",
+        "infoEmpty": "No hay registros disponibles",
+        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+        "paginate": {
+          "first":"Primera",
+          "next": "Siguiente",
+          last:"Última",
+          previous:"Anterior",
+        
+        },
+        "search":"Buscar"     
+        
+      }
+    };
+  }
+
+  obtenerServiciosSalud(){
+    this.restApiService.getHospitales().subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res.length >=1 ){
+          this.serviciosSalud = res
+        }
+      }
+    })
+  }
+  obtenerUsuarios(){
+    this.usuarioService.getUsuariosHospital(1).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res.length>=1){
+          this.usuarios= res
+        }else{
+          this.usuarios = []
+        }
+      },error:(err)=>{
+        console.log(err);
+        
+      }
+    })
+  }
 }

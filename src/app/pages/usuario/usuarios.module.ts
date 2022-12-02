@@ -20,6 +20,7 @@ import lottie from 'lottie-web';
 import Swal from 'sweetalert2';
 import { EditarComponent } from './editar/editar.component';
 import { ListarComponent } from './listar/listar.component';
+import { DataTablesModule } from "angular-datatables";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ListarComponent } from './listar/listar.component';
     FeatherModule.pick(allIcons),
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DataTablesModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

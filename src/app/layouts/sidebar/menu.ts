@@ -1269,13 +1269,15 @@ export const MENU: MenuItem[] = [
     label: 'Exámenes',
     icon: 'bx bx-injection',
     level:5,
+    isShow:true,
     subItems: [
       {
         id: 2,
         label: 'Listado',
         link: '/examenes/listado',
         parentId: 1,
-        level: 5
+        level: 5,
+        isShow:true,
       }
     ]
   },
@@ -1284,20 +1286,23 @@ export const MENU: MenuItem[] = [
     label: 'Reportes',
     icon: 'bx bxs-report ',
     level:3,
+    isShow:false,
     subItems: [
       {
         id: 4,
         label: 'MINSAL',
         link: '/reportes/minsal',
         parentId: 3,
-        level:3
+        level:3,
+        isShow:false,
       },
       {
         id: 5,
         label: 'Personalizado',
         link: '/reportes/personalizado',
         parentId: 3,
-        level:3
+        level:3,
+        isShow:true,
       }
     ]
   },
@@ -1306,20 +1311,23 @@ export const MENU: MenuItem[] = [
     label: 'Usuarios',
     icon: 'ri-group-line',
     level:2,
+    isShow:true,
     subItems: [
       {
         id: 7,
         label: 'Crear Nuevo Usuario',
         link: '/usuarios/crear',
         parentId: 6,
-        level:2
+        level:2,
+        isShow:false,
       },
       {
         id: 8,
         label: 'Listado',
         link: '/usuarios/listar',
         parentId: 6,
-        level:2
+        level:2,
+        isShow:false,
       }
     ]
   }

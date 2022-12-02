@@ -19,16 +19,6 @@ export class PassService {
   }
 
   verifyChangePass( id){
-    return this.http.get(`${ENV.api_url}user/password/cambiar?secret=${id}`).toPromise().then((res:any)=>{
-      console.log(res);
-      if(res.status == 200 && res == 'OK'){
-        return true
-      }
-      return false
-    }).catch((err)=>{
-      console.log(err);
-      return false;
-      
-    });
+    return this.http.get(`${ENV.api_url}user/password/cambiar?secret=${id}`);
   }
 }
