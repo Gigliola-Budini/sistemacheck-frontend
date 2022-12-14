@@ -7,25 +7,10 @@ import { ValidatorService } from "src/app/core/services/validator.service";
 
 // Sweet Alert
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
-const regiones = [
-  {id:1, nombre:"Arica y Parinacota"},
-  {id:2,nombre: "Tarapacá" },
-  {id:3,nombre: "Antofagasta" },
-  {id:2,nombre: "Atacama" },
-  {id:2,nombre: "Coquimbo" },
-  {id:2,nombre: "Valparaíso" },
-  {id:2,nombre: "Metropolitana de Santiago" },
-  {id:2,nombre: "O'Higgins" },
-  {id:2,nombre: "Maule" },
-  {id:2,nombre: "Ñuble" },
-  {id:2,nombre: "Biobío" },
-  {id:2,nombre: "La Araucanía" },
-  {id:2,nombre: "Los Ríos" },
-  {id:2,nombre: "Los Lagos" },
-  {id:2,nombre: "Aysén" },
-  {id:2,nombre: "Magallanes" },
-  {id:2,nombre: "Tarapacá" }];
+const hospitales = [
+  {id:1, nombre:"Hospital de San Fernando"}];
 
 @Component({
   selector: 'app-crear',
@@ -42,28 +27,28 @@ export class CrearComponent implements OnInit {
     nombre:'',
     primerApellido:'',
     segundoApellido:'',
-    region:'',
-    idRol:0,
-    idHospital:0,
+    idServicio: undefined,
+    idRol:undefined,
+    idHospital:undefined,
     correo:''
   }
   confirmarCorreoform:any;
-  serviciosSalud: any[];
+  centrosSalud: any[];
   roles:any[];
-  regiones:any[];
+  serviciosSalud:any[];
   
 
   constructor(private restApiService:RestApiCheckService, 
     private validarService:ValidatorService,
     private formBuilder: UntypedFormBuilder, 
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private router: Router) { }
   
   ngOnInit(): void {
     this.breadCrumbItems = [
       { label: 'Usuarios' },
       { label: 'Crear', active: true }
     ];
-
     this.userForm =  this.formBuilder.group({
       correo: [this.usuario.correo, [Validators.required, Validators.email]],
       // rut: [this.user.rut, [Validators.required]],
@@ -73,13 +58,15 @@ export class CrearComponent implements OnInit {
       idRol:[this.usuario.idRol, [Validators.required]],
       idHospital:[this.usuario.idHospital, [Validators.required]],
       rut: [this.usuario.rut, [Validators.required,Validators.minLength(8)]],
-      region:[this.usuario.region, [Validators.required]],
+      idServicio:[this.usuario.idServicio, [Validators.required]],
       confirmarCorreo: [this.confirmarCorreoform, [Validators.required, Validators.email]],
     })
 
-    this.regiones = regiones;
+   
     this.obtenerRoles()
-    this.obtenerServiciosSalud();
+    // this.obtenerCentrosSalud();
+    this.obtenerServiciosSalud()
+    this.centrosSalud= hospitales
   }
 
   get f() { return this.userForm.controls; }
@@ -90,7 +77,7 @@ export class CrearComponent implements OnInit {
   get segundoApellido() { return this.userForm.get('segundoApellido'); }
   get idRol() { return this.userForm.get('idRol'); }
   get idHospital() { return this.userForm.get('idHospital'); }
-  get region() { return this.userForm.get('region'); }
+  get idServicio() { return this.userForm.get('idServicio'); }
   get confirmarCorreo() { return this.userForm.get('confirmarCorreo'); }
 
   obtenerRoles(){
@@ -98,18 +85,27 @@ export class CrearComponent implements OnInit {
       next:(res:any)=>{
         console.log(res);
         if(res){
-          
+          this.roles = res
         }
-        this.roles = [{id: 1,nombre:'Encargado de DiagnoChile'}]
-        console.log(this.roles);
+       
         
       }
     })
-    this.roles = [{id: 1,nombre:'Encargado de DiagnoChile'}]
+    // this.roles = [{id: 1,nombre:'Encargado de DiagnoChile'}]
+  }
+
+  obtenerCentrosSalud(){
+    this.restApiService.getHospitales().subscribe({
+      next:(res:any)=>{
+        if(res.length){
+          this.serviciosSalud = res
+        }
+      }
+    })
   }
 
   obtenerServiciosSalud(){
-    this.restApiService.getHospitales().subscribe({
+    this.restApiService.getServiciosSalud().subscribe({
       next:(res:any)=>{
         console.log(res);
         if(res.length){
@@ -139,7 +135,7 @@ export class CrearComponent implements OnInit {
       idHospital: this.idHospital.value,
       idRol: this.idRol.value,
       email: this.correo.value,
-      password: "check.2022v1.0"
+      password: "check.2022v1.0",
     }
     this.usuarioService.createUser(usuarioAux).subscribe({
       next:(res:any)=>{
@@ -154,8 +150,8 @@ export class CrearComponent implements OnInit {
               next: (res:any)=>{
                 console.log(res);
                 
-                this.successmsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
-                this.userForm.reset
+                this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
+                
               },
               error:this.handleError.bind(this)
             })
@@ -197,5 +193,45 @@ export class CrearComponent implements OnInit {
     console.log(err);
     
   }
+
+   /**
+   * timer sweet alert
+   * @param timer modal content
+   */
+  timermsg(title, msg) {
+      let timerInterval: any;
+      Swal.fire({
+        title: title,
+        html: msg,
+        timer: 1500,
+        timerProgressBar: false,
+        didOpen: () => {
+          Swal.showLoading();
+          timerInterval = setInterval(() => {
+            const content = Swal.getHtmlContainer();
+            if (content) {
+              const b: any = content.querySelector('b');
+              if (b) {
+                b.textContent = Swal.getTimerLeft();
+              }
+            }
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+        
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        console.log('se ejecuto');
+        
+        this.router.navigate(['/usuarios/listar'])
+        if (result.dismiss === Swal.DismissReason.timer) {
+          
+          
+
+        }
+      });
+    }
 
 }

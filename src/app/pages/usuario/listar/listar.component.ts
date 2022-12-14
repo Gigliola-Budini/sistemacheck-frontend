@@ -14,8 +14,8 @@ import { DataTablesModule } from "angular-datatables";
 export class ListarComponent implements OnInit {
   dtOptions: DataTables.Settings;
   breadCrumbItems!: Array<{}>;
-  cargando:any= false;
-  usuarios:Usuario[] =[];
+  cargando:boolean= false;
+  usuarios:Usuario[];
   isAdmin:boolean = false;
   currentUser :any
   serviciosSalud: any[]; 
@@ -68,6 +68,7 @@ export class ListarComponent implements OnInit {
     })
   }
   obtenerUsuarios(){
+    this.cargando = true;
     this.usuarioService.getUsuariosHospital(1).subscribe({
       next:(res:any)=>{
         console.log(res);
@@ -76,9 +77,10 @@ export class ListarComponent implements OnInit {
         }else{
           this.usuarios = []
         }
+        this.cargando = false;
       },error:(err)=>{
         console.log(err);
-        
+        this.cargando = false;
       }
     })
   }

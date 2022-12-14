@@ -3,7 +3,7 @@ export interface Usuario{
     primerApellido:string;
     segundoApellido:string;
     rut:string;
-    region:string;
+    idServicio:number;
     idRol: number;
     idHospital:  number;
     correo: string;

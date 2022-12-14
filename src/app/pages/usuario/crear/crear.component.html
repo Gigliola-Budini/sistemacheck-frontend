@@ -92,41 +92,10 @@
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
-                        <label for="choices-priority-input" class="form-label">Región</label>
-                        <select formControlName="region" class="form-select" [ngClass]="{ 'is-invalid':  region.invalid  && (region.dirty || region.touched)}"
-                           >
-                           <option value="-1" selected>Seleccione</option>
-                           <option *ngFor="let item of regiones" [value]="item.id">{{item.nombre}}</option>
-                           
-                        </select>
-                        <div *ngIf="region.invalid && (region.dirty || region.touched)" class="invalid-feedback">
-                            <div *ngIf="region.errors?.['required']">
-                                    Debe completar la región
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-4">
-                    <div class="mb-3 mb-md-0">
-                        <label for="choices-priority-input" class="form-label">Centro de Salud</label>
-                        <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
-                           >
-                           <option value="-1" selected>Seleccione</option>
-                           <option *ngFor="let item of serviciosSalud" [value]="item.id" >{{item.nombre}}</option>
-                        </select>
-                        <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
-                            <div *ngIf="idHospital.errors?.['required']">
-                                    Debe completar el centro de salud
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xxl-4">
-                    <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Cargo</label>
                         <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}"
                            >
-                           <option value="-1" selected>Seleccione</option>
+                           <option value="" selected>Seleccione</option>
                            <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
                         </select>
                         <div *ngIf="idRol.invalid && (idRol.dirty || idRol.touched)" class="invalid-feedback">
@@ -136,13 +105,45 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3 mb-md-0">
+                        <label for="choices-priority-input" class="form-label">Servicio de Salud</label>
+                        <select formControlName="idServicio" class="form-select" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}"
+                           >
+                           <option value="" selected>Seleccione</option>
+                           <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
+                           
+                        </select>
+                        <div *ngIf="idServicio.invalid && (idServicio.dirty || idServicio.touched)" class="invalid-feedback">
+                            <div *ngIf="idServicio.errors?.['required']">
+                                    Debe seleccionar un Servicio de Salud
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3 mb-md-0">
+                        <label for="choices-priority-input" class="form-label">Centro de Salud</label>
+                        <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
+                           >
+                           <option value="" selected>Seleccione</option>
+                           <option *ngFor="let item of centrosSalud" [value]="item.id" >{{item.nombre}}</option>
+                        </select>
+                        <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
+                            <div *ngIf="idHospital.errors?.['required']">
+                                    Debe seleccionar el Centro de salud
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             
             </div>
             <div class="row">
-                <div class="col-3 offset-3">
+                <div class="col-xxl-3 offset-xxl-3 offset-md-2 col-sm-1">
                     <div class="text-center m-5">    
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary w-sm" [disabled]="!userForm.valid">Crear Usuario</button>
+                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid">Crear Usuario</button>
                         </div>
                       </div>
                 </div> 
@@ -151,7 +152,7 @@
                         
                         <div class="d-grid gap-2 ">
                         
-                          <button type="button" class="btn btn-danger w-sm">Cancelar</button>
+                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-sm">Volver</button>
                           
                         </div>
                       </div>
