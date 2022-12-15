@@ -52,7 +52,7 @@ export class UsuarioService {
     return this.http.post(`${ENV.api_url}/user/password/habilitar?token=${this.token}`,usuario,this.httpOptions);
   }
   getUsuariosHospital(idHospital){
-    return this.http.get(`${ENV.api_url}/user/hospital?token=${this.token}&hospital=${idHospital}`,this.httpOptions);
+    return this.http.get(`${ENV.api_url}/users?token=${this.token}&idHospital=${idHospital}`,this.httpOptions);
   }
  
 }

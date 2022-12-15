@@ -18,7 +18,7 @@ export class PassService {
     return this.http.put(`${ENV.api_url}user/password/cambiar`,{"secret":id,"password":pass});
   }
 
-  verifyChangePass( id){
+  verifyChangePass(id){
     return this.http.get(`${ENV.api_url}user/password/cambiar?secret=${id}`);
   }
 }

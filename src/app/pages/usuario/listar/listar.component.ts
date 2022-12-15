@@ -14,12 +14,13 @@ import { DataTablesModule } from "angular-datatables";
 export class ListarComponent implements OnInit {
   dtOptions: DataTables.Settings;
   breadCrumbItems!: Array<{}>;
-  cargando:boolean= false;
+  cargando:boolean = false;
   usuarios:Usuario[];
   isAdmin:boolean = false;
   currentUser :any
-  serviciosSalud: any[]; 
+  hospitales: any[] =[]; 
   idHospital : any;
+
   constructor(private tokenService: TokenStorageService,private restApiService:RestApiCheckService,private usuarioService:UsuarioService) { 
     let currentUser = this.tokenService.getUser()
     if(currentUser.rol == 'Encargado de DiagnoChile'){
@@ -49,7 +50,6 @@ export class ListarComponent implements OnInit {
           "next": "Siguiente",
           last:"Última",
           previous:"Anterior",
-        
         },
         "search":"Buscar"     
         
@@ -62,7 +62,7 @@ export class ListarComponent implements OnInit {
       next:(res:any)=>{
         console.log(res);
         if(res.length >=1 ){
-          this.serviciosSalud = res
+          this.hospitales = res
         }
       }
     })
