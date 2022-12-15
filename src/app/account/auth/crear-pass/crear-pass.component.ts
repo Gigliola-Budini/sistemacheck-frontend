@@ -129,6 +129,10 @@ export class CrearPassComponent implements OnInit {
        return;
      }
 
+
+
+
+     
      this.passService.changePass(this.f['password'].value, this.token).subscribe({
       next:(res:any)=>{
         console.log(res);
