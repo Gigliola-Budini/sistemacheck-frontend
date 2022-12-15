@@ -1268,7 +1268,7 @@ export const MENU: MenuItem[] = [
     id: 1,
     label: 'Exámenes',
     icon: 'bx bx-injection',
-    level:5,
+    level:4,
     isShow:true,
     subItems: [
       {
@@ -1276,7 +1276,7 @@ export const MENU: MenuItem[] = [
         label: 'Listado',
         link: '/examenes/listado',
         parentId: 1,
-        level: 5,
+        level: 4,
         isShow:true,
       }
     ]
@@ -1310,7 +1310,7 @@ export const MENU: MenuItem[] = [
     id: 6,
     label: 'Usuarios',
     icon: 'ri-group-line',
-    level:2,
+    level:1,
     isShow:true,
     subItems: [
       {
@@ -1318,7 +1318,7 @@ export const MENU: MenuItem[] = [
         label: 'Crear Nuevo Usuario',
         link: '/usuarios/crear',
         parentId: 6,
-        level:2,
+        level:1,
         isShow:false,
       },
       {
@@ -1326,7 +1326,7 @@ export const MENU: MenuItem[] = [
         label: 'Listado',
         link: '/usuarios/listar',
         parentId: 6,
-        level:2,
+        level:1,
         isShow:false,
       }
     ]

@@ -58,7 +58,7 @@ export class RestApiCheckService {
   }
 
   getHospitales(){
-    return this.http.get(`${ENV.api_url}`,httpOptions);
+    return this.http.get(`${ENV.api_url}hospital`,httpOptions);
   }
 
   getServiciosSalud(){

@@ -36,6 +36,7 @@ export class CrearComponent implements OnInit {
   centrosSalud: any[];
   roles:any[];
   serviciosSalud:any[];
+  cargando:boolean= false;
   
 
   constructor(private restApiService:RestApiCheckService, 
@@ -64,7 +65,7 @@ export class CrearComponent implements OnInit {
 
    
     this.obtenerRoles()
-    // this.obtenerCentrosSalud();
+    this.obtenerCentrosSalud();
     this.obtenerServiciosSalud()
     this.centrosSalud= hospitales
   }
@@ -98,7 +99,7 @@ export class CrearComponent implements OnInit {
     this.restApiService.getHospitales().subscribe({
       next:(res:any)=>{
         if(res.length){
-          this.serviciosSalud = res
+          this.centrosSalud = res
         }
       }
     })
@@ -116,6 +117,7 @@ export class CrearComponent implements OnInit {
   }
 
   crearUsuario(){
+    
     console.log(this.userForm.value);
 
     if (!this.validarService.validarRut(this.rut.value)) {
@@ -128,7 +130,7 @@ export class CrearComponent implements OnInit {
     if(!this.userForm.valid ){
       return;
     }
-
+    this.cargando = true
     let usuarioAux = {
       name: this.nombre.value + ' '+ this.primerApellido.value + ' '+this.segundoApellido.value,
       rut: this.rut.value,
@@ -149,19 +151,27 @@ export class CrearComponent implements OnInit {
             this.usuarioService.sendEmailPass(userPass).subscribe({
               next: (res:any)=>{
                 console.log(res);
-                
-                this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
-                
+                if(res){
+                  this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
+                }else{
+                  this.modelTitle('No se pudo crear el Usuario')
+                }
+                this.cargando = false;
               },
               error:this.handleError.bind(this)
             })
+          }else if(res.message){
+            this.modelTitle(res.message)
           }else{
-            this.modelTitle()
+            this.modelTitle('No se pudo crear el Usuario')
           }
+          this.cargando = false;
         }, 
         error: (err)=>{ 
-          this.modelTitle()
-          console.log(err)}
+          this.modelTitle('No se pudo creor el usuario')
+          console.log(err)
+        this.cargando = false;}
+          
     })
   }
 
@@ -177,10 +187,10 @@ export class CrearComponent implements OnInit {
     });
   }
 
-  modelTitle() {
+  modelTitle(msg) {
     Swal.fire({
       title: 'Error',
-      text: 'No se pudo crear el usuario',
+      text: msg,
       icon: 'error',
       showCancelButton: false,
       confirmButtonColor: '#364574',
@@ -189,7 +199,7 @@ export class CrearComponent implements OnInit {
   }
 
   handleError(err){
-    this.modelTitle()
+    this.modelTitle('err')
     console.log(err);
     
   }

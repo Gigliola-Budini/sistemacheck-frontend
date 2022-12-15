@@ -18,25 +18,25 @@
                   <div class="row g-3">
                       
                       <!--end col-->
-                      <div class="col-xxl-3 col-sm-4">
+                      <div class="col-xxl-3 col-md-4">
                         <div class="input-light">
                             <select class="form-control bg-light border-light" data-choices data-choices-search-false name="choices-single-default"  id="idHospital">
                               <option  value="" selected>Seleccione Centro de Salud</option>  
-                              <option *ngFor="let hospital of serviciosSalud" value="hospital.id" selected>{{hospital.nombre}}</option>
+                              <option *ngFor="let hospital of hospitales" value="hospital.idHospital" selected>{{hospital.nombreHospital}}</option>
                                
                             </select>
                         </div>
                     </div>
 
-                      <div class="col-xxl-2 col-sm-2">
+                      <div class="col-xxl-2 col-md-2">
                         <label for=""></label>
                           <button type="button" class="btn btn-primary w-100" style="align-self: end;" (click)="obtenerExamenesFecha(fechaInicio, fechaFin)">
                               <i class="ri-search-line mt-3 me-1 align-bottom" ></i> Buscar
                           </button>
                       </div>
-                      <div class="col-xxl-2 offset-md-5 col-sm-2 ">
+                      <div class="offset-lg-3  col">
                         <label for=""></label>
-                          <a class="btn btn-success me-2" style="align-self: end;  float: right;" [routerLink]="'/usuarios/crear'">
+                          <a class="btn btn-success me-2" style="align-self: end;  float: right;min-width: 150px !important;" [routerLink]="'/usuarios/crear'">
                               <i class="ri-user-add-line mt-3 me-1 align-bottom" ></i> Nuevo Usuario
                           </a>
                       </div>
@@ -46,11 +46,11 @@
           </div>
           <div class="card-body">
               <div>
-                <div *ngIf="usuarios.length == 0 && !cargando " class="alert alert-info alert-border-left alert-dismissible fade show" role="alert">
+                <div *ngIf="usuarios.length == 0 && !cargando" class="alert alert-info alert-border-left alert-dismissible fade show" role="alert">
                   <i class="ri-airplay-line me-3 align-middle"></i> <strong>No se encontraron resultados</strong> 
                   <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
                 </div>
-                <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                <div class="card bg-light overflow-hidden" *ngIf="cargando == true">
                   <div class="card-body">
                       <div class="d-flex">
                           <div class="flex-grow-1">
@@ -96,7 +96,7 @@
                               <td>{{data.cargo}}</td>
                               <td>{{data.hospital}}</td>
                               <td>{{data.estado}}</td>
-                              <td><a [routerLink]="">EDITAR</a></td>
+                              <td><a [routerLink]="'/usuarios/editar/'+ data.id">EDITAR</a></td>
                             </tr>
                            
                             

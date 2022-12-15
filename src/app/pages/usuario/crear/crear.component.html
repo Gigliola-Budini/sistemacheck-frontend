@@ -127,7 +127,7 @@
                         <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
                            >
                            <option value="" selected>Seleccione</option>
-                           <option *ngFor="let item of centrosSalud" [value]="item.id" >{{item.nombre}}</option>
+                           <option *ngFor="let item of centrosSalud" [value]="item.idHospital" >{{item.nombreHospital}}</option>
                         </select>
                         <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
                             <div *ngIf="idHospital.errors?.['required']">
@@ -139,23 +139,25 @@
                 
             
             </div>
-            <div class="row">
-                <div class="col-xxl-3 offset-xxl-3 offset-md-2 col-sm-1">
-                    <div class="text-center m-5">    
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid">Crear Usuario</button>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8  my-4 ">
+                   
+                        <div class="hstack gap-3 m-2">
+                            <button type="submit" class="btn btn-primary w-50" [disabled]="!userForm.valid || cargando  == true">Crear Usuario</button>
+                            <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-50">Volver</button>
                         </div>
-                      </div>
-                </div> 
-                <div class="col-3">
-                    <div class="text-center m-5">
+                   
+                      <!-- <div class="text-center">
                         
-                        <div class="d-grid gap-2 ">
+                        <div class="d-grid gap-2 m-2">
                         
-                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-sm">Volver</button>
+                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light">Volver</button>
                           
                         </div>
-                      </div>
+                      </div> -->
+                </div> 
+                <div class="col-xxl-3 col-md-4">
+                    
                 </div>
                
             </div>

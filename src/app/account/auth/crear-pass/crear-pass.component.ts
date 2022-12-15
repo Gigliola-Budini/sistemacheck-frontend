@@ -129,13 +129,16 @@ export class CrearPassComponent implements OnInit {
        return;
      }
 
+
+
+
+     
      this.passService.changePass(this.f['password'].value, this.token).subscribe({
       next:(res:any)=>{
         console.log(res);
-        if(res == 'OK'){
+        if(res == 'OK' ){
           this.successmsg('Contraseña creada', '')
         }
-        
       },
       error:(err)=>{
         this.modelTitle('Error', 'Ocurrió un problema al crear la contraseña')
