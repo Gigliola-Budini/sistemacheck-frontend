@@ -58,7 +58,7 @@ export class RestApiCheckService {
   }
 
   getHospitales(){
-    return this.http.get(`${ENV.api_url}hospital`,httpOptions);
+    return this.http.get(`${ENV.api_url}hospital?token=${this.token}`,httpOptions);
   }
 
   getServiciosSalud(){
@@ -66,6 +66,6 @@ export class RestApiCheckService {
   }
   
   getRoles(){
-    return this.http.get(`${ENV.api_url}roles`,httpOptions);
+    return this.http.get(`${ENV.api_url}roles?token=${this.token}`,httpOptions);
   }
 }

@@ -62,27 +62,38 @@
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
                         <label class="form-label" for="project-title-input">Correo</label>
-                        <input formControlName="correo" type="email" class="form-control" id="project-title-input"
-                            placeholder="Ingrese el correo" [ngClass]="{ 'is-invalid':  correo.invalid  && (correo.dirty || correo.touched)}"
-                            email="true">
-                            <div *ngIf="correo.invalid && (correo.dirty || correo.touched)" class="invalid-feedback">
-                                <div *ngIf="correo.errors?.['required']">
-                                        Debe completar el correo
-                                </div>
-                                <div *ngIf="correo.errors?.['email']">
-                                    El formato del correo no es válido
+                        <div class="input-group">
+                            <input formControlName="correo" type="email" class="form-control" id="project-title-input"
+                                placeholder="Ingrese el correo" [ngClass]="{ 'is-invalid':  correo.invalid  && (correo.dirty || correo.touched)}"
+                                email="true">
+                            <button class="btn btn-outline-primary" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
+                                <i class="ri-pencil-fill "></i>
+                            </button>
+                            <!-- <button class="btn btn-light btn-icon waves-effect waves-light" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
+                                <i class="ri-pencil-fill "></i>
+                            </button> -->
+                           
+                        </div>
+                        <div *ngIf="correo.invalid && (correo.dirty || correo.touched)" class="invalid-feedback">
+                            <div *ngIf="correo.errors?.['required']">
+                                    Debe completar el correo
                             </div>
-                            </div>
+                            <div *ngIf="correo.errors?.['email']">
+                                El formato del correo no es válido
+                        </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Cargo</label>
-                        <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}"
-                           >
-                           <option value="" selected>Seleccione</option>
-                           <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
-                        </select>
+                        <div class="input-group">
+                            <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}">
+                                <option value="" selected>Seleccione</option>
+                                <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
+                            </select>
+                            <button class="btn btn-outline-primary" type="button" id="btn-edit-cargo" (click)="switchControles('idRol')"><i class="ri-pencil-fill "></i></button>
+                        </div>
                         <div *ngIf="idRol.invalid && (idRol.dirty || idRol.touched)" class="invalid-feedback">
                             <div *ngIf="idRol.errors?.['required']">
                                     Debe completar el cargo
@@ -90,15 +101,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xxl-4">
+                <div class="col-md-6 col-xxl-4" *ngIf="isAdmin">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Servicio de Salud</label>
-                        <select formControlName="idServicio" class="form-select" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}"
-                           >
-                           <option value="" selected>Seleccione</option>
-                           <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
-                           
-                        </select>
+                        <div class="input-group">
+                            <select formControlName="idServicio" class="form-select" (click)="filtrarControlHospitales()" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}">
+                                <option value="" selected>Seleccione</option>
+                                <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
+                            </select>
+                            <button class="btn btn-outline-primary" type="button" id="button-addon2" (click)="switchControles('idServicio')"><i class="ri-pencil-fill "></i></button>
+                        </div>
                         <div *ngIf="idServicio.invalid && (idServicio.dirty || idServicio.touched)" class="invalid-feedback">
                             <div *ngIf="idServicio.errors?.['required']">
                                     Debe seleccionar un Servicio de Salud
@@ -106,14 +118,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xxl-4">
+                <div class="col-md-6 col-xxl-4" *ngIf="isAdmin">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Centro de Salud</label>
-                        <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
-                           >
-                           <option value="" selected>Seleccione</option>
-                           <option *ngFor="let item of centrosSalud" [value]="item.id" >{{item.nombre}}</option>
-                        </select>
+                        <div class="input-group">
+                            <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
+                            >
+                            <option value="" selected>Seleccione</option>
+                            <option *ngFor="let item of centrosSalud" [value]="item.idHospital" >{{item.nombreHospital}}</option>
+                            </select>
+                            <button class="btn btn-soft-primary" type="button" id="btn-edit-hospital" (click)="switchControles('idHospital')"><i class="ri-pencil-fill "></i></button>
+                        </div>
                         <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
                             <div *ngIf="idHospital.errors?.['required']">
                                     Debe seleccionar el Centro de salud

@@ -34,8 +34,9 @@ export class ListarComponent implements OnInit {
       { label: 'Usuarios' },
       { label: 'Listado', active: true }
     ];
-    this.obtenerServiciosSalud()
     this.obtenerUsuarios()
+    this.obtenerServiciosSalud()
+    
     
     this.dtOptions = {
      

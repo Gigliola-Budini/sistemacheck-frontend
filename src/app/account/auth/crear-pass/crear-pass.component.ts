@@ -128,10 +128,6 @@ export class CrearPassComponent implements OnInit {
      if (this.passresetForm.invalid) {
        return;
      }
-
-
-
-
      
      this.passService.changePass(this.f['password'].value, this.token).subscribe({
       next:(res:any)=>{
@@ -143,7 +139,6 @@ export class CrearPassComponent implements OnInit {
       error:(err)=>{
         this.modelTitle('Error', 'Ocurrió un problema al crear la contraseña')
         console.log(err);
-        
       }
      })
    }
