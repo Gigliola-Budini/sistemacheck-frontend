@@ -34,6 +34,7 @@ export class CrearComponent implements OnInit {
   }
   confirmarCorreoform:any;
   centrosSalud: any[];
+  dataCentrosSalud: any[];
   roles:any[];
   serviciosSalud:any[];
   cargando:boolean= false;
@@ -57,7 +58,7 @@ export class CrearComponent implements OnInit {
       primerApellido:[this.usuario.primerApellido,  [Validators.required]],
       segundoApellido:[this.usuario.segundoApellido, [Validators.required]],
       idRol:[this.usuario.idRol, [Validators.required]],
-      idHospital:[this.usuario.idHospital, [Validators.required]],
+      idHospital:[{value:this.usuario.idHospital,disabled:true}, [Validators.required]],
       rut: [this.usuario.rut, [Validators.required,Validators.minLength(8)]],
       idServicio:[this.usuario.idServicio, [Validators.required]],
       confirmarCorreo: [this.confirmarCorreoform, [Validators.required, Validators.email]],
@@ -67,7 +68,7 @@ export class CrearComponent implements OnInit {
     this.obtenerRoles()
     this.obtenerCentrosSalud();
     this.obtenerServiciosSalud()
-    this.centrosSalud= hospitales
+    // this.centrosSalud= hospitales
   }
 
   get f() { return this.userForm.controls; }
@@ -99,7 +100,7 @@ export class CrearComponent implements OnInit {
     this.restApiService.getHospitales().subscribe({
       next:(res:any)=>{
         if(res.length){
-          this.centrosSalud = res
+          this.dataCentrosSalud = res
         }
       }
     })
@@ -152,6 +153,7 @@ export class CrearComponent implements OnInit {
               next: (res:any)=>{
                 console.log(res);
                 if(res){
+                  
                   this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
                 }else{
                   this.modelTitle('No se pudo crear el Usuario')
@@ -162,10 +164,12 @@ export class CrearComponent implements OnInit {
             })
           }else if(res.message){
             this.modelTitle(res.message)
+            this.cargando = false;
           }else{
             this.modelTitle('No se pudo crear el Usuario')
+            this.cargando = false;
           }
-          this.cargando = false;
+          
         }, 
         error: (err)=>{ 
           this.modelTitle('No se pudo creor el usuario')
@@ -173,6 +177,19 @@ export class CrearComponent implements OnInit {
         this.cargando = false;}
           
     })
+  }
+  filtrarControlHospitales(){
+
+    console.log(this.idServicio);
+    if(this.idServicio.status == 'VALID'){
+      this.idHospital.enable()
+      this.centrosSalud = this.dataCentrosSalud.filter(elem => {
+        return elem.fkServicioSalud == this.idServicio.value
+      })
+    }else{
+      this.centrosSalud = []
+      this.idHospital.disable()
+    }
   }
 
   successmsg(title, mes) {
@@ -213,7 +230,7 @@ export class CrearComponent implements OnInit {
       Swal.fire({
         title: title,
         html: msg,
-        timer: 1500,
+        timer: 3000,
         timerProgressBar: false,
         didOpen: () => {
           Swal.showLoading();
@@ -243,5 +260,6 @@ export class CrearComponent implements OnInit {
         }
       });
     }
+
 
 }

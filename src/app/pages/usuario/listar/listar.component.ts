@@ -15,7 +15,7 @@ export class ListarComponent implements OnInit {
   dtOptions: DataTables.Settings;
   breadCrumbItems!: Array<{}>;
   cargando:boolean = false;
-  usuarios:Usuario[];
+  usuarios:Usuario[] = [];
   isAdmin:boolean = false;
   currentUser :any
   hospitales: any[] =[]; 
@@ -34,8 +34,9 @@ export class ListarComponent implements OnInit {
       { label: 'Usuarios' },
       { label: 'Listado', active: true }
     ];
-    this.obtenerServiciosSalud()
     this.obtenerUsuarios()
+    this.obtenerServiciosSalud()
+    
     
     this.dtOptions = {
      

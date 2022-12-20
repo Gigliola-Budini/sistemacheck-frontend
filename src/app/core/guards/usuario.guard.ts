@@ -6,7 +6,7 @@ import { AuthenticationService } from '../services/auth.service';
 import { AuthfakeauthenticationService } from '../services/authfake.service';
 import { TokenStorageService } from '../../core/services/token-storage.service';
 import { environment } from '../../../environments/environment';
-const idModulo = 2;
+const idModulo = 1;
 @Injectable({ providedIn: 'root' })
 export class UsuarioGuard implements CanActivate {
     constructor(

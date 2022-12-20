@@ -7,7 +7,7 @@
       <div class="card">
           <div class="card-body">
             <form action="" [formGroup]="userForm" (ngSubmit)="crearUsuario()">
-            <div class="row">  
+            <div class="row mt-3">  
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3">
                         <label class="form-label" for="rut-inp">Rut <i class="text-muted"> - sin puntos y con guión</i></label>
@@ -108,7 +108,7 @@
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Servicio de Salud</label>
-                        <select formControlName="idServicio" class="form-select" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}"
+                        <select formControlName="idServicio" class="form-select" (change)="filtrarControlHospitales()" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}"
                            >
                            <option value="" selected>Seleccione</option>
                            <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
@@ -124,7 +124,7 @@
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Centro de Salud</label>
-                        <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
+                        <select class="form-select" formControlName="idHospital"  [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
                            >
                            <option value="" selected>Seleccione</option>
                            <option *ngFor="let item of centrosSalud" [value]="item.idHospital" >{{item.nombreHospital}}</option>
@@ -140,10 +140,21 @@
             
             </div>
             <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8  my-4 ">
+                <div class="col-lg-5 col-md-8  my-4 ">
                    
-                        <div class="hstack gap-3 m-2">
-                            <button type="submit" class="btn btn-primary w-50" [disabled]="!userForm.valid || cargando  == true">Crear Usuario</button>
+                        <div class="hstack gap-3 ">
+                            <button type="submit" class="btn btn-primary w-50 me-2 ml-2" [disabled]="!userForm.valid || cargando  == true">
+                                Crear Usuario
+                                <!-- <span class="d-flex align-items-center">
+                                    <span class="flex-grow-1 me-2">
+                                        Crear Usuario...
+                                    </span>
+                                    <span class="spinner-border flex-shrink-0" *ngIf="cargando">
+                                        <span class="visually-hidden"> Crear Usuario...</span>
+                                    </span>
+                                </span>    -->
+                            
+                            </button>
                             <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-50">Volver</button>
                         </div>
                    
