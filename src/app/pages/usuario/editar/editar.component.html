@@ -66,7 +66,7 @@
                             <input formControlName="correo" type="email" class="form-control" id="project-title-input"
                                 placeholder="Ingrese el correo" [ngClass]="{ 'is-invalid':  correo.invalid  && (correo.dirty || correo.touched)}"
                                 email="true">
-                            <button class="btn btn-outline-primary" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
                                 <i class="ri-pencil-fill "></i>
                             </button>
                             <!-- <button class="btn btn-light btn-icon waves-effect waves-light" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
@@ -92,7 +92,7 @@
                                 <option value="" selected>Seleccione</option>
                                 <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
                             </select>
-                            <button class="btn btn-outline-primary" type="button" id="btn-edit-cargo" (click)="switchControles('idRol')"><i class="ri-pencil-fill "></i></button>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-cargo" (click)="switchControles('idRol')"><i class="ri-pencil-fill "></i></button>
                         </div>
                         <div *ngIf="idRol.invalid && (idRol.dirty || idRol.touched)" class="invalid-feedback">
                             <div *ngIf="idRol.errors?.['required']">
@@ -109,7 +109,7 @@
                                 <option value="" selected>Seleccione</option>
                                 <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
                             </select>
-                            <button class="btn btn-outline-primary" type="button" id="button-addon2" (click)="switchControles('idServicio')"><i class="ri-pencil-fill "></i></button>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="button-addon2" (click)="switchControles('idServicio')"><i class="ri-pencil-fill "></i></button>
                         </div>
                         <div *ngIf="idServicio.invalid && (idServicio.dirty || idServicio.touched)" class="invalid-feedback">
                             <div *ngIf="idServicio.errors?.['required']">
@@ -127,7 +127,7 @@
                             <option value="" selected>Seleccione</option>
                             <option *ngFor="let item of centrosSalud" [value]="item.idHospital" >{{item.nombreHospital}}</option>
                             </select>
-                            <button class="btn btn-soft-primary" type="button" id="btn-edit-hospital" (click)="switchControles('idHospital')"><i class="ri-pencil-fill "></i></button>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-hospital" (click)="switchControles('idHospital')"><i class="ri-pencil-fill "></i></button>
                         </div>
                         <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
                             <div *ngIf="idHospital.errors?.['required']">

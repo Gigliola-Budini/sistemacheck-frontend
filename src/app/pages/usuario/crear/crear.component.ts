@@ -153,6 +153,7 @@ export class CrearComponent implements OnInit {
               next: (res:any)=>{
                 console.log(res);
                 if(res){
+                  
                   this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
                 }else{
                   this.modelTitle('No se pudo crear el Usuario')
@@ -163,10 +164,12 @@ export class CrearComponent implements OnInit {
             })
           }else if(res.message){
             this.modelTitle(res.message)
+            this.cargando = false;
           }else{
             this.modelTitle('No se pudo crear el Usuario')
+            this.cargando = false;
           }
-          this.cargando = false;
+          
         }, 
         error: (err)=>{ 
           this.modelTitle('No se pudo creor el usuario')
@@ -227,7 +230,7 @@ export class CrearComponent implements OnInit {
       Swal.fire({
         title: title,
         html: msg,
-        timer: 1500,
+        timer: 3000,
         timerProgressBar: false,
         didOpen: () => {
           Swal.showLoading();
