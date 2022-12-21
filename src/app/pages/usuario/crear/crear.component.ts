@@ -191,6 +191,17 @@ export class CrearComponent implements OnInit {
       this.idHospital.disable()
     }
   }
+  switchControls(){
+    if(this.idRol.value == 1){
+      this.idServicio.disable()
+      this.idHospital.disable()
+      this.idHospital.setValue(0)
+      this.idServicio.setValue(0)
+    }else{
+      this.idServicio.enable()
+      this.idHospital.enable()
+    }
+  }
 
   successmsg(title, mes) {
     Swal.fire({

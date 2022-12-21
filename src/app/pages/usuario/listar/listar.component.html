@@ -9,6 +9,9 @@
               <div class="d-flex align-items-center">
                   <h5 class="card-title mb-0 flex-grow-1">Usuarios</h5>
                   <div class="flex-shrink-0 d-flex gap-1">
+                    <a class="btn btn-success me-2" style="align-self: end;  float: right;min-width: 150px !important;" [routerLink]="'/usuarios/crear'">
+                      <i class="ri-user-add-line mt-3 me-1 align-bottom" ></i> Nuevo Usuario
+                    </a>
                       <!-- <button class="btn btn-primary" (click)="deleteMultiple(deleteModel)"><i class="ri-delete-bin-2-line"></i></button> -->
                       <!-- <a routerLink="/invoices/create" class="btn btn-danger"><i class="ri-add-line align-bottom me-1"></i> Create Invoice</a> -->
                   </div>
@@ -34,12 +37,12 @@
                               <i class="ri-search-line mt-3 me-1 align-bottom" ></i> Buscar
                           </button>
                       </div>
-                      <div class="offset-lg-3  col">
+                      <!-- <div class="offset-lg-3  col">
                         <label for=""></label>
                           <a class="btn btn-success me-2" style="align-self: end;  float: right;min-width: 150px !important;" [routerLink]="'/usuarios/crear'">
                               <i class="ri-user-add-line mt-3 me-1 align-bottom" ></i> Nuevo Usuario
                           </a>
-                      </div>
+                      </div> -->
                       <!--end col-->
                   </div>
                   <!--end row-->

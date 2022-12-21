@@ -133,7 +133,7 @@ export class CrearPassComponent implements OnInit {
       next:(res:any)=>{
         console.log(res);
         if(res == 'OK' ){
-          this.successmsg('Contraseña creada', '')
+          this.timermsg('Contraseña creada', 'Redirigiendo a Inicio de Sesión')
         }
       },
       error:(err)=>{
@@ -165,9 +165,9 @@ export class CrearPassComponent implements OnInit {
       this.authService.logout();
       this.passService.verifyChangePass(this.token).subscribe({next:(res:any)=>{
         if(res!= 'OK'){
-          this.modelTitle('El link esta expirado','redirigiendo al inicio')
           this.authService.logout();
-          this.router.navigate(['/']);
+          this.timermsg('El link esta expirado','redirigiendo al inicio')
+          
         }
       }})
      
@@ -195,5 +195,38 @@ export class CrearPassComponent implements OnInit {
         confirmButtonText: 'Ok'
       });
     }
-
+ /**
+   * Alerta con tiempo
+   * @param timer modal content
+   */
+ timermsg(title, msg) {
+  let timerInterval: any;
+  Swal.fire({
+    title: title,
+    html: msg,
+    timer: 3000,
+    timerProgressBar: false,
+    didOpen: () => {
+      Swal.showLoading();
+      timerInterval = setInterval(() => {
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          const b: any = content.querySelector('b');
+          if (b) {
+            b.textContent = Swal.getTimerLeft();
+          }
+        }
+      }, 100);
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+    }
+    
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    // Redireccion al inicio
+    this.router.navigate(['/'])
+    if (result.dismiss === Swal.DismissReason.timer) { }
+  });
+}
 }

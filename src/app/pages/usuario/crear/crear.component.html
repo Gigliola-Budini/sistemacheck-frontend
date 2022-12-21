@@ -93,7 +93,7 @@
                 <div class="col-md-6 col-xxl-4">
                     <div class="mb-3 mb-md-0">
                         <label for="choices-priority-input" class="form-label">Cargo</label>
-                        <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}"
+                        <select class="form-select" formControlName="idRol" (change)="switchControls()" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}"
                            >
                            <option value="" selected>Seleccione</option>
                            <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>

@@ -49,10 +49,31 @@ export class UsuarioService {
 //     "email":"gustavo@impactis.cl"
 // }
   sendEmailPass(usuario){
-    return this.http.post(`${ENV.api_url}/user/password/habilitar?token=${this.token}`,usuario,this.httpOptions);
+    return this.http.post(`${ENV.api_url}user/password/habilitar?token=${this.token}`,usuario,this.httpOptions);
   }
   getUsuariosHospital(idHospital){
-    return this.http.get(`${ENV.api_url}/users?token=${this.token}&idHospital=${idHospital}`,this.httpOptions);
+    return this.http.get(`${ENV.api_url}users?token=${this.token}&idHospital=${idHospital}`,this.httpOptions);
   }
+
+  getUsuarioId(id){
+    return this.http.get(`${ENV.api_url}users/id?token=${this.token}&idUser=${id}`,this.httpOptions);
+  }
+
+  enableDisableUsuario(idUsuario, estado){
+    return this.http.put(`${ENV.api_url}users/id/state?token=${this.token}`,{idUser:idUsuario,estado:estado},{responseType:'text'});
+  }
+
+  /**
+   * 
+   * @param 
+   * usuario: 
+   *  { “rut”:string,"idRol":int, "idHospital":int, "name":string, “email":string }
+   * @returns 
+   */
+  editUsuario(usuario){
+    return this.http.put(`${ENV.api_url}users/datos`,usuario);
+  }
+
+
  
 }

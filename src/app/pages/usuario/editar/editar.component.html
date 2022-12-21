@@ -143,7 +143,7 @@
                 <div class="col-xxl-2 offset-xxl-3 offset-md-2 col-sm-1">
                     <div class="text-center my-5">    
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid">Editar Usuario</button>
+                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid" (click)="editarUsuario()">Editar Usuario</button>
                         </div>
                       </div>
                 </div> 
@@ -157,7 +157,8 @@
                 <div class="col-2">
                     <div class="text-center my-5">
                         <div class="d-grid gap-2 ">
-                          <button type="button" class="btn btn-light w-sm">Deshabilitar</button>
+                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 1" (click)="deshabilitarUsuario()">Deshabilitar</button>
+                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 0" (click)="habilitarUsuario()">Habilitar</button>
                         </div>
                       </div>
                 </div>

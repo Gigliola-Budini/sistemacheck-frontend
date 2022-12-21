@@ -11,11 +11,18 @@ var httpOptions={};
   providedIn: 'root'
 })
 export class PassService {
-  constructor(private http:HttpClient) {
+  httpOptions = {
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json,text/plain, text/html',
+    })
+  };
+  constructor(private http:HttpClient) { 
    }
 
   changePass(pass, id){
-    return this.http.put(`${ENV.api_url}user/password/cambiar`,{"secret":id,"password":pass});
+    
+    return this.http.put(`${ENV.api_url}user/password/cambiar`,{"secret":id,"password":pass},{responseType:'text'});
   }
 
   verifyChangePass(id){
