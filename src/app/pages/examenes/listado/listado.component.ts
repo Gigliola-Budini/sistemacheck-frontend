@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { data } from "./../data";
 import {Muestra} from "./examen.model"
 import { Examen } from '../../reportes/reporte-minsal/examen.model';
+import { DataTablesModule } from 'angular-datatables';
 
 interface SearchResult {
   examenes: Examen[];
@@ -107,11 +108,13 @@ export class ListadoComponent implements OnInit {
           "next": "Siguiente",
           last:"Última",
           previous:"Anterior",
-        
         },
         "search":"Buscar"     
-        
       }
+      // ,columnDefs: [{targets: 6, render: (date)=>{
+      //         return new Date(date);
+      //       }}]
+      
     };
     this.obtenerExamenesFecha(this.fechaInicio,this.fechaFin)
     
