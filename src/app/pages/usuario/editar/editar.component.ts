@@ -66,7 +66,7 @@ export class EditarComponent implements OnInit {
       segundoApellido:[this.usuario.segundoApellido, [Validators.required]],
       idRol:[{value:this.usuario.idRol,disabled:true}, [Validators.required]],
       idHospital:[{value:this.usuario.idHospital,disabled:true}, [Validators.required]],
-      rut: [this.usuario.rut, [Validators.required,Validators.minLength(8)]],
+      rut: [{value:this.usuario.rut,disabled:true}, [Validators.required,Validators.minLength(8)]],
       idServicio:[{value:this.usuario.idServicio,disabled:true}, [Validators.required]],
 
     })
@@ -99,15 +99,22 @@ export class EditarComponent implements OnInit {
       name:this.nombre.value,
       email: this.correo.value,
       idHospital: this.idHospital.value,
-      idRol: this.idRol.value
+      idRol: this.idRol.value,
+      apellidoP:this.primerApellido.value,
+      apellidoM:this.segundoApellido.value,
     }
     this.usuarioService.editUsuario(usuarioAux).subscribe({
       next:(res:any)=>{
+        if(res.length){
+          this.timermsg('Muy bien','El usuario ha sido editado')
+        }else{
+          Swal.fire({title: 'Error', text:'No se pudo realizar el cambio', confirmButtonColor: '#364574', icon: 'error',})
+        }
         console.log(res);
         
       },error:(err)=>{
         console.log(err);
-        
+        Swal.fire({title: 'Error', text:'No se pudo realizar el cambio', confirmButtonColor: '#364574', icon: 'error',})
       },})
   }
 
@@ -125,13 +132,10 @@ export class EditarComponent implements OnInit {
           this.f['idHospital'].setValue(usu.idhospital)
           this.f['correo'].setValue(usu.email)
           this.f['nombre'].setValue(usu.nombre)
+          this.f['primerApellido'].setValue(usu.apellidoP)
+          this.f['segundoApellido'].setValue(usu.apellidoM)
           this.habilitado = usu.estado 
           console.log(usu.estado, this.habilitado);
-          
-          // this.f['primerApellido'].setValue(usu.nombre)
-          // this.f['segundoApellido'].setValue(usu.nombre)
-          
-        
         }
       },
       error:(err)=>{
@@ -264,5 +268,40 @@ export class EditarComponent implements OnInit {
       Swal.fire({title: 'Error', text:'No se pudo realizar el cambio', confirmButtonColor: '#364574', icon: 'error',})
     });;
   }
+ /**
+   * timer sweet alert
+   * @param timer modal content
+   */
 
+ timermsg(title, msg) {
+  let timerInterval: any;
+  Swal.fire({
+    title: title,
+    html: msg,
+    timer: 3000,
+    timerProgressBar: false,
+    didOpen: () => {
+      Swal.showLoading();
+      timerInterval = setInterval(() => {
+        const content = Swal.getHtmlContainer();
+        if (content) {
+          const b: any = content.querySelector('b');
+          if (b) {
+            b.textContent = Swal.getTimerLeft();
+          }
+        }
+      }, 100);
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+    }
+    
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    this.router.navigate(['/usuarios/listar'])
+    if (result.dismiss === Swal.DismissReason.timer) {
+    
+    }
+  });
+}
 }

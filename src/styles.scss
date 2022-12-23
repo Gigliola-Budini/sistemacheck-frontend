@@ -6,3 +6,7 @@
 label{
     font-weight: 400 !important;
 }
+
+[data-layout=vertical][data-sidebar-size=sm] .navbar-menu{
+    position: fixed !important;
+}
