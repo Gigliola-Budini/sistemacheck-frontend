@@ -203,7 +203,7 @@ export class ReporteMinsalComponent implements OnInit {
         "MPV M  1 - 4 años",	"MPV M  5 - 14 años", 	"MPV M  15 -54 años",	"MPV M 55 - 64 años", 	"MPV M  > 65 años" ];
       this.hospitales = [{idHospital:'2',nombre:'San Fernando'}]  
       this.fechaFin = this.changeDate(this.today);
-      let fechaAux = this.datesServices.getMondayOfCurrentWeek(new Date())
+      let fechaAux = this.datesServices.getDayOfCurrentWeek(new Date(),7)
       this.fechaInicio = this.changeDate(fechaAux);
       // this.fechaFin = '2022/10/30'
       // this.fechaInicio = '2022/10/24'
