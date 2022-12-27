@@ -39,7 +39,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 @NgModule({
   declarations: [
     DashboardComponent,
-    ToastsContainer
+    ToastsContainer,
   ],
   imports: [
     CommonModule,

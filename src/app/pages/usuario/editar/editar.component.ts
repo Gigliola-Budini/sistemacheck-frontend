@@ -106,6 +106,7 @@ export class EditarComponent implements OnInit {
     this.usuarioService.editUsuario(usuarioAux).subscribe({
       next:(res:any)=>{
         if(res.length){
+          
           this.timermsg('Muy bien','El usuario ha sido editado')
         }else{
           Swal.fire({title: 'Error', text:'No se pudo realizar el cambio', confirmButtonColor: '#364574', icon: 'error',})

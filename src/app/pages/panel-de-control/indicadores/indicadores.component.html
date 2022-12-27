@@ -1,0 +1,128 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="PANEL DE CONTROL" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col">
+
+        <div class="h-100">
+            <div class="row mb-3 pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1">Bienvenido/a</h4>
+                            <p class="text-muted mb-0">Estadisticas de virus</p>
+                        </div>
+                        <div class="mt-3 mt-lg-0">
+                            <form action="javascript:void(0);">
+                                <div class="row g-3 mb-0 align-items-center">
+                                    <div class="col-sm-auto">
+                                        <div class="input-group">
+                                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" mode="range">
+                                            <div class="input-group-text bg-primary border-primary text-white"><i class="ri-calendar-2-line"></i></div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button>
+                                    </div><!--end col-->
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
+                    </div><!-- end card header -->
+                </div><!--end col-->
+            </div><!--end row-->
+
+            <div class="row">
+                <div *ngFor="let stat of statData" class="col-xl-3 col-md-6">
+                    <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon" [persantage]="stat.persantage" [profit]="stat.profit"></app-stat>
+                </div>
+            </div> <!-- end row-->
+
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-header border-0 align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
+                            <div class="d-flex gap-1">
+                                <button type="button" class="btn btn-soft-secondary btn-sm">
+                                    ALL
+                                </button>
+                                <button type="button" class="btn btn-soft-secondary btn-sm">
+                                    1M
+                                </button>
+                                <button type="button" class="btn btn-soft-secondary btn-sm">
+                                    6M
+                                </button>
+                                <button type="button" class="btn btn-soft-primary btn-sm">
+                                    1Y
+                                </button>
+                            </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-header p-0 border-0 bg-soft-light">
+                            <div class="row g-0 text-center">
+                                <div class="col-6 col-sm-3">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span [CountTo]="7585" class="counter-value" [from]="0" [duration]="1"></span></h5>
+                                        <p class="text-muted mb-0">Orders</p>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-6 col-sm-3">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1">$<span [CountTo]="22.89" class="counter-value" [from]="0" [duration]="1"></span>k</h5>
+                                        <p class="text-muted mb-0">Earnings</p>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-6 col-sm-3">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span [CountTo]="367" class="counter-value" [from]="0" [duration]="1"></span></h5>
+                                        <p class="text-muted mb-0">Refunds</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-6 col-sm-3">
+                                    <div class="p-3 border border-dashed border-start-0 border-end-0">
+                                        <h5 class="mb-1 text-success"><span [CountTo]="18.92" class="counter-value" [from]="0" [duration]="1"></span>%</h5>
+                                        <p class="text-muted mb-0">Conversation Ratio</p>
+                                    </div>
+                                </div>
+                               
+                            </div> 
+                        </div>
+                        
+                        <!-- end card header -->
+
+                        <div class="card-body p-0 pb-2">
+                            <!-- <div class="w-100">
+                                <apx-chart dir="ltr" class="apex-charts" [chart]="analyticsChart.chart"
+                        [series]="analyticsChart.series" [legend]="analyticsChart.legend"
+                        [stroke]="analyticsChart.stroke" [colors]="analyticsChart.colors" [fill]="analyticsChart.fill"
+                        [dataLabels]="analyticsChart.dataLabels" [xaxis]="analyticsChart.xaxis"
+                        [markers]="analyticsChart.markers" [plotOptions]="analyticsChart.plotOptions"
+                        [yaxis]="analyticsChart.yaxis" [tooltip]="analyticsChart.tooltip" [grid]="analyticsChart.grid"
+                        [labels]="analyticsChart.labels">
+                    </apx-chart> -->
+                            <!-- </div> -->
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+                
+                <!-- end col -->
+            </div>
+
+
+           
+
+        </div> <!-- end .h-100-->
+
+    </div> <!-- end col -->
+
+   </div>
+
+<!-- <app-toasts aria-live="polite" aria-atomic="true"></app-toasts> -->

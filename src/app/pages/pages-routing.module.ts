@@ -32,6 +32,9 @@ const routes: Routes = [
     
     {
       path: 'usuarios', loadChildren: () => import('./usuario/usuarios.module').then(m => m.UsuariosModule)
+    },
+    {
+      path: 'indicadores', loadChildren: () => import('./panel-de-control/panel-de-control.module').then(m => m.PanelDeControlModule)
     }
 ];
 
