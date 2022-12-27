@@ -133,12 +133,14 @@ export class CrearComponent implements OnInit {
     }
     this.cargando = true
     let usuarioAux = {
-      name: this.nombre.value + ' '+ this.primerApellido.value + ' '+this.segundoApellido.value,
+      name: this.nombre.value,
       rut: this.rut.value,
       idHospital: this.idHospital.value,
       idRol: this.idRol.value,
       email: this.correo.value,
       password: "check.2022v1.0",
+      apellidoP: this.primerApellido.value,
+      apellidoM: this.segundoApellido.value
     }
     this.usuarioService.createUser(usuarioAux).subscribe({
       next:(res:any)=>{
