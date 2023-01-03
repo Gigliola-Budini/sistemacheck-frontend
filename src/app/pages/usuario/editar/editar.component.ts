@@ -215,7 +215,8 @@ export class EditarComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#364574',
       cancelButtonColor: 'rgb(243, 78, 78)',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'Cancelar'
     }).then(result => {
       if (result.value) {
         this.usuarioService.enableDisableUsuario(parseInt(this.idUsuario), estado)

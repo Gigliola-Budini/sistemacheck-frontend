@@ -8,6 +8,10 @@ import { IndicadoresComponent } from "./indicadores/indicadores.component";
 
 const routes: Routes = [
   {
+    path: "",
+    component: IndicadoresComponent
+  },
+  {
     path: "principal",
     component: IndicadoresComponent
   }

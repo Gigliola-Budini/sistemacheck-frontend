@@ -1,10 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit,TemplateRef, ViewChild } from '@angular/core';
 import { tileLayer, latLng, circle } from 'leaflet';
 import { ChartType } from './dashboard.model';
 import { SwiperDirective, SwiperComponent } from 'ngx-swiper-wrapper';
 import { SwiperOptions } from 'swiper';
 import { BestSelling, TopSelling, RecentSelling, statData } from '../../dashboards/dashboard/data';
-import { ToastService } from '../../dashboards/dashboard/toast-service';
+import { RestApiCheckService } from 'src/app/core/services/rest-api-check.service';
+
+interface State {
+    title:  string;
+    value: number,
+    icon: string //'bx-dollar-circle',
+    persantage: string,
+    profit: string //'up' - 'down' - 'equal'
+}
 
 @Component({
   selector: 'app-indicadores',
@@ -25,7 +33,7 @@ export class IndicadoresComponent implements OnInit {
   @ViewChild(SwiperDirective) directiveRef?: SwiperDirective;
   @ViewChild(SwiperComponent, { static: false }) componentRef?: SwiperComponent;
 
-  constructor(public toastService: ToastService) { }
+  constructor(private respApiService: RestApiCheckService) { }
 
   ngOnInit(): void {
     /**
@@ -40,13 +48,67 @@ export class IndicadoresComponent implements OnInit {
      /**
      * Fetches the data
      */
-      this.fetchData();
+      // this.fetchData();
 
     // Chart Color Data Get Function
     this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]');
     this._SalesCategoryChart('["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]');
+    this.obtenerDatosIndicadores('27/01/2022','01/01/2023')
+    this.obtenerDatosIndicadoresEtereos('27/01/2022','01/01/2023')
+   
   }
 
+  obtenerDatosIndicadores(fechaIni,fechaFin){
+    this.respApiService.getIndicadores(fechaIni,fechaFin).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res.data){
+          //this.statData = statData2
+         this.statData = this.setStateVirus(res.data[0].virus)
+        }
+      }, error:(err)=>{
+        console.log(err);
+        
+      }
+    })
+  }
+  obtenerDatosIndicadoresEtereos(fechaIni,fechaFin){
+    this.respApiService.getIndicadores2(fechaIni,fechaFin).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res.data){
+          //this.statData = statData2
+         //this.statData = this.setStateVirus(res.data[0].virus)
+        }
+      }, error:(err)=>{
+        console.log(err);
+        
+      }
+    })
+  }
+
+  setStateVirus(data){
+    let stateArr: State[]= []
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+        console.log(element);
+        let porcentaje = (data[key].positivo*100)/(data[key].positivo + data[key].negativo)
+        let elem : State= {
+          title: key,
+          value :data[key].positivo,
+          persantage: porcentaje+'',
+          profit:'up',
+          icon:'bx-dollar-circle'
+        }
+        stateArr.push(elem)
+      }
+    }
+
+    console.log(stateArr);
+    return stateArr;
+    
+  }
   // Chart Colors Set
   private getChartColorsArray(colors:any) {
     colors = JSON.parse(colors);
