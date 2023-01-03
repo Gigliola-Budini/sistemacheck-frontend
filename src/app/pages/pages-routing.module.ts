@@ -6,12 +6,12 @@ import { DashboardComponent } from "./dashboards/dashboard/dashboard.component";
 import { ReportesModule } from './reportes/reportes.module';
 
 const routes: Routes = [
+    // {
+    //     path: "",
+    //     component: DashboardComponent
+    // },
     {
-        path: "",
-        component: DashboardComponent
-    },
-    {
-      path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
+      path: '', loadChildren: () => import('./panel-de-control/panel-de-control.module').then(m => m.PanelDeControlModule)
     },
     {
       path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule)

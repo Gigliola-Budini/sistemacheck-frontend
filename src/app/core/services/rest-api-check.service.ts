@@ -68,4 +68,12 @@ export class RestApiCheckService {
   getRoles(){
     return this.http.get(`${ENV.api_url}roles?token=${this.token}`,httpOptions);
   }
+
+  getIndicadores(fechaIni,fechaFin){
+    return this.http.get(`${ENV.api_url}estadistica/virus/fecha?fechaDesde=${fechaIni}&fechaHasta=${fechaFin}&token=${this.token}`,httpOptions);
+  }
+
+  getIndicadores2(fechaIni,fechaFin){
+    return this.http.get(`${ENV.api_url}estadistica/virus/fecha/rangoEtereo?fechaDesde=${fechaIni}&fechaHasta=${fechaFin}&token=${this.token}`,httpOptions);
+  }
 }

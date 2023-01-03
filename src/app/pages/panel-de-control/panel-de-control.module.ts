@@ -14,7 +14,7 @@ import { allIcons } from 'angular-feather/icons';
 // Flat Picker
 import { FlatpickrModule } from 'angularx-flatpickr';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Load Icons
 import { defineLordIconElement } from 'lord-icon-element';
@@ -26,6 +26,7 @@ import { DataTablesModule } from "angular-datatables";
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { IndicadoresComponent } from "./indicadores/indicadores.component";
+import { WidgetModule } from '../../shared/widget/widget.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { IndicadoresComponent } from "./indicadores/indicadores.component";
     ReactiveFormsModule,
     DataTablesModule,
     FlatpickrModule.forRoot(),
-    NgApexchartsModule
+    NgApexchartsModule,
+    WidgetModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 
  

@@ -60,7 +60,7 @@ export class CrearComponent implements OnInit {
       idRol:[this.usuario.idRol, [Validators.required]],
       idHospital:[{value:this.usuario.idHospital,disabled:true}, [Validators.required]],
       rut: [this.usuario.rut, [Validators.required,Validators.minLength(8)]],
-      idServicio:[this.usuario.idServicio, [Validators.required]],
+      idServicio:[{value:this.usuario.idServicio,disabled:true}, [Validators.required]],
       confirmarCorreo: [this.confirmarCorreoform, [Validators.required, Validators.email]],
     })
 
@@ -85,12 +85,10 @@ export class CrearComponent implements OnInit {
   obtenerRoles(){
     this.restApiService.getRoles().subscribe({
       next:(res:any)=>{
-        console.log(res);
+        // console.log(res);
         if(res){
           this.roles = res
         }
-       
-        
       }
     })
     // this.roles = [{id: 1,nombre:'Encargado de DiagnoChile'}]
@@ -109,7 +107,7 @@ export class CrearComponent implements OnInit {
   obtenerServiciosSalud(){
     this.restApiService.getServiciosSalud().subscribe({
       next:(res:any)=>{
-        console.log(res);
+        // console.log(res);
         if(res.length){
           this.serviciosSalud = res
         }
@@ -117,13 +115,9 @@ export class CrearComponent implements OnInit {
     })
   }
 
-  crearUsuario(){
-    
-    console.log(this.userForm.value);
-
+  crearUsuario(){ 
+    // console.log(this.userForm.value);
     if (!this.validarService.validarRut(this.rut.value)) {
-      console.log(this.userForm.get('rut'));
-      
       this.userForm.get('rut').setErrors({notValid: true})
       return;
     }
@@ -144,7 +138,7 @@ export class CrearComponent implements OnInit {
     }
     this.usuarioService.createUser(usuarioAux).subscribe({
       next:(res:any)=>{
-        console.log(res);
+        // console.log(res);
           if(res.id){
             let userPass= {
               idUser: res.id,
@@ -153,9 +147,8 @@ export class CrearComponent implements OnInit {
             }
             this.usuarioService.sendEmailPass(userPass).subscribe({
               next: (res:any)=>{
-                console.log(res);
+                // console.log(res);
                 if(res){
-                  
                   this.timermsg('Usuario registrado','Se ha enviado un link al correo del usuario para establecer la contraseña.')
                 }else{
                   this.modelTitle('No se pudo crear el Usuario')
@@ -181,24 +174,37 @@ export class CrearComponent implements OnInit {
     })
   }
   filtrarControlHospitales(){
-
-    console.log(this.idServicio);
+    //console.log(this.idServicio, this.idRol.value, typeof(this.idRol.value));
     if(this.idServicio.status == 'VALID'){
-      this.idHospital.enable()
+      if(this.idRol.value == "3"  || this.idRol.value == "1" || this.idRol.value ==undefined){
+        this.centrosSalud = []
+        this.idHospital.disable()
+      }else{
+        this.idHospital.enable()
+      }
       this.centrosSalud = this.dataCentrosSalud.filter(elem => {
         return elem.fkServicioSalud == this.idServicio.value
       })
+      
     }else{
       this.centrosSalud = []
       this.idHospital.disable()
     }
   }
   switchControls(){
+    // console.log(this.idRol.value);
     if(this.idRol.value == 1){
       this.idServicio.disable()
-      this.idHospital.disable()
+      if (this.idHospital.enabled) {
+        this.idHospital.disable()
+      }
+      
       this.idHospital.setValue(0)
       this.idServicio.setValue(0)
+    }else if(this.idRol.value == 3){
+      this.idHospital.disable()
+      this.idHospital.setValue(0)
+      this.idServicio.enable()
     }else{
       this.idServicio.enable()
       this.idHospital.enable()
@@ -263,7 +269,7 @@ export class CrearComponent implements OnInit {
         
       }).then((result) => {
         /* Read more about handling dismissals below */
-        console.log('se ejecuto');
+        // console.log('se ejecuto');
         
         this.router.navigate(['/usuarios/listar'])
         if (result.dismiss === Swal.DismissReason.timer) {
