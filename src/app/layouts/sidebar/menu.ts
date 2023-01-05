@@ -1268,7 +1268,7 @@ export const MENU: MenuItem[] = [
     id: 9,
     label: 'Indicadores',
     icon: 'ri-bar-chart-fill',
-    level:1,
+    level:4,
     isShow:true,
     link:'/indicadores/principal'
    
@@ -1279,16 +1279,17 @@ export const MENU: MenuItem[] = [
     icon: 'bx bx-injection',
     level:4,
     isShow:true,
-    subItems: [
-      {
-        id: 2,
-        label: 'Listado',
-        link: '/examenes/listado',
-        parentId: 1,
-        level: 4,
-        isShow:true,
-      }
-    ]
+    link: '/examenes/listado',
+    // subItems: [
+    //   {
+    //     id: 2,
+    //     label: 'Listado',
+    //     link: '/examenes/listado',
+    //     parentId: 1,
+    //     level: 4,
+    //     isShow:true,
+    //   }
+    // ]
   },
   {
     id: 3,
@@ -1320,25 +1321,26 @@ export const MENU: MenuItem[] = [
     label: 'Usuarios',
     icon: 'ri-group-line',
     level:1,
-    isShow:true,
-    subItems: [
-      {
-        id: 7,
-        label: 'Crear Nuevo Usuario',
-        link: '/usuarios/crear',
-        parentId: 6,
-        level:1,
-        isShow:false,
-      },
-      {
-        id: 8,
-        label: 'Listado',
-        link: '/usuarios/listar',
-        parentId: 6,
-        level:1,
-        isShow:false,
-      }
-    ]
+    isShow:false,
+    link: '/usuarios/listar',
+    // subItems: [
+    //   {
+    //     id: 7,
+    //     label: 'Crear Nuevo Usuario',
+    //     link: '/usuarios/crear',
+    //     parentId: 6,
+    //     level:1,
+    //     isShow:false,
+    //   },
+    //   {
+    //     id: 8,
+    //     label: 'Listado',
+    //     link: '/usuarios/listar',
+    //     parentId: 6,
+    //     level:1,
+    //     isShow:false,
+    //   }
+    // ]
   }
   
 

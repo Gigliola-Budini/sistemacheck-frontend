@@ -34,6 +34,7 @@ export class EditarComponent implements OnInit {
   dataCentrosSalud:any[];
   centrolSalud:any=[]
   isAdmin:boolean;
+  cargando:boolean = false;
 
   constructor(private restApiService:RestApiCheckService, 
     private validarService:ValidatorService,
@@ -48,6 +49,7 @@ export class EditarComponent implements OnInit {
       if(user.rol == "Encargado de DiagnoChile"){
         this.isAdmin = true
       }
+      this.cargando = true;
     }
 
 
@@ -136,11 +138,13 @@ export class EditarComponent implements OnInit {
           this.f['primerApellido'].setValue(usu.apellidoP)
           this.f['segundoApellido'].setValue(usu.apellidoM)
           this.habilitado = usu.estado 
-          console.log(usu.estado, this.habilitado);
+          // console.log(usu.estado, this.habilitado);
         }
+        this.cargando = false;
       },
       error:(err)=>{
         console.log(err);
+        this.cargando = false;
         
       }
     })

@@ -62,7 +62,7 @@ export class RestApiCheckService {
   }
 
   getServiciosSalud(){
-    return this.http.get(`${ENV.api_url}ServicioSalud`,httpOptions);
+    return this.http.get(`${ENV.api_url}ServicioSalud?token=${this.token}`,httpOptions);
   }
   
   getRoles(){
