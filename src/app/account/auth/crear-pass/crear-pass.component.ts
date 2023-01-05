@@ -166,7 +166,7 @@ export class CrearPassComponent implements OnInit {
       this.passService.verifyChangePass(this.token).subscribe({next:(res:any)=>{
         if(res!= 'OK'){
           this.authService.logout();
-          this.timermsg('El link esta expirado','redirigiendo al inicio')
+          this.timermsg('El link expiró','Será redirigido al Inicio de Sesión')
           
         }
       }})

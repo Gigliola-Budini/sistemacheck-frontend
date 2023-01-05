@@ -14,6 +14,37 @@ interface State {
     profit: string //'up' - 'down' - 'equal'
 }
 
+const data = [{
+  nombre:"sincicial",
+  semana: 42,
+  positivos:24,
+  negativos:40
+},{
+  nombre:"sincicial",
+  semana: 43,
+  positivos:24,
+  negativos:40
+},{
+  nombre:"influenza",
+  semana: 42,
+  positivos:24,
+  negativos:40
+},{
+  nombre:"influenza",
+  semana: 43,
+  positivos:24,
+  negativos:40
+},{
+  nombre:"adenovirus",
+  semana: 42,
+  positivos:24,
+  negativos:40
+},{
+  nombre:"adenovirus",
+  semana: 42,
+  positivos:24,
+  negativos:40
+}]
 @Component({
   selector: 'app-indicadores',
   templateUrl: './indicadores.component.html',
