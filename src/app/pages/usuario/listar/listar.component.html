@@ -78,7 +78,8 @@
                                     </div>
                                   </th> -->
                                   <th class="sort text-uppercase" >RUT</th>
-                                  <th class="sort text-uppercase" >NOMBRE</th>
+                                  <th class="sort text-uppercase" >NOMBRES</th>
+                                  <th class="sort text-uppercase" >APELLIDOS</th>
                                   <th class="sort text-uppercase" >CARGO</th>
                                   <th class="sort text-uppercase" >HOSPITAL</th>
                                   <th class="sort text-uppercase" >ESTADO</th>
@@ -96,6 +97,7 @@
                               
                               <td>{{data.rut}}</td>
                               <td>{{data.nombre}}</td>
+                              <td>{{(data.apellidoP != null)?data.apellidoP: '' + ' ' }} {{(data.apellidoM != 'null') ? data.apellidoM : ''}}</td>
                               <td>{{data.cargo}}</td>
                               <td>{{data.hospital}}</td>
                               <td style="text-align: center;">{{(data.estado == 1)? 'Habilitado': 'Deshabilitado'}}</td>

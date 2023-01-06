@@ -1264,15 +1264,15 @@ export const MENU: MenuItem[] = [
   //     }
   //   ]
   // },
-  {
-    id: 9,
-    label: 'Indicadores',
-    icon: 'ri-bar-chart-fill',
-    level:4,
-    isShow:true,
-    link:'/indicadores/principal'
+  // {
+  //   id: 9,
+  //   label: 'Indicadores',
+  //   icon: 'ri-bar-chart-fill',
+  //   level:4,
+  //   isShow:true,
+  //   link:'/indicadores/principal'
    
-  },
+  // },
   {
     id: 1,
     label: 'Exámenes',
