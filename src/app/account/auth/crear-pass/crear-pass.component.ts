@@ -169,7 +169,8 @@ export class CrearPassComponent implements OnInit {
           this.timermsg('El link expiró','Será redirigido al Inicio de Sesión')
           
         }
-      }})
+      },error:(err)=>console.log(err)
+      })
      
     }
     successmsg(title, mes) {

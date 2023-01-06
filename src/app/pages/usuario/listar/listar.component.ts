@@ -26,6 +26,7 @@ export class ListarComponent implements OnInit {
     if(currentUser.rol == 'Encargado de DiagnoChile'){
       this.isAdmin = true
     }
+    this.idHospital = currentUser.idHospital
   }
 
   ngOnInit(): void {
@@ -35,7 +36,7 @@ export class ListarComponent implements OnInit {
       { label: 'Listado', active: true }
     ];
     this.obtenerUsuarios()
-    this.obtenerServiciosSalud()
+    this.obtenerCentrosSalud()
     
     
     this.dtOptions = {
@@ -58,7 +59,7 @@ export class ListarComponent implements OnInit {
     };
   }
 
-  obtenerServiciosSalud(){
+  obtenerCentrosSalud(){
     this.restApiService.getHospitales().subscribe({
       next:(res:any)=>{
         console.log(res);
@@ -70,7 +71,8 @@ export class ListarComponent implements OnInit {
   }
   obtenerUsuarios(){
     this.cargando = true;
-    this.usuarioService.getUsuariosHospital(1).subscribe({
+    
+    this.usuarioService.getUsuariosHospital(this.idHospital).subscribe({
       next:(res:any)=>{
         console.log(res);
         if(res.length>=1){
