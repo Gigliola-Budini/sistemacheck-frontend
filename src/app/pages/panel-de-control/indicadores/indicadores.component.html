@@ -17,16 +17,17 @@
                             <form action="javascript:void(0);">
                                 <div class="row g-3 mb-0 align-items-center">
                                     <div class="col-sm-auto">
-                                        <div class="input-group">
+                                        <!-- <div class="input-group">
                                             <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" mode="range">
                                             <div class="input-group-text bg-primary border-primary text-white"><i class="ri-calendar-2-line"></i></div>
-                                        </div>
+                                        </div> -->
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-auto">
+                                        <!-- <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button> -->
                                     </div><!--end col-->
                                     <div class="col-auto">
-                                        <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button>
-                                    </div><!--end col-->
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button>
+                                        <!-- <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button> -->
                                     </div><!--end col-->
                                 </div><!--end row-->
                             </form>
@@ -34,17 +35,74 @@
                     </div><!-- end card header -->
                 </div><!--end col-->
             </div><!--end row-->
-
+            <div class="row">
+                <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0"><b class="text-secondary"></b> Generando estadisticas...</h6>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <!-- <h6 class="mb-0">1 min left</h6> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress bg-soft-secondary rounded-0">
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div *ngFor="let stat of statData" class="col-xl-3 col-md-6">
                     <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon" [persantage]="stat.persantage" [profit]="stat.profit"></app-stat>
                 </div>
             </div> <!-- end row-->
 
+            <div class="col-xxl-12" *ngIf="!cargando">
+                <div class="card card-height-100">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Positivos por virus de las últimas 12 semanas</h4>
+                        <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown" ngbDropdown>
+                                <!-- <a class="text-reset dropdown-btn arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                                    <span class="fw-semibold text-uppercase fs-12">Sort by: </span><span class="text-muted">Current Year<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                </a> -->
+                                <!-- <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Last Week</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Current Year</a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div><!-- end card header -->
+                    <div class="card-body px-0">
+                        <ul class="list-inline main-chart text-center mb-0">
+                            <li class="list-inline-item chart-border-left me-0 border-0">
+                                <h4 class="text-primary">{{total}} <span class="text-muted d-inline-block fs-13 align-middle ms-2">Total Exámenes</span></h4>
+                            </li>
+                            <li class="list-inline-item chart-border-left me-0">
+                                <h4>{{totalPositivos}}<span class="text-muted d-inline-block fs-13 align-middle ms-2">Total Positivos</span>
+                                </h4>
+                            </li>
+                            <li class="list-inline-item chart-border-left me-0">
+                                <h4><span data-plugin="counterup">{{((totalPositivos*100)/total).toFixed(2)}}</span>%<span class="text-muted d-inline-block fs-13 align-middle ms-2">Tasa de Positividad</span></h4>
+                            </li>
+                        </ul>
+                        <div class="mb-n3">
+                        <apx-chart [series]="splineAreaChart.series" [chart]="splineAreaChart.chart"
+                        [dataLabels]="splineAreaChart.dataLabels" [stroke]="splineAreaChart.stroke"
+                        [xaxis]="splineAreaChart.xaxis" [yaxis]="splineAreaChart.yaxis"
+                        [colors]="splineAreaChart.colors" [fill]="splineAreaChart.fill"></apx-chart>
+                        </div>
+                    </div>
+                </div><!-- end card -->
+            </div><!-- end col -->
+        
             <div class="row">
                 <div class="col-xl-8">
                     <div class="card">
-                        <div class="card-header border-0 align-items-center d-flex">
+                        <!-- <div class="card-header border-0 align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
                             <div class="d-flex gap-1">
                                 <button type="button" class="btn btn-soft-secondary btn-sm">
@@ -60,9 +118,10 @@
                                     1Y
                                 </button>
                             </div>
-                        </div><!-- end card header -->
+                        </div> -->
+                        <!-- end card header -->
 
-                        <div class="card-header p-0 border-0 bg-soft-light">
+                        <!-- <div class="card-header p-0 border-0 bg-soft-light">
                             <div class="row g-0 text-center">
                                 <div class="col-6 col-sm-3">
                                     <div class="p-3 border border-dashed border-start-0">
@@ -73,42 +132,43 @@
                                
                                 <div class="col-6 col-sm-3">
                                     <div class="p-3 border border-dashed border-start-0">
-                                        <h5 class="mb-1">$<span [CountTo]="22.89" class="counter-value" [from]="0" [duration]="1"></span>k</h5>
-                                        <p class="text-muted mb-0">Earnings</p>
+                                        <h5 class="mb-1">$<span [CountTo]="total" class="counter-value" [from]="0" [duration]="1"></span>k</h5>
+                                        <p class="text-muted mb-0">Total Exámenes</p>
                                     </div>
                                 </div>
                                
                                 <div class="col-6 col-sm-3">
                                     <div class="p-3 border border-dashed border-start-0">
-                                        <h5 class="mb-1"><span [CountTo]="367" class="counter-value" [from]="0" [duration]="1"></span></h5>
-                                        <p class="text-muted mb-0">Refunds</p>
+                                        <h5 class="mb-1"><span [CountTo]="totalPositivos" class="counter-value" [from]="0" [duration]="1"></span></h5>
+                                        <p class="text-muted mb-0">Positivos</p>
                                     </div>
                                 </div>
                                 
                                 <div class="col-6 col-sm-3">
                                     <div class="p-3 border border-dashed border-start-0 border-end-0">
-                                        <h5 class="mb-1 text-success"><span [CountTo]="18.92" class="counter-value" [from]="0" [duration]="1"></span>%</h5>
-                                        <p class="text-muted mb-0">Conversation Ratio</p>
+                                        <h5 class="mb-1 text-success"><span [CountTo]="totalNegativos" class="counter-value" [from]="0" [duration]="1"></span>%</h5>
+                                        <p class="text-muted mb-0"> Negativos</p>
                                     </div>
                                 </div>
                                
                             </div> 
-                        </div>
+                        </div> -->
                         
                         <!-- end card header -->
-
+<!-- 
                         <div class="card-body p-0 pb-2">
-                            <!-- <div class="w-100">
+                            <div class="w-100">
                                 <apx-chart dir="ltr" class="apex-charts" [chart]="analyticsChart.chart"
-                        [series]="analyticsChart.series" [legend]="analyticsChart.legend"
-                        [stroke]="analyticsChart.stroke" [colors]="analyticsChart.colors" [fill]="analyticsChart.fill"
-                        [dataLabels]="analyticsChart.dataLabels" [xaxis]="analyticsChart.xaxis"
-                        [markers]="analyticsChart.markers" [plotOptions]="analyticsChart.plotOptions"
-                        [yaxis]="analyticsChart.yaxis" [tooltip]="analyticsChart.tooltip" [grid]="analyticsChart.grid"
-                        [labels]="analyticsChart.labels">
-                    </apx-chart> -->
-                            <!-- </div> -->
-                        </div><!-- end card body -->
+                                    [series]="analyticsChart.series" [legend]="analyticsChart.legend"
+                                    [stroke]="analyticsChart.stroke" [colors]="analyticsChart.colors" [fill]="analyticsChart.fill"
+                                    [dataLabels]="analyticsChart.dataLabels" [xaxis]="analyticsChart.xaxis"
+                                    [markers]="analyticsChart.markers" [plotOptions]="analyticsChart.plotOptions"
+                                    [yaxis]="analyticsChart.yaxis" [tooltip]="analyticsChart.tooltip" [grid]="analyticsChart.grid"
+                                    [labels]="analyticsChart.labels">
+                                 </apx-chart>
+                            </div>
+                        </div> -->
+                        <!-- end card body -->
                     </div><!-- end card -->
                 </div><!-- end col -->
 
