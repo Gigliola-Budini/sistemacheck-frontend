@@ -5,6 +5,7 @@ import { SwiperDirective, SwiperComponent } from 'ngx-swiper-wrapper';
 import { SwiperOptions } from 'swiper';
 import { BestSelling, TopSelling, RecentSelling, statData } from '../../dashboards/dashboard/data';
 import { RestApiCheckService } from 'src/app/core/services/rest-api-check.service';
+import { DatesService } from "src/app/core/services/dates.service";
 
 interface State {
     title:  string;
@@ -41,10 +42,12 @@ const data = [{
   negativos:40
 },{
   nombre:"adenovirus",
-  semana: 42,
+  semana: 43,
   positivos:24,
   negativos:40
 }]
+
+const virus = ['Influenza A','Influenza B', 'Sincicial', 'Adenovirus']
 @Component({
   selector: 'app-indicadores',
   templateUrl: './indicadores.component.html',
@@ -60,11 +63,17 @@ export class IndicadoresComponent implements OnInit {
   RecentSelling: any;
   SalesCategoryChart!: ChartType;
   statData!: any;
-
+  splineAreaChart:any;
+  categorias = []
+  valorMax=0
+  total = 0
+  totalPositivos= 0
+  totalNegativos= 0
+  cargando: boolean=  false
   @ViewChild(SwiperDirective) directiveRef?: SwiperDirective;
   @ViewChild(SwiperComponent, { static: false }) componentRef?: SwiperComponent;
 
-  constructor(private respApiService: RestApiCheckService) { }
+  constructor(private respApiService: RestApiCheckService, private dateService:DatesService) { }
 
   ngOnInit(): void {
     /**
@@ -80,26 +89,50 @@ export class IndicadoresComponent implements OnInit {
      * Fetches the data
      */
       // this.fetchData();
-
+    let hoy = this.dateService.formatFechaEsp(new Date());
+    let ultimoDomingo= this.dateService.formatFechaEsp(this.dateService.getDayOfCurrentWeek(new Date(),0))
+    let tresMeses= this.dateService.formatFechaEsp(this.dateService.sumarDias(new Date(), -90))
     // Chart Color Data Get Function
     this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]');
-    this._SalesCategoryChart('["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]');
-    this.obtenerDatosIndicadores('27/01/2022','01/01/2023')
-    this.obtenerDatosIndicadoresEtereos('27/01/2022','01/01/2023')
+    this._splineAreaChart('["--vz-success", "--vz-danger","--vz-primary"]',[]);
+    this.obtenerDatosIndicadores(ultimoDomingo,hoy)
+    this.obtenerDatosGraficos(tresMeses,hoy)
+    this.obtenerDatosIndicadoresEtereos('27/01/2022','8/01/2023')
    
   }
 
+  formatoFechaEsp(date:Date){
+    
+  }
   obtenerDatosIndicadores(fechaIni,fechaFin){
+    // this.cargando = true
     this.respApiService.getIndicadores(fechaIni,fechaFin).subscribe({
       next:(res:any)=>{
         console.log(res);
         if(res.data){
           //this.statData = statData2
          this.statData = this.setStateVirus(res.data[0].virus)
+        
         }
       }, error:(err)=>{
         console.log(err);
-        
+        // this.cargando = false;
+      }
+    })
+  }
+  obtenerDatosGraficos(fechaIni,fechaFin){
+    this.cargando = true
+    this.respApiService.getIndicadores(fechaIni,fechaFin).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        if(res.data){
+          //this.statData = statData2
+         let dataGrafico = this.distribuirData(res.data[0].virus)
+         this._splineAreaChart('["--vz-success", "--vz-danger", "--vz-warning", "--vz-primary", "--vz-secondary"]',dataGrafico);
+        }
+      }, error:(err)=>{
+        console.log(err);
+        this.cargando = false
       }
     })
   }
@@ -120,25 +153,94 @@ export class IndicadoresComponent implements OnInit {
 
   setStateVirus(data){
     let stateArr: State[]= []
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        console.log(element);
-        let porcentaje = (data[key].positivo*100)/(data[key].positivo + data[key].negativo)
+    if(data.total != 0){
+      for (const key in data) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          const element = data[key];
+          console.log(element);
+          let porcentaje = (data[key].positivo*100)/(data[key].positivo + data[key].negativo)
+          let elem : State= {
+            title: key,
+            value :data[key].positivo,
+            persantage: porcentaje+'',
+            profit:'up',
+            icon:'bx bxs-virus'
+          }
+          stateArr.push(elem)
+        }
+      }
+    }else{
+
+      for (let i = 0; i < virus.length; i++) {
+        const nombre = virus[i];
         let elem : State= {
-          title: key,
-          value :data[key].positivo,
-          persantage: porcentaje+'',
-          profit:'up',
-          icon:'bx-dollar-circle'
+          title: nombre,
+          value :0,
+          persantage:0+'',
+          profit:'equal',
+          icon:'bx bxs-virus'
         }
         stateArr.push(elem)
       }
-    }
+      // this.cargando = false
+    } 
+   
 
     console.log(stateArr);
     return stateArr;
     
+  }
+
+  distribuirData(data){
+    let allData = {
+      serie:[],
+      labels:[]
+    }
+    let serie = []
+    this.total = data.total
+    this.totalPositivos = data.totalPositivos
+    this.totalNegativos = data.totalNegativos
+    delete data['total']
+    delete data['totalPositivos']
+    delete data['totalNegativos']
+    for (const key in data) {
+      let nom =''
+      nom  = key
+      let labels = []
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+        let nombre = key.split('^')
+        let objectSerie = {
+          name: nombre[1],
+          data:[]
+        }
+        for (const key2 in element) {
+          
+          if (Object.prototype.hasOwnProperty.call(element, key2)) {
+            const result = element[key2];
+            if(result.positivo != undefined ){
+              objectSerie.data.push(result.positivo)
+              this.valorMax = (result.positivo > this.valorMax)? result.positivo:this.valorMax
+            }else{
+              objectSerie.data.push(0)
+            }
+            let label = 'semana '+ key2.replace('_','')
+            labels.push(label)
+          }
+          
+          console.log(this.categorias);
+        }
+        
+        serie.push(objectSerie)
+        this.categorias = labels
+      }
+
+    }
+    this.cargando = false
+    console.log(this.categorias);
+    
+    console.log(serie);
+    return serie
   }
   // Chart Colors Set
   private getChartColorsArray(colors:any) {
@@ -274,33 +376,6 @@ export class IndicadoresComponent implements OnInit {
     };
   }
 
-  /**
- *  Sales Category
- */
-   private _SalesCategoryChart(colors:any) {
-    colors = this.getChartColorsArray(colors);
-    this.SalesCategoryChart = {
-      series: [44, 55, 41, 17, 15],
-      labels: ["Direct", "Social", "Email", "Other", "Referrals"],
-      chart: {
-          height: 333,
-          type: "donut",
-      },
-      legend: {
-          position: "bottom",
-      },
-      stroke: {
-          show: false
-      },
-      dataLabels: {
-          dropShadow: {
-              enabled: false,
-          },
-      },
-      colors: colors
-    };
-  }
-
    /**
    * Fetches the data
    */
@@ -310,37 +385,6 @@ export class IndicadoresComponent implements OnInit {
       this.RecentSelling = RecentSelling;
       this.statData = statData;
     }
-
-    /**
-   * Sale Location Map
-   */
-  options = {
-    layers: [
-      tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
-        id: "mapbox/light-v9",
-        tileSize: 512,
-        zoomOffset: -1,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      })
-    ],
-    zoom: 1.1,
-    center: latLng(28, 1.5)
-  };
-  layers = [
-    circle([41.9, 12.45], { color: "#435fe3", opacity: 0.5, weight: 10, fillColor: "#435fe3", fillOpacity: 1, radius: 400000, }),
-    circle([12.05, -61.75], { color: "#435fe3", opacity: 0.5, weight: 10, fillColor: "#435fe3", fillOpacity: 1, radius: 400000, }),
-    circle([1.3, 103.8], { color: "#435fe3", opacity: 0.5, weight: 10, fillColor: "#435fe3", fillOpacity: 1, radius: 400000, }),
-  ];
-
-  /**
- * Swiper Vertical  
-   */
-   public Vertical: SwiperOptions = {
-    a11y: { enabled: true },
-    direction: 'vertical',
-    slidesPerView: 2,
-    pagination: true,
-  };
 
   /**
    * Recent Activity
@@ -360,15 +404,43 @@ export class IndicadoresComponent implements OnInit {
     }
   }
 
-  /**
-   * SidebarHide modal
-   * @param content modal content
-   */
-   SidebarHide() {
-    const recentActivity = document.querySelector('.layout-rightside-col');
-      if(recentActivity != null){
-        recentActivity.classList.remove('d-block');
+  private _splineAreaChart(colors:any, series) {
+    colors = this.getChartColorsArray(colors);
+    this.splineAreaChart = {
+      series: series,
+      // [{
+      //     name: 'Revenue',
+      //     data: [20, 25, 30, 35, 40, 55, 70, 110, 150, 180, 210, 250]
+      // },{
+      //     name: 'Expenses',
+      //     data: [12, 17, 45, 42, 24, 35, 42, 75, 102, 108, 156, 199]
+      // }],
+      chart: {
+          height: 390,
+          type: 'area',
+          toolbar: 'false',
+      },
+      dataLabels: {
+          enabled: false
+      },
+      stroke: {
+          curve: 'smooth',
+          width: 2,
+      },
+      xaxis: {
+          categories: this.categorias
+      },
+      yaxis: {
+          tickAmount:15,
+          min: 0,
+          max: this.valorMax
+      },
+      colors: colors,
+      fill: {
+          opacity: 0.06,
+          type: 'solid'
       }
+    };
   }
 
 }

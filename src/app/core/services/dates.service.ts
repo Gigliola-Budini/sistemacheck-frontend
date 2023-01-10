@@ -21,4 +21,22 @@ export class DatesService {
     
     return new Date(d.setDate(diff));
   }
+
+  formatFechaEsp(date:Date){
+    let dd = (date.getDate() < 10) ? '0'+date.getDate(): date.getDate();
+    let mm:any = date.getMonth()+1;   
+    let yy = date.getFullYear();
+    let hh= (date.getHours() < 10) ? '0'+date.getHours(): date.getHours();
+    let mn = (date.getMinutes() < 10) ? '0'+date.getMinutes(): date.getMinutes();
+    let ss= date.getSeconds();
+
+    if(mm < 10 ){ mm = '0'+ mm}
+
+    return dd+'/'+mm+'/'+yy;
+  }
+  
+  sumarDias(fecha, dias){
+      fecha.setDate(fecha.getDate() + dias);
+      return fecha;
+    }
 }
