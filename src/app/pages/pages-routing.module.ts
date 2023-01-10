@@ -14,6 +14,9 @@ const routes: Routes = [
       path: '', loadChildren: () => import('./panel-de-control/panel-de-control.module').then(m => m.PanelDeControlModule)
     },
     {
+      path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
+    },
+    {
       path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule)
     },
     {

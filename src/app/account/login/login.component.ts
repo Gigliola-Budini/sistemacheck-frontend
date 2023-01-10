@@ -63,8 +63,10 @@ export class LoginComponent implements OnInit {
      * Form Validatyion
      */
      this.loginForm = this.formBuilder.group({
-      rut: ['11111111-1', [Validators.required]],
-      pass: ['12345', [Validators.required]],
+      //  rut: ['11111111-1', [Validators.required]],
+      //  pass: ['12345', [Validators.required]],
+       rut: ['', [Validators.required]],
+       pass: ['', [Validators.required]],
     });
     // get return url from route parameters or default to '/'
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -96,12 +98,14 @@ export class LoginComponent implements OnInit {
         
         if(res.token){
           // localStorage.setItem('toast', 'true');
+          let apellidos = ((res.apellidoP != null)?res.apellidoP : '') + ' '+ ((res.apellidoM != null)?res.apellidoM : '')
           let usuario = {
-            nombre:res.nombre,
+            nombre:res.nombre +' '+ apellidos,
             rut: res.rut,
             hospital:res.Hospital,
             rol:res.nombreRol,
             email:res.email,
+            idHospital: res.idHospital,
             basic: btoa(this.f['rut'].value+':'+this.f['pass'].value)
           }
           localStorage.setItem('currentUser', JSON.stringify(usuario));
