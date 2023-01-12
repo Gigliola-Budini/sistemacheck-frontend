@@ -6,6 +6,8 @@ import { SwiperOptions } from 'swiper';
 import { BestSelling, TopSelling, RecentSelling, statData } from '../../dashboards/dashboard/data';
 import { RestApiCheckService } from 'src/app/core/services/rest-api-check.service';
 import { DatesService } from "src/app/core/services/dates.service";
+import { CrmComponent } from '../../dashboards/crm/crm.component';
+import { ThisReceiver } from '@angular/compiler';
 
 interface State {
     title:  string;
@@ -70,6 +72,9 @@ export class IndicadoresComponent implements OnInit {
   totalPositivos= 0
   totalNegativos= 0
   cargando: boolean=  false
+  virusGrafico = []
+  virusDatos = []
+  colores = '["--vz-success", "--vz-danger", "--vz-warning", "--vz-primary", "--vz-secondary"]'
   @ViewChild(SwiperDirective) directiveRef?: SwiperDirective;
   @ViewChild(SwiperComponent, { static: false }) componentRef?: SwiperComponent;
 
@@ -93,7 +98,7 @@ export class IndicadoresComponent implements OnInit {
     let ultimoDomingo= this.dateService.formatFechaEsp(this.dateService.getDayOfCurrentWeek(new Date(),0))
     let tresMeses= this.dateService.formatFechaEsp(this.dateService.sumarDias(new Date(), -90))
     // Chart Color Data Get Function
-    this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]');
+    this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]',[],'');
     this._splineAreaChart('["--vz-success", "--vz-danger","--vz-primary"]',[]);
     this.obtenerDatosIndicadores(ultimoDomingo,hoy)
     this.obtenerDatosGraficos(tresMeses,hoy)
@@ -143,6 +148,8 @@ export class IndicadoresComponent implements OnInit {
         if(res.data){
           //this.statData = statData2
          //this.statData = this.setStateVirus(res.data[0].virus)
+         this.virusDatos = this.distibuirDatosEdad(res.data[0].virus)
+         this._analyticsChart('["--vz-success", "--vz-danger", "--vz-warning", "--vz-primary", "--vz-secondary"]',this.virusDatos,this.virusGrafico[1] )
         }
       }, error:(err)=>{
         console.log(err);
@@ -228,7 +235,7 @@ export class IndicadoresComponent implements OnInit {
             labels.push(label)
           }
           
-          console.log(this.categorias);
+          // console.log(this.categorias);
         }
         
         serie.push(objectSerie)
@@ -237,10 +244,74 @@ export class IndicadoresComponent implements OnInit {
 
     }
     this.cargando = false
-    console.log(this.categorias);
-    
-    console.log(serie);
+    // console.log(this.categorias);
+    // console.log(serie);
     return serie
+  }
+
+  distibuirDatosEdad(datos){
+    
+    let data=[]
+    let serie = []
+    let rangos = ['menos 1 año','1 a 4 años','5 a 14 años','15 a 54 años','55 a 64 años','mas 65 años']
+    // this.total = datos.total
+    // this.totalPositivos = datos.totalPositivos
+    // this.totalNegativos = datos.totalNegativos
+    delete datos['total']
+    delete datos['totalPositivos']
+    delete datos['totalNegativos']
+    for (const key in datos) {
+      let nom =''
+      nom  = key
+      let labels = []
+      if (Object.prototype.hasOwnProperty.call(datos, key)) {
+        const virus = datos[key];
+        let nombre = key.split('^')
+        let objectVirus = {
+          series:[],
+          nombre:nombre[1]
+        }
+        
+        for (let e = 0; e < rangos.length; e++) {
+          const element = rangos[e];
+          objectVirus.series.push({
+            name:element,
+            type:'line',
+            data:[]
+          })
+        }
+        
+       
+        for (const keySemana in virus) {
+          if (Object.prototype.hasOwnProperty.call(virus, keySemana)) {
+            const semana = virus[keySemana];
+            let c = 0
+            if(semana.positivo != undefined ){
+              for (const keyEdad in semana.positivo) {
+                if (Object.prototype.hasOwnProperty.call(semana.positivo, keyEdad)) {
+                  const rango = semana.positivo[keyEdad];
+                  objectVirus.series[c].data.push(rango)
+                }
+                c++
+              }
+              // this.valorMax = (result.positivo > this.valorMax)? result.positivo:this.valorMax
+            }else{
+              objectVirus.series[c].data.push(0)
+            }
+            // let label = 'semana '+ key2.replace('_','')
+            // labels.push(label)
+          }
+        }
+        
+        data.push(objectVirus)
+        this.virusGrafico.push(nombre[1])
+        // this.categorias = labels
+      }
+
+    }
+    this.cargando = false
+    // console.log(data,this.virusGrafico);
+    return data
   }
   // Chart Colors Set
   private getChartColorsArray(colors:any) {
@@ -270,11 +341,21 @@ export class IndicadoresComponent implements OnInit {
   /**
  * Sales Analytics Chart
  */
-  private _analyticsChart(colors:any) {
+  private _analyticsChart(colors:any, datos, nombre) {
     colors = this.getChartColorsArray(colors);
+    let i = datos.findIndex((elem)=>elem.nombre == nombre)
+    
+    let series = []
+    if(i != -1 ){
+      console.log(datos[i]);
+      
+     series = datos[i].series
+     console.log("series: ",series);
+     
+    }
     this.analyticsChart = {
       chart: {
-          height: 370,
+          height: 500,
           type: "line",
           toolbar: {
               show: false,
@@ -282,37 +363,42 @@ export class IndicadoresComponent implements OnInit {
       },
       stroke: {
           curve: "straight",
-          dashArray: [0, 0, 8],
-          width: [2, 0, 2.2],
+          dashArray: [1, 2, 3],
+          width: [2, 2.5, 2.2],
       },
       colors: colors,
-      series: [{
-          name: 'Orders',
-          type: 'area',
-          data: [34, 65, 46, 68, 49, 61, 42, 44, 78, 52, 63, 67]
-      }, {
-          name: 'Earnings',
-          type: 'bar',
-          data: [89.25, 98.58, 68.74, 108.87, 77.54, 84.03, 51.24, 28.57, 92.57, 42.36,
-              88.51, 36.57]
-      }, {
-          name: 'Refunds',
-          type: 'line',
-          data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35]
-      }],
+      series: 
+       series,
+      // [{
+      //     name: 'Orders',
+      //     type: 'area',
+      //     data: [0,1,0,0]
+      // }, {
+      //     name: 'Earnings',
+      //     type: 'bar',
+      //     data: [0,1,1,0]
+      // }, {
+      //     name: 'Refunds',
+      //     type: 'line',
+      //     data: [0,1,0,1]
+      // }],
       fill: {
-          opacity: [0.1, 0.9, 1],
+          opacity: [1, 2, 1],
       },
-      labels: ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'],
+      labels:
+      // this.categorias,
+       ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'],
       markers: {
           size: [0, 0, 0],
-          strokeWidth: 2,
+          strokeWidth: 6,
           hover: {
               size: 4,
           },
       },
       xaxis: {
-          categories: [
+          categories:
+          //  this.categorias,
+          [
               "Jan",
               "Feb",
               "Mar",
@@ -333,6 +419,11 @@ export class IndicadoresComponent implements OnInit {
               show: false,
           },
       },
+    //   yaxis: {
+    //     tickAmount:15,
+    //     min: 0,
+    //     max: this.valorMax
+    // },
       grid: {
           show: true,
           xaxis: {
