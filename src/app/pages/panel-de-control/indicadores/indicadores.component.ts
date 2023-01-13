@@ -8,6 +8,7 @@ import { RestApiCheckService } from 'src/app/core/services/rest-api-check.servic
 import { DatesService } from "src/app/core/services/dates.service";
 import { CrmComponent } from '../../dashboards/crm/crm.component';
 import { ThisReceiver } from '@angular/compiler';
+import { forEach } from 'lodash';
 
 interface State {
     title:  string;
@@ -98,11 +99,11 @@ export class IndicadoresComponent implements OnInit {
     let ultimoDomingo= this.dateService.formatFechaEsp(this.dateService.getDayOfCurrentWeek(new Date(),0))
     let tresMeses= this.dateService.formatFechaEsp(this.dateService.sumarDias(new Date(), -90))
     // Chart Color Data Get Function
-    this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]',[],'');
+    // this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]',[],'');
     this._splineAreaChart('["--vz-success", "--vz-danger","--vz-primary"]',[]);
     this.obtenerDatosIndicadores(ultimoDomingo,hoy)
     this.obtenerDatosGraficos(tresMeses,hoy)
-    this.obtenerDatosIndicadoresEtereos('27/01/2022','8/01/2023')
+    this.obtenerDatosIndicadoresEtereos(tresMeses,hoy)
    
   }
 
@@ -216,9 +217,9 @@ export class IndicadoresComponent implements OnInit {
       let labels = []
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const element = data[key];
-        let nombre = key.split('^')
+        let nombre = key
         let objectSerie = {
-          name: nombre[1],
+          name: nombre,
           data:[]
         }
         for (const key2 in element) {
@@ -266,10 +267,11 @@ export class IndicadoresComponent implements OnInit {
       let labels = []
       if (Object.prototype.hasOwnProperty.call(datos, key)) {
         const virus = datos[key];
-        let nombre = key.split('^')
+        let nombre = key
         let objectVirus = {
           series:[],
-          nombre:nombre[1]
+          nombre:nombre,
+          labels:[]
         }
         
         for (let e = 0; e < rangos.length; e++) {
@@ -281,12 +283,12 @@ export class IndicadoresComponent implements OnInit {
           })
         }
         
-       
+       let labelsSemana = []
         for (const keySemana in virus) {
           if (Object.prototype.hasOwnProperty.call(virus, keySemana)) {
             const semana = virus[keySemana];
             let c = 0
-            if(semana.positivo != undefined ){
+            if(semana.positivo != undefined && semana.positivo != 0){
               for (const keyEdad in semana.positivo) {
                 if (Object.prototype.hasOwnProperty.call(semana.positivo, keyEdad)) {
                   const rango = semana.positivo[keyEdad];
@@ -296,19 +298,26 @@ export class IndicadoresComponent implements OnInit {
               }
               // this.valorMax = (result.positivo > this.valorMax)? result.positivo:this.valorMax
             }else{
-              objectVirus.series[c].data.push(0)
+              for (let i = 0; i < rangos.length; i++) {
+                objectVirus.series[c].data.push(0)
+                c++
+              }
             }
             // let label = 'semana '+ key2.replace('_','')
             // labels.push(label)
+            
+            labelsSemana.push(keySemana)
           }
         }
-        
+        objectVirus.labels = labelsSemana
         data.push(objectVirus)
-        this.virusGrafico.push(nombre[1])
-        // this.categorias = labels
+        this.virusGrafico.push(nombre)
+       
+        
       }
 
     }
+    console.log(data);
     this.cargando = false
     // console.log(data,this.virusGrafico);
     return data
@@ -350,7 +359,7 @@ export class IndicadoresComponent implements OnInit {
       console.log(datos[i]);
       
      series = datos[i].series
-     console.log("series: ",series);
+     console.log("series: ",datos[i].labels);
      
     }
     this.analyticsChart = {
@@ -386,8 +395,8 @@ export class IndicadoresComponent implements OnInit {
           opacity: [1, 2, 1],
       },
       labels:
-      // this.categorias,
-       ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'],
+       datos[i].labels,
+       //['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'],
       markers: {
           size: [0, 0, 0],
           strokeWidth: 6,
@@ -397,21 +406,24 @@ export class IndicadoresComponent implements OnInit {
       },
       xaxis: {
           categories:
-          //  this.categorias,
-          [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-          ],
+            datos.labels,
+          // [
+          //     "Jan",
+          //     "Feb",
+          //     "Mar",
+          //     "Apr",
+          //     "May",
+          //     "Jun",
+          //     "Jul",
+          //     "Aug",
+          //     "Sep",
+          //     "Oct",
+          //     "Nov",
+          //     "Dec",
+          //     "Oct",
+          //     "Nov",
+          //     "Dec",
+          // ],
           axisTicks: {
               show: false,
           },
