@@ -8,6 +8,7 @@ import { RestApiCheckService } from 'src/app/core/services/rest-api-check.servic
 import { DatesService } from "src/app/core/services/dates.service";
 import { CrmComponent } from '../../dashboards/crm/crm.component';
 import { ThisReceiver } from '@angular/compiler';
+import { forEach } from 'lodash';
 
 interface State {
     title:  string;
@@ -287,7 +288,7 @@ export class IndicadoresComponent implements OnInit {
           if (Object.prototype.hasOwnProperty.call(virus, keySemana)) {
             const semana = virus[keySemana];
             let c = 0
-            if(semana.positivo != undefined ){
+            if(semana.positivo != undefined && semana.positivo != 0){
               for (const keyEdad in semana.positivo) {
                 if (Object.prototype.hasOwnProperty.call(semana.positivo, keyEdad)) {
                   const rango = semana.positivo[keyEdad];
@@ -297,10 +298,14 @@ export class IndicadoresComponent implements OnInit {
               }
               // this.valorMax = (result.positivo > this.valorMax)? result.positivo:this.valorMax
             }else{
-              objectVirus.series[c].data.push(0)
+              for (let i = 0; i < rangos.length; i++) {
+                objectVirus.series[c].data.push(0)
+                c++
+              }
             }
             // let label = 'semana '+ key2.replace('_','')
             // labels.push(label)
+            
             labelsSemana.push(keySemana)
           }
         }
