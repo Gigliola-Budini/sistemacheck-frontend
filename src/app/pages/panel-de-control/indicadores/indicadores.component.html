@@ -17,14 +17,14 @@
                             <form action="javascript:void(0);">
                                 <div class="row g-3 mb-0 align-items-center">
                                     <div class="col-sm-auto">
-                                        <!-- <div class="input-group">
-                                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" mode="range">
+                                        <div class="input-group">
+                                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [locale]="'Spanish'" [altInput]="true" [convertModelValue]="true" mode="range" [(ngModel)]="fechaIndicadores" (change)="selector()" name="fechaIndicadores">
                                             <div class="input-group-text bg-primary border-primary text-white"><i class="ri-calendar-2-line"></i></div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <!--end col-->
                                     <div class="col-auto">
-                                        <!-- <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button> -->
+                                        <button type="button" class="btn btn-soft-success" (click)="buscarIndicadores(fechaIndicadores.from,fechaIndicadores.to)"><i class="ri-add-circle-line align-middle me-1"></i> Buscar</button>
                                     </div><!--end col-->
                                     <div class="col-auto">
                                         <!-- <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button> -->
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="!cargando">
                 <div *ngFor="let stat of statData" class="col-xl-3 col-md-6">
                     <app-stat [title]="stat.title" [value]="stat.value" [icon]="stat.icon" [persantage]="stat.persantage" [profit]="stat.profit"></app-stat>
                 </div>

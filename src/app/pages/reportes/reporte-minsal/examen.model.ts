@@ -12,4 +12,5 @@ export interface Examen{
     valor: string;
     nombreServicioSalud: string;
     nombreHospital:string;
+    encargadoLab:string
 }

@@ -13,6 +13,8 @@ import { allIcons } from 'angular-feather/icons';
 
 // Flat Picker
 import { FlatpickrModule } from 'angularx-flatpickr';
+import flatpickr from 'flatpickr';
+import { Spanish } from "flatpickr/dist/l10n/es";
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -27,6 +29,12 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { IndicadoresComponent } from "./indicadores/indicadores.component";
 import { WidgetModule } from '../../shared/widget/widget.module';
+
+flatpickr.localize(Spanish);
+// export function flatpickrFactory() {
+//   flatpickr.localize(Spanish);
+//   return flatpickr;
+// }
 
 @NgModule({
   declarations: [
@@ -51,5 +59,5 @@ import { WidgetModule } from '../../shared/widget/widget.module';
 export class PanelDeControlModule {
   constructor(){
     defineLordIconElement(lottie.loadAnimation);
-  }
- }
+  } 
+}
