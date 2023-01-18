@@ -23,6 +23,7 @@ import { DatesService } from "src/app/core/services/dates.service";
 // import { ProductService } from "../../../core/services/rest-api.service";
 import { RestApiCheckService } from "src/app/core/services/rest-api-check.service";
 import { forEach } from 'lodash';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
 
 @Component({
@@ -52,7 +53,6 @@ export class ReporteMinsalComponent implements OnInit {
    headersList: string[];
    headersListVRS?: string[];
    headersListFLUV?: string[];
-   hospitales?: any[];
    examenes: any[]= [];
    virus:any[] = [
    {codigo:'72365-0',nombre:'Influenza A',columNombre:'FLUA',tipo:1},
@@ -92,6 +92,8 @@ export class ReporteMinsalComponent implements OnInit {
    
     }
     cargando:any = false;
+    idHospital:any;
+    centrosSalud:any[];
   // dataEx:any[]=[
   //     {
   //       "annio": 2022, 
@@ -186,7 +188,11 @@ export class ReporteMinsalComponent implements OnInit {
   //     }, 
   //   ]
   
-   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe, private datesServices:DatesService) {
+   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe, 
+    private datesServices:DatesService, private tokenService: TokenStorageService) {
+    let currentUser = this.tokenService.getUser()
+    this.idHospital = currentUser.idHospital
+
      this.invoicesList = service.countries$;
      this.total = service.total$;
      this.headersList = ["Establecimiento","Responsable de notificacion","Semana epidemiológica","VRS","FLUA ","FLUB", "ADV",	"PARAFLU 1"	,"MPV",	"VRS H < 1 año",	"VRS H 1 - 4 años",	"VRS H 5 - 14 años",	"VRS H 15 -54 años",
@@ -201,9 +207,9 @@ export class ReporteMinsalComponent implements OnInit {
       "P2 M > 65 años",  	"P3 H < 1 año5",	"P3 H 1 - 4 años",	"P3 H  5 - 14 años" , 	"P3 H  15 -54 años" , 	"P3 H 55 - 64 años" ,	"P3 H > 65 años",	"P3 M < 1 año6",	"P3 M  1 - 4 años",	"P3 M 5 - 14 años", 
       	"P3 M  15 -54 años",	"P3 M  55 - 64 años", 	"P3 M  > 65 años",	"MPV H < 1 año",	"MPV H  1 - 4 años", 	"P3 H 5 - 14 años",	"MPV H 15 -54 años",  	"MPV H  55 - 64 años", "	MPV H > 65 años", "MPV M < 1 año",	
         "MPV M  1 - 4 años",	"MPV M  5 - 14 años", 	"MPV M  15 -54 años",	"MPV M 55 - 64 años", 	"MPV M  > 65 años" ];
-      this.hospitales = [{idHospital:'2',nombre:'San Fernando'}]  
+     
       this.fechaFin = this.changeDate(this.today);
-      let fechaAux = this.datesServices.getDayOfCurrentWeek(new Date(),7)
+      let fechaAux = this.datesServices.getDayOfCurrentWeek(new Date(),1)
       this.fechaInicio = this.changeDate(fechaAux);
       // this.fechaFin = '2022/10/30'
       // this.fechaInicio = '2022/10/24'
@@ -225,7 +231,7 @@ export class ReporteMinsalComponent implements OnInit {
     //    this.content = this.invoices;
     //    this.invoices =  Object.assign([], x);   
     //  });
-
+    this.getHospitales();
     this.consultaReporteMinsal(this.fechaInicio, this.fechaFin)
     // this.consultaReporteMinsal('24/10/2022', '30/10/2022')
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
@@ -234,6 +240,16 @@ export class ReporteMinsalComponent implements OnInit {
     //   },
     //   error:this.handleError.bind(this)
     //  })
+   }
+
+   getHospitales(){
+    this.reporteService.getHospitales().subscribe({
+      next:(res:any)=>{
+        if(res.length){
+          this.centrosSalud = res
+        }
+      }
+    })
    }
 
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
@@ -337,6 +353,7 @@ export class ReporteMinsalComponent implements OnInit {
        filaAux = { 
         hospital: elem.nombreHospital,
         servicioSalud:elem.nombreServicioSalud,
+        encargado: elem.encargadoLab,
         anio: '',
        semana:'',
        examenes:{

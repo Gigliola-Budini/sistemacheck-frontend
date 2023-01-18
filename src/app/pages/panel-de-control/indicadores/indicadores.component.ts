@@ -76,6 +76,7 @@ export class IndicadoresComponent implements OnInit {
   virusGrafico = []
   virusDatos = []
   colores = '["--vz-success", "--vz-danger", "--vz-warning", "--vz-primary", "--vz-secondary"]'
+  fechaIndicadores:{ from: Date; to: Date } ;
   @ViewChild(SwiperDirective) directiveRef?: SwiperDirective;
   @ViewChild(SwiperComponent, { static: false }) componentRef?: SwiperComponent;
 
@@ -95,12 +96,18 @@ export class IndicadoresComponent implements OnInit {
      * Fetches the data
      */
       // this.fetchData();
+    
+    this.fechaIndicadores = {
+      from: this.dateService.getDayOfCurrentWeek(new Date(),0),
+      to: this.dateService.getDayOfCurrentWeek(new Date(),6)
+    }
+
     let hoy = this.dateService.formatFechaEsp(new Date());
     let ultimoDomingo= this.dateService.formatFechaEsp(this.dateService.getDayOfCurrentWeek(new Date(),0))
     let tresMeses= this.dateService.formatFechaEsp(this.dateService.sumarDias(new Date(), -90))
     // Chart Color Data Get Function
     // this._analyticsChart('["--vz-primary", "--vz-success", "--vz-danger"]',[],'');
-    this._splineAreaChart('["--vz-success", "--vz-danger","--vz-primary"]',[]);
+    // this._splineAreaChart('["--vz-success", "--vz-danger","--vz-primary"]',[]);
     this.obtenerDatosIndicadores(ultimoDomingo,hoy)
     this.obtenerDatosGraficos(tresMeses,hoy)
     this.obtenerDatosIndicadoresEtereos(tresMeses,hoy)
@@ -109,6 +116,10 @@ export class IndicadoresComponent implements OnInit {
 
   formatoFechaEsp(date:Date){
     
+  }
+
+  buscarIndicadores(fechaIni,fechaFin){
+    this.obtenerDatosIndicadores(this.dateService.formatFechaEsp(fechaIni), this.dateService.formatFechaEsp(fechaFin))
   }
   obtenerDatosIndicadores(fechaIni,fechaFin){
     // this.cargando = true
@@ -158,23 +169,37 @@ export class IndicadoresComponent implements OnInit {
       }
     })
   }
-
+selector(){
+  console.log('si funcione');
+  this.fechaIndicadores.from = this.dateService.getDayOfCurrentWeek(this.fechaIndicadores.from,0 )
+}
   setStateVirus(data){
     let stateArr: State[]= []
     if(data.total != 0){
       for (const key in data) {
         if (Object.prototype.hasOwnProperty.call(data, key)) {
           const element = data[key];
-          console.log(element);
-          let porcentaje = (data[key].positivo*100)/(data[key].positivo + data[key].negativo)
-          let elem : State= {
-            title: key,
-            value :data[key].positivo,
-            persantage: porcentaje+'',
-            profit:'up',
-            icon:'bx bxs-virus'
+          let l = Object.keys(element).length
+
+          let i = 1
+          for (const keySemana in element) {
+            if (Object.prototype.hasOwnProperty.call(element, keySemana) && i == l) {
+              const semana = element[keySemana];
+              let porcentaje = (semana.positivo*100)/(semana.positivo + semana.negativo)
+              let elem : State= {
+                title: key,
+                value :semana.positivo,
+                persantage:porcentaje.toFixed(2)+'',
+                profit:'up',
+                icon:'bx bxs-virus'
+              }
+              stateArr.push(elem)
+                }
+                i++
           }
-          stateArr.push(elem)
+          
+          console.log(element);
+          
         }
       }
     }else{
@@ -196,6 +221,11 @@ export class IndicadoresComponent implements OnInit {
 
     console.log(stateArr);
     return stateArr;
+    
+  }
+
+  accion(){
+    console.log(this.fechaIndicadores);
     
   }
 

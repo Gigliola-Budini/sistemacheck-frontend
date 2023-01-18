@@ -167,8 +167,8 @@
                <label class="text-muted" for="">Seleccione Hospital</label>
                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default2"
                     id="choices-single-default2">
-                    <!-- <option value="">Seleccione</option> -->
-                    <option value="hospital.idHospital" *ngFor="let hospital of hospitales">{{hospital.nombre}}</option>
+                    <option value="">Seleccione</option>
+                    <option value="hospital.idHospital" *ngFor="let hospital of centrosSalud">{{hospital.nombreHospital}}</option>
                 </select>
             </div>
             <!--end col-->
@@ -262,7 +262,7 @@
             </div>
 
               <div hidden>
-                  <div class="table-responsive table-card">
+                  <div class="table-responsive table-card mx-2">
                       <table class="table align-middle table-nowrap" id="invoiceTable" #asTablaMinsal>
                           <thead class="text-muted">
                               <tr>
@@ -321,9 +321,9 @@
                                     </ul>
                                 </div>
                               </td> -->
-                              <td>{{data.nombreServicioSalud}}</td>
+                              <td>{{data.servicioSalud}}</td>
                               <td >{{data.hospital}}</td>
-                              <td></td>
+                              <td>{{data.encargado}}</td>
                               <td>{{data.semana}}</td>
                               <td>{{data.examenes.VRS.total}}</td>
                               <td>{{data.examenes.FLUA.total }}</td>
@@ -457,15 +457,15 @@
               <div class="mt-xl-3" *ngIf="examenes.length > 0">
                 <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados VRS <small class="text-muted">- VIRUS SINCICIAL RESPIRATORIO</small></h6>
                 <!-- <label class="mb-4"style=" font-size: 14px; color: #1721C3;">Resultados VRS - VIRUS SINCICIAL RESPIRATORIO</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -475,13 +475,13 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" >
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
+                            </th> -->
                             <td >{{data.hospital}}</td>
-                            <td style="text-align: right;"></td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
                             <td style="text-align: center;">{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.VRS.total}}</td>
                             <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[0]}}</td>
@@ -527,15 +527,15 @@
             <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU A  <small class="text-muted"> - INFLUENZA A</small></h6>
               <!-- <label style="margin-bottom: 1.5rem  !important;font-size: 14px;  color: #1721C3; margin-top: 1.5rem;">Resultados FLU A - INFLUENZA A</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -545,14 +545,14 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
+                            </th> -->
                            
                             <td style="padding-right: 1.5rem;">{{data.hospital}}</td>
-                            <td style="text-align: right;"></td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
                             <td style="text-align: center;">{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.FLUA.total}}</td>
                             <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[0]}}</td>
@@ -600,15 +600,15 @@
               font-size: 14px;
               color: #1721C3;
               margin-top: 1.5rem;">Resultados FLU B - INFLUENZA B</label> -->
-              <div class="table-responsive table-card">
+              <div class="table-responsive table-card mx-2">
                   <table class="table align-middle table-nowrap"  >
                       <thead class="text-muted">
                           <tr>
-                              <th scope="col" style="width: 50px;">
+                              <!-- <th scope="col" style="width: 50px;">
                                 <div class="form-check">
                                   <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                 </div>
-                              </th>
+                              </th> -->
                               <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -618,14 +618,14 @@
                       </thead>
                       <tbody class="list form-check-all">
                         <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                          <th scope="row">
+                          <!-- <th scope="row">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                             </div>
                           </th>
-                         
+                          -->
                           <td >{{data.hospital}}</td>
-                            <td style="text-align: right;"></td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
                             <td style="text-align: center;">{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.FLUB.total}}</td>
                             <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[0]}}</td>
@@ -673,15 +673,15 @@
               font-size: 14px;
               color: #1721C3;
               margin-top: 1.5rem;">Resultados ADV - ADENOVIRUS</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -691,13 +691,13 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
+                            </th> -->
                             <td >{{data.hospital}}</td>
-                            <td style="text-align: right;"></td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
                             <td style="text-align: center;">{{data.semana}}</td>
                             <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.ADV.total}}</td>
                             <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[0]}}</td>
