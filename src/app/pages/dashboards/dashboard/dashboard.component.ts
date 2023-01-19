@@ -45,7 +45,8 @@ export class DashboardComponent implements OnInit {
     if(localStorage.getItem('toast')){
       this.toastService.show('Inicio de sesión exitoso!', { classname: 'bg-success text-center text-white', delay: 5000 });
       localStorage.removeItem('toast');
-    }    
+    }   
+    localStorage.removeItem('errorLogin'); 
 
      /**
      * Fetches the data

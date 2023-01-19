@@ -1,0 +1,15 @@
+th{
+    background-color: #F6F8FA !important;
+    color:#212529!important;
+    font-weight: 600 !important;
+}
+
+th, td {
+    border: 1px solid #e9ebec !important;
+    border: 1px solid var(--vz-border-color) !important;
+    padding: 0.75rem 0.6rem !important;
+  }
+
+.dataTables_length>label{
+    font-weight: normal !important;
+}

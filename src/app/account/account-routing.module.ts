@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 // Component Pages
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
+import { CrearPassModule } from "./auth/crear-pass/crear-pass.module";
 const routes: Routes = [
  
   {
@@ -16,6 +17,9 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: 'clave', loadChildren: () => import('./auth/crear-pass/crear-pass.module').then(m => m.CrearPassModule)
   }
 
 ];

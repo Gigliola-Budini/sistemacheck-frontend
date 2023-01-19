@@ -6,9 +6,12 @@ import { DashboardComponent } from "./dashboards/dashboard/dashboard.component";
 import { ReportesModule } from './reportes/reportes.module';
 
 const routes: Routes = [
+    // {
+    //     path: "",
+    //     component: DashboardComponent
+    // },
     {
-        path: "",
-        component: DashboardComponent
+      path: '', loadChildren: () => import('./panel-de-control/panel-de-control.module').then(m => m.PanelDeControlModule)
     },
     {
       path: '', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule)
@@ -25,6 +28,16 @@ const routes: Routes = [
     },
     {
       path: 'reportes', loadChildren: () => import('./reportes/reportes.module').then(m => m.ReportesModule)
+    },
+    {
+      path: 'examenes', loadChildren: () => import('./examenes/examenes.module').then(m => m.ExamenesModule)
+    },
+    
+    {
+      path: 'usuarios', loadChildren: () => import('./usuario/usuarios.module').then(m => m.UsuariosModule)
+    },
+    {
+      path: 'indicadores', loadChildren: () => import('./panel-de-control/panel-de-control.module').then(m => m.PanelDeControlModule)
     }
 ];
 

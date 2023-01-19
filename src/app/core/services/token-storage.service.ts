@@ -35,4 +35,12 @@ export class TokenStorageService {
 
     return {};
   }
+  public getRoles(): any {
+    const user = window.localStorage.getItem('rol');    
+    if (user) {
+      return JSON.parse(user);
+    }
+
+    return {};
+  }
 }

@@ -60,6 +60,9 @@
                                             <div *ngIf="submitted && f['pass'].errors" class="invalid-feedback">
                                               <span *ngIf="f['pass'].errors['required']">La contraseña es obligatoria</span>
                                             </div>
+                                            <div *ngIf="errorLogin" class="mt-3" style="width: 100%; margin-top: 0.25rem;font-size: 0.875em;  color: #f06548;">
+                                                <div>Los datos ingresados no son correctos. Por favor intente nuevamente.</div>
+                                            </div>
                                         </div>
                                         
                                     </div>
@@ -70,9 +73,7 @@
   
                                     <div class="mt-4">
                                         <button class="btn btn-primary w-100" type="submit">Acceder</button>
-                                        <!-- <div *ngIf="errorLogin" class="mt-3" style="width: 100%; margin-top: 0.25rem;font-size: 0.875em;  color: #f06548;">
-                                            <div >Las credenciales no son válidas.</div>
-                                        </div> -->
+                                        
                                     </div>
   
                                     <!-- <div class="mt-4 text-center">

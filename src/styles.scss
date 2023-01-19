@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.dataTables_length>label{
+    font-weight: normal !important;
+}
+
+label{
+    font-weight: 400 !important;
+}
+
+[data-layout=vertical][data-sidebar-size=sm] .navbar-menu{
+    position: fixed !important;
+}

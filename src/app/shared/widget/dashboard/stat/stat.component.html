@@ -15,7 +15,7 @@
             <div class="d-flex align-items-end justify-content-between mt-4">
                 <div>
                     <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span *ngIf="title == 'TOTAL EARNINGS' || title == 'MY BALANCE'">$</span><span [CountTo]="value" class="counter-value" [from]="0" [duration]="1"></span><span *ngIf="title == 'TOTAL EARNINGS' || title == 'MY BALANCE'">K</span><span *ngIf="title == 'CUSTOMERS'">M</span></h4>
-                    <a href="" class="text-decoration-underline">View net earnings</a>
+                    <!-- <a href="" class="text-decoration-underline">View net earnings</a> -->
                 </div>
                 <div class="avatar-sm flex-shrink-0">
                     <span class="avatar-title rounded fs-3" [ngClass]=" { 'bg-soft-success': icon === 'bx-dollar-circle', 'bg-soft-info': icon === 'bx-shopping-bag', 'bg-soft-warning ': icon === 'bx-user-circle', 'bg-soft-primary ': icon === 'bx-wallet'}">

@@ -167,8 +167,8 @@
                <label class="text-muted" for="">Seleccione Hospital</label>
                 <select class="form-control" data-choices data-choices-search-false name="choices-single-default2"
                     id="choices-single-default2">
-                    <!-- <option value="">Seleccione</option> -->
-                    <option value="hospital.idHospital" *ngFor="let hospital of hospitales">{{hospital.nombre}}</option>
+                    <option value="">Seleccione</option>
+                    <option value="hospital.idHospital" *ngFor="let hospital of centrosSalud">{{hospital.nombreHospital}}</option>
                 </select>
             </div>
             <!--end col-->
@@ -235,8 +235,34 @@
           </div> -->
 
           <div class="card-body" >
+            <!-- Info Alert -->
+              <div *ngIf="examenes.length == 0 && !cargando " class="alert alert-info alert-border-left alert-dismissible fade show" role="alert">
+                <i class="ri-airplay-line me-3 align-middle"></i> <strong>No se encontraron resultados</strong>  para el rango de fechas seleccionado
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+              </div>
+              <!-- Secondary Alert -->
+              <!-- <div *ngIf="cargando" class="alert alert-secondary alert-border-left alert-dismissible fade show" role="alert">
+                <i class="ri-check-double-line me-3 align-middle"></i> <strong>Cargando datos ...</strong> - espere un momento, por favor.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div> -->
+              <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0"><b class="text-secondary"></b> Generando Reporte...</h6>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <!-- <h6 class="mb-0">1 min left</h6> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="progress bg-soft-secondary rounded-0">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
               <div hidden>
-                  <div class="table-responsive table-card">
+                  <div class="table-responsive table-card mx-2">
                       <table class="table align-middle table-nowrap" id="invoiceTable" #asTablaMinsal>
                           <thead class="text-muted">
                               <tr>
@@ -245,6 +271,7 @@
                                       <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                     </div>
                                   </th>
+                                  <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Servicio de Salud</th>
                                   <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;" *ngFor="let header of headersList">{{header}}</th>
                               </tr>
                           </thead>
@@ -294,63 +321,64 @@
                                     </ul>
                                 </div>
                               </td> -->
-                              <td >{{data.nombreHospital}}</td>
-                              <td></td>
+                              <td>{{data.servicioSalud}}</td>
+                              <td >{{data.hospital}}</td>
+                              <td>{{data.encargado}}</td>
                               <td>{{data.semana}}</td>
-                              <td>{{data.VRS.total}}</td>
-                              <td>{{data.FLUA.total }}</td>
-                              <td>{{data.FLUB.total}}</td>
-                              <td>{{data.ADV.total}}</td>
+                              <td>{{data.examenes.VRS.total}}</td>
+                              <td>{{data.examenes.FLUA.total }}</td>
+                              <td>{{data.examenes.FLUB.total}}</td>
+                              <td>{{data.examenes.ADV.total}}</td>
                               <td></td>
                               <td></td>
-                              <td >{{data.VRS.rangoEdadM["_1"]}}</td>
-                              <td>{{data.VRS.rangoEdadM["_1-4"]}}</td>
-                              <td>{{data.VRS.rangoEdadM["_5-14"]}}</td>
-                              <td>{{data.VRS.rangoEdadM["_15-54"]}}</td>
-                              <td>{{data.VRS.rangoEdadM["_55-64"]}}</td>
-                              <td>{{data.VRS.rangoEdadM["_65"]}}</td>
-                              <td >{{data.VRS.rangoEdadF["_1"]}}</td>
-                              <td>{{data.VRS.rangoEdadF["_1-4"]}}</td>
-                              <td>{{data.VRS.rangoEdadF["_5-14"]}}</td>
-                              <td>{{data.VRS.rangoEdadF["_15-54"]}}</td>
-                              <td>{{data.VRS.rangoEdadF["_55-64"]}}</td>
-                              <td>{{data.VRS.rangoEdadF["_65"]}}</td>
-                              <td >{{data.FLUA.rangoEdadM["_1"]}}</td>
-                              <td>{{data.FLUA.rangoEdadM["_1-4"]}}</td>
-                              <td>{{data.FLUA.rangoEdadM["_5-14"]}}</td>
-                              <td>{{data.FLUA.rangoEdadM["_15-54"]}}</td>
-                              <td>{{data.FLUA.rangoEdadM["_55-64"]}}</td>
-                              <td>{{data.FLUA.rangoEdadM["_65"]}}</td>
-                              <td >{{data.FLUA.rangoEdadF["_1"]}}</td>
-                              <td>{{data.FLUA.rangoEdadF["_1-4"]}}</td>
-                              <td>{{data.FLUA.rangoEdadF["_5-14"]}}</td>
-                              <td>{{data.FLUA.rangoEdadF["_15-54"]}}</td>
-                              <td>{{data.FLUA.rangoEdadF["_55-64"]}}</td>
-                              <td>{{data.FLUA.rangoEdadF["_65"]}}</td>
-                              <td >{{data.FLUB.rangoEdadM["_1"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_1-4"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_5-14"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_55-64"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_55-64"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_65"]}}</td>
-                              <td >{{data.FLUB.rangoEdadF["_1"]}}</td>
-                              <td>{{data.FLUB.rangoEdadF["_1-4"]}}</td>
-                              <td>{{data.FLUB.rangoEdadM["_5-14"]}}</td>
-                              <td>{{data.FLUB.rangoEdadF["_15-54"]}}</td>
-                              <td>{{data.FLUB.rangoEdadF["_55-64"]}}</td>
-                              <td>{{data.FLUB.rangoEdadF["_65"]}}</td>
-                              <td >{{data.ADV.rangoEdadM["_1"]}}</td>
-                              <td>{{data.ADV.rangoEdadM["_1-4"]}}</td>
-                              <td>{{data.ADV.rangoEdadM["_5-14"]}}</td>
-                              <td>{{data.ADV.rangoEdadM["_15-54"]}}</td>
-                              <td>{{data.ADV.rangoEdadM["_55-64"]}}</td>
-                              <td>{{data.ADV.rangoEdadM["_65"]}}</td>
-                              <td >{{data.ADV.rangoEdadF["_1"]}}</td>
-                              <td>{{data.ADV.rangoEdadF["_1-4"]}}</td>
-                              <td>{{data.ADV.rangoEdadF["_5-14"]}}</td>
-                              <td>{{data.ADV.rangoEdadF["_15-54"]}}</td>
-                              <td>{{data.ADV.rangoEdadF["_55-64"]}}</td>
-                              <td>{{data.ADV.rangoEdadF["_65"]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[0]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[1]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[2]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[3]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[4]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadM[5]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[0]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[1]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[2]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[3]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[4]}}</td>
+                              <td>{{data.examenes.VRS.rangoEdadF[5]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[0]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[1]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[2]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[3]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[4]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadM[5]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[0]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[1]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[2]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[3]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[4]}}</td>
+                              <td>{{data.examenes.FLUA.rangoEdadF[5]}}</td>
+                              <td>{{data.examenes.FLUB.rangoEdadM[0]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadM[1]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadM[2]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadM[3]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadM[4]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadM[5]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[0]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[1]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[2]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[3]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[4]}}</td>
+                            <td>{{data.examenes.FLUB.rangoEdadF[5]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[0]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[1]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[2]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[3]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[4]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadM[5]}}</td>
+                            <td >{{data.examenes.ADV.rangoEdadF[0]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadF[1]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadF[2]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadF[3]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadF[4]}}</td>
+                            <td>{{data.examenes.ADV.rangoEdadF[5]}}</td>
                               <td></td>
                               <td></td>
                               <td></td>
@@ -426,18 +454,18 @@
 
 
 
-              <div class="mt-xl-3">
+              <div class="mt-xl-3" *ngIf="examenes.length > 0">
                 <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados VRS <small class="text-muted">- VIRUS SINCICIAL RESPIRATORIO</small></h6>
                 <!-- <label class="mb-4"style=" font-size: 14px; color: #1721C3;">Resultados VRS - VIRUS SINCICIAL RESPIRATORIO</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -447,27 +475,27 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" >
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
-                            <td>{{data.nombreHospital}}</td>
-                            <td></td>
-                            <td>{{data.semana}}</td>
-                            <td style="padding-right: 1.5rem;">{{data.VRS.total}}</td>
-                            <td >{{data.VRS.rangoEdadM["_1"]}}</td>
-                            <td>{{data.VRS.rangoEdadM["_1-4"]}}</td>
-                            <td>{{data.VRS.rangoEdadM["_5-14"]}}</td>
-                            <td>{{data.VRS.rangoEdadM["_15-54"]}}</td>
-                            <td>{{data.VRS.rangoEdadM["_55-64"]}}</td>
-                            <td>{{data.VRS.rangoEdadM["_65"]}}</td>
-                            <td >{{data.VRS.rangoEdadF["_1"]}}</td>
-                            <td>{{data.VRS.rangoEdadF["_1-4"]}}</td>
-                            <td>{{data.VRS.rangoEdadF["_5-14"]}}</td>
-                            <td>{{data.VRS.rangoEdadF["_15-54"]}}</td>
-                            <td>{{data.VRS.rangoEdadF["_55-64"]}}</td>
-                            <td>{{data.VRS.rangoEdadF["_65"]}}</td>
+                            </th> -->
+                            <td >{{data.hospital}}</td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
+                            <td style="text-align: center;">{{data.semana}}</td>
+                            <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.VRS.total}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadM[5]}}</td>
+                            <td style="text-align: right;" >{{data.examenes.VRS.rangoEdadF[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadF[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadF[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadF[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadF[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.VRS.rangoEdadF[5]}}</td>
                            
 
                           </tr>
@@ -496,18 +524,18 @@
             </div>
 
 
-            <div class="mt-xl-3">
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU A  <small class="text-muted"> - INFLUENZA A</small></h6>
               <!-- <label style="margin-bottom: 1.5rem  !important;font-size: 14px;  color: #1721C3; margin-top: 1.5rem;">Resultados FLU A - INFLUENZA A</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                             <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -517,29 +545,28 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
+                            </th> -->
                            
-                            <td style="padding-right: 1.5rem;">{{data.nombreHospital}}</td>
-                            <td></td>
-                            <td>{{data.semana}}</td>
-                            <td style="padding-right: 1.5rem;">{{data.FLUA.total}}</td>
-                            <td >{{data.FLUA.rangoEdadM["_1"]}}</td>
-                            <td>{{data.FLUA.rangoEdadM["_1-4"]}}</td>
-                            <td>{{data.FLUA.rangoEdadM["_5-14"]}}</td>
-                            <td>{{data.FLUA.rangoEdadM["_15-54"]}}</td>
-                            <td>{{data.FLUA.rangoEdadM["_55-64"]}}</td>
-                            <td>{{data.FLUA.rangoEdadM["_65"]}}</td>
-                            <td >{{data.FLUA.rangoEdadF["_1"]}}</td>
-                            <td>{{data.FLUA.rangoEdadF["_1-4"]}}</td>
-                            <td>{{data.FLUA.rangoEdadF["_5-14"]}}</td>
-                            <td>{{data.FLUA.rangoEdadF["_15-54"]}}</td>
-                            <td>{{data.FLUA.rangoEdadF["_55-64"]}}</td>
-                            <td>{{data.FLUA.rangoEdadF["_65"]}}</td>
-                           
+                            <td style="padding-right: 1.5rem;">{{data.hospital}}</td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
+                            <td style="text-align: center;">{{data.semana}}</td>
+                            <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.FLUA.total}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadM[5]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUA.rangoEdadF[5]}}</td>
 
                           </tr>
                         </tbody>
@@ -565,21 +592,23 @@
                   <!-- End Pagination -->
                 </div>
             </div>
-            <div class="mt-xl-3">
+
+
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados FLU B  <small class="text-muted"> - INFLUENZA B</small></h6>
               <!-- <label style="margin-bottom: 1.5rem  !important;
               font-size: 14px;
               color: #1721C3;
               margin-top: 1.5rem;">Resultados FLU B - INFLUENZA B</label> -->
-              <div class="table-responsive table-card">
+              <div class="table-responsive table-card mx-2">
                   <table class="table align-middle table-nowrap"  >
                       <thead class="text-muted">
                           <tr>
-                              <th scope="col" style="width: 50px;">
+                              <!-- <th scope="col" style="width: 50px;">
                                 <div class="form-check">
                                   <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                 </div>
-                              </th>
+                              </th> -->
                               <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                           <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -589,28 +618,28 @@
                       </thead>
                       <tbody class="list form-check-all">
                         <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                          <th scope="row">
+                          <!-- <th scope="row">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                             </div>
                           </th>
-                         
-                          <td >{{data.nombreHospital}}</td>
-                            <td></td>
-                            <td>{{data.semana}}</td>
-                            <td style="padding-right: 1.5rem;">{{data.FLUB.total}}</td>
-                            <td >{{data.FLUB.rangoEdadM["_1"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_1-4"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_5-14"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_55-64"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_55-64"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_65"]}}</td>
-                            <td >{{data.FLUB.rangoEdadF["_1"]}}</td>
-                            <td>{{data.FLUB.rangoEdadF["_1-4"]}}</td>
-                            <td>{{data.FLUB.rangoEdadM["_5-14"]}}</td>
-                            <td>{{data.FLUB.rangoEdadF["_15-54"]}}</td>
-                            <td>{{data.FLUB.rangoEdadF["_55-64"]}}</td>
-                            <td>{{data.FLUB.rangoEdadF["_65"]}}</td>
+                          -->
+                          <td >{{data.hospital}}</td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
+                            <td style="text-align: center;">{{data.semana}}</td>
+                            <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.FLUB.total}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadM[5]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.FLUB.rangoEdadF[5]}}</td>
                          
 
                         </tr>
@@ -638,21 +667,21 @@
               </div>
           </div>
 
-            <div class="mt-xl-3">
+            <div class="mt-xl-3" *ngIf="examenes.length > 0">
               <h6 class="mb-5 mt-3" style=" font-size: 14px; color: #1721C3;">Resultados ADV  <small class="text-muted"> - ADENOVIRUS</small></h6>
               <!-- <label style="margin-bottom: 1.5rem;
               font-size: 14px;
               color: #1721C3;
               margin-top: 1.5rem;">Resultados ADV - ADENOVIRUS</label> -->
-                <div class="table-responsive table-card">
+                <div class="table-responsive table-card mx-2">
                     <table class="table align-middle table-nowrap"  >
                         <thead class="text-muted">
                             <tr>
-                                <th scope="col" style="width: 50px;">
+                                <!-- <th scope="col" style="width: 50px;">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                                   </div>
-                                </th>
+                                </th> -->
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Establecimiento</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Responsable de notificación</th>
                                 <th class="sort text-uppercase" data-sort="invoice_id" style="padding-right: 1.5rem;">Semana Epidemiológica</th>
@@ -662,27 +691,27 @@
                         </thead>
                         <tbody class="list form-check-all">
                           <tr *ngFor="let data of examenes" id="i_{{data._id}}">
-                            <th scope="row">
+                            <!-- <th scope="row">
                               <div class="form-check">
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
-                            </th>
-                            <td >{{data.nombreHospital}}</td>
-                            <td></td>
-                            <td>{{data.semana}}</td>
-                            <td style="padding-right: 1.5rem;">{{data.ADV.total}}</td>
-                            <td >{{data.ADV.rangoEdadM["_1"]}}</td>
-                            <td>{{data.ADV.rangoEdadM["_1-4"]}}</td>
-                            <td>{{data.ADV.rangoEdadM["_5-14"]}}</td>
-                            <td>{{data.ADV.rangoEdadM["_15-54"]}}</td>
-                            <td>{{data.ADV.rangoEdadM["_55-64"]}}</td>
-                            <td>{{data.ADV.rangoEdadM["_65"]}}</td>
-                            <td >{{data.ADV.rangoEdadF["_1"]}}</td>
-                            <td>{{data.ADV.rangoEdadF["_1-4"]}}</td>
-                            <td>{{data.ADV.rangoEdadF["_5-14"]}}</td>
-                            <td>{{data.ADV.rangoEdadF["_15-54"]}}</td>
-                            <td>{{data.ADV.rangoEdadF["_55-64"]}}</td>
-                            <td>{{data.ADV.rangoEdadF["_65"]}}</td>
+                            </th> -->
+                            <td >{{data.hospital}}</td>
+                            <td style="text-align: right;">{{data.encargado}}</td>
+                            <td style="text-align: center;">{{data.semana}}</td>
+                            <td style="padding-right: 1.5rem;text-align: right;">{{data.examenes.ADV.total}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadM[5]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[0]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[1]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[2]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[3]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[4]}}</td>
+                            <td style="text-align: right;">{{data.examenes.ADV.rangoEdadF[5]}}</td>
                           </tr>
                         </tbody>
                     </table>
@@ -732,7 +761,7 @@
                                   <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
                               </div>
                             </th>
-                            <td><ngb-highlight [result]="data.invoiceId" [term]="service.searchTerm"></ngb-highlight></td>
+                            <td style="text-align: right;"><ngb-highlight [result]="data.invoiceId" [term]="service.searchTerm"></ngb-highlight></td>
                             <td class="customer_name">
                               <div class="d-flex align-items-center" *ngIf="data.img">
                                 <img src="assets/images/users/{{data.img}}"  class="avatar-xs rounded-circle me-2" alt="">

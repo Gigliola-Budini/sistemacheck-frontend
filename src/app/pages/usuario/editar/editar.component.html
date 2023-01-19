@@ -1,0 +1,199 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Editar Usuario" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-body mt-3 mb-3">
+            <form action="" [formGroup]="userForm" (ngSubmit)="editarUsuario()">
+                <div class="card bg-light overflow-hidden" *ngIf="cargando">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0"><b class="text-secondary"></b> Cargando datos... espere un momento, por favor.</h6>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <!-- <h6 class="mb-0">1 min left</h6> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress bg-soft-secondary rounded-0">
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            <div class="row">  
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="rut-inp">Rut <i class="text-muted"> - sin puntos y con guión</i></label>
+                        <input formControlName="rut" type="text" class="form-control" id="rut-inp" placeholder="Ingrese el RUT ej 11111111-1"[ngClass]="{ 'is-invalid':  f['rut'].invalid  && (f['rut'].dirty || f['rut'].touched)}" required>
+                            <div *ngIf="f['rut'].invalid && (f['rut'].dirty || f['rut'].touched)" class="invalid-feedback">
+                        
+                                <div *ngIf="rut.errors?.['required']">
+                                     Debe completar el rut
+                                </div>
+                                <div *ngIf="f['rut'].errors['notValid'] || f['rut'].errors['minlength']">
+                                    El Rut es no es válido
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4 ">
+                    <div class="mb-3">
+                        <label class="form-label" for="project-title-input">Nombre</label>
+                        <input formControlName="nombre" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el nombre" [ngClass]="{ 'is-invalid':  f['nombre'].invalid  && (f['nombre'].dirty || f['nombre'].touched)}">
+                        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+                            <div *ngIf="f['nombre'].errors['required']">
+                                    Debe completar el nombre
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="project-title-input">Primer Apellido </label>
+                        <input formControlName="primerApellido" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el primer apellido" [ngClass]="{ 'is-invalid':  primerApellido.invalid  && (primerApellido.dirty || primerApellido.touched)}">
+                        <div *ngIf="primerApellido.invalid && (primerApellido.dirty || primerApellido.touched)" class="invalid-feedback">
+                            <div *ngIf="primerApellido.errors?.['required']" >
+                                    Debe completar el primer apellido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="project-title-input">Segundo Apellido</label>
+                        <input formControlName="segundoApellido" type="text" class="form-control" id="project-title-input"
+                            placeholder="Ingrese el segundo apellido" [ngClass]="{ 'is-invalid':  segundoApellido.invalid  && (segundoApellido.dirty || segundoApellido.touched)}">
+                            <div *ngIf="segundoApellido.invalid && (segundoApellido.dirty || segundoApellido.touched)" class="invalid-feedback">
+                                <div *ngIf="segundoApellido.errors?.['required']">
+                                        Debe completar el segundo apellido
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="project-title-input">Correo</label>
+                        <div class="input-group">
+                            <input formControlName="correo" type="email" class="form-control" id="project-title-input"
+                                placeholder="Ingrese el correo" [ngClass]="{ 'is-invalid':  correo.invalid  && (correo.dirty || correo.touched)}"
+                                email="true">
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
+                                <i class="ri-pencil-fill "></i>
+                            </button>
+                            <!-- <button class="btn btn-light btn-icon waves-effect waves-light" type="button" id="btn-edit-correo" data-bs-toggle="button" (click)="switchControles('correo')">
+                                <i class="ri-pencil-fill "></i>
+                            </button> -->
+                           
+                        </div>
+                        <div *ngIf="correo.invalid && (correo.dirty || correo.touched)" class="invalid-feedback">
+                            <div *ngIf="correo.errors?.['required']">
+                                    Debe completar el correo
+                            </div>
+                            <div *ngIf="correo.errors?.['email']">
+                                El formato del correo no es válido
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4">
+                    <div class="mb-3 mb-md-0">
+                        <label for="choices-priority-input" class="form-label">Cargo</label>
+                        <div class="input-group">
+                            <select class="form-select" formControlName="idRol" [ngClass]="{ 'is-invalid':  idRol.invalid  && (idRol.dirty || idRol.touched)}">
+                                <option value="" selected>Seleccione</option>
+                                <option *ngFor="let item of roles" [value]="item.id" >{{item.nombre}}</option>
+                            </select>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-cargo" (click)="switchControles('idRol')"><i class="ri-pencil-fill "></i></button>
+                        </div>
+                        <div *ngIf="idRol.invalid && (idRol.dirty || idRol.touched)" class="invalid-feedback">
+                            <div *ngIf="idRol.errors?.['required']">
+                                    Debe completar el cargo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4" *ngIf="isAdmin">
+                    <div class="mb-3 mb-md-0">
+                        <label for="choices-priority-input" class="form-label">Servicio de Salud</label>
+                        <div class="input-group">
+                            <select formControlName="idServicio" class="form-select" (click)="filtrarControlHospitales()" [ngClass]="{ 'is-invalid':  idServicio.invalid  && (idServicio.dirty || idServicio.touched)}">
+                                <option value="" selected>Seleccione</option>
+                                <option *ngFor="let item of serviciosSalud" [value]="item.id">{{item.nombre}}</option>
+                            </select>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="button-addon2" (click)="switchControles('idServicio')"><i class="ri-pencil-fill "></i></button>
+                        </div>
+                        <div *ngIf="idServicio.invalid && (idServicio.dirty || idServicio.touched)" class="invalid-feedback">
+                            <div *ngIf="idServicio.errors?.['required']">
+                                    Debe seleccionar un Servicio de Salud
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xxl-4" *ngIf="isAdmin">
+                    <div class="mb-3 mb-md-0">
+                        <label for="choices-priority-input" class="form-label">Centro de Salud</label>
+                        <div class="input-group">
+                            <select class="form-select" formControlName="idHospital" [ngClass]="{ 'is-invalid':  idHospital.invalid  && (idHospital.dirty || idHospital.touched)}"
+                            >
+                            <option value="" selected>Seleccione</option>
+                            <option *ngFor="let item of centrosSalud" [value]="item.idHospital" >{{item.nombreHospital}}</option>
+                            </select>
+                            <button class="btn btn-light waves-effect edit-btn" type="button" id="btn-edit-hospital" (click)="switchControles('idHospital')"><i class="ri-pencil-fill "></i></button>
+                        </div>
+                        <div *ngIf="idHospital.invalid && (idHospital.dirty || idHospital.touched)" class="invalid-feedback">
+                            <div *ngIf="idHospital.errors?.['required']">
+                                    Debe seleccionar el Centro de salud
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            
+            </div>
+            <div class="row">
+                <div class="col-xxl-2 offset-xxl-3 offset-md-2 col-sm-1">
+                    <div class="text-center my-5">    
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid" (click)="editarUsuario()">Editar Usuario</button>
+                        </div>
+                      </div>
+                </div> 
+                <div class="col-2">
+                    <div class="text-center my-5 ">
+                        <div class="d-grid gap-2 ">
+                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-sm">Volver</button>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-2">
+                    <div class="text-center my-5">
+                        <div class="d-grid gap-2 ">
+                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 1" (click)="deshabilitarUsuario()">Deshabilitar</button>
+                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 0" (click)="habilitarUsuario()">Habilitar</button>
+                        </div>
+                      </div>
+                </div>
+               
+            </div>
+
+
+        </form>
+            
+
+              
+             
+          </div>
+          <!-- end card body -->
+      </div>
+      <!-- end card -->
+
+      
+  </div>
+  
+  <!-- end col -->
+</div>
+<!-- end row -->

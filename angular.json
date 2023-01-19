@@ -41,11 +41,13 @@
               "src/styles.scss",
               "src/assets/scss/config/default/bootstrap.scss",
               "src/assets/scss/config/default/app.scss",
-              "src/assets/scss/icons.scss"
+              "src/assets/scss/icons.scss",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css"
             ],
-            "scripts":
-            [
-            ]
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js"
+            ]      
           },
           "configurations": {
             "production": {

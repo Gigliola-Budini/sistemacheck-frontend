@@ -1265,23 +1265,83 @@ export const MENU: MenuItem[] = [
   //   ]
   // },
   {
-    id: 184,
+    id: 9,
+    label: 'Indicadores',
+    icon: 'ri-bar-chart-fill',
+    level:4,
+    isShow:true,
+    link:'/indicadores/principal'
+   
+  },
+  {
+    id: 1,
+    label: 'Exámenes',
+    icon: 'bx bx-injection',
+    level:4,
+    isShow:true,
+    link: '/examenes/listado',
+    // subItems: [
+    //   {
+    //     id: 2,
+    //     label: 'Listado',
+    //     link: '/examenes/listado',
+    //     parentId: 1,
+    //     level: 4,
+    //     isShow:true,
+    //   }
+    // ]
+  },
+  {
+    id: 3,
     label: 'Reportes',
     icon: 'bx bxs-report ',
+    level:3,
+    isShow:false,
     subItems: [
       {
-        id: 185,
+        id: 4,
         label: 'MINSAL',
         link: '/reportes/minsal',
-        parentId: 184
+        parentId: 3,
+        level:3,
+        isShow:false,
       },
       {
-        id: 186,
+        id: 5,
         label: 'Personalizado',
         link: '/reportes/personalizado',
-        parentId: 184
+        parentId: 3,
+        level:3,
+        isShow:true,
       }
     ]
+  },
+  {
+    id: 6,
+    label: 'Usuarios',
+    icon: 'ri-group-line',
+    level:1,
+    isShow:false,
+    link: '/usuarios/listar',
+    // subItems: [
+    //   {
+    //     id: 7,
+    //     label: 'Crear Nuevo Usuario',
+    //     link: '/usuarios/crear',
+    //     parentId: 6,
+    //     level:1,
+    //     isShow:false,
+    //   },
+    //   {
+    //     id: 8,
+    //     label: 'Listado',
+    //     link: '/usuarios/listar',
+    //     parentId: 6,
+    //     level:1,
+    //     isShow:false,
+    //   }
+    // ]
   }
+  
 
 ];

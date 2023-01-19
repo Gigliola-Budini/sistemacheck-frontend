@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
@@ -15,16 +16,31 @@ export class SidebarComponent implements OnInit {
   menu: any;
   toggle: any = true;
   menuItems: MenuItem[] = [];
+  permisos: any[];
   @ViewChild('sideMenu') sideMenu!: ElementRef;
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
-  constructor(private router: Router, public translate: TranslateService) {
+  constructor(private router: Router, public translate: TranslateService, private tokenService:TokenStorageService) {
     translate.setDefaultLang('es');
+    this.permisos = this.tokenService.getRoles()
+     // Menu Items
+     let menu:any = MENU.map((item)=>{
+      let obj = item
+      obj.isShow = this.validarPermiso(item.level)
+      if (this.hasItems(obj)) {
+        obj.subItems.forEach((elem)=>{
+           elem.isShow = this.validarPermiso(elem.level)
+        })
+      }
+      return obj;
+    });
+    console.log('menu', menu);
+    
+    this.menuItems = menu
   }
 
   ngOnInit(): void {
-    // Menu Items
-    this.menuItems = MENU;
+   
     console.log(this.menuItems);
     
   }
@@ -143,6 +159,12 @@ export class SidebarComponent implements OnInit {
     return false;
   }
 
+  validarPermiso(lvl){
+    let id = this.permisos.findIndex((item)=>item.id == lvl)
+  
+    if(id != -1) return true;
+    return false;
+  }
   updateActive(event: any) {
     const ul = document.getElementById("navbar-nav");
     if (ul) {

@@ -102,7 +102,8 @@ export class AuthenticationService {
                 "Authorization": "Basic " + btoa(`${rut}:${password}`)
             })
         };
-        return this.http.post(ENV.api_url + 'login' ,{ rut } , httpOptions2);
+        console.log(httpOptions2.headers);
+        return this.http.post(ENV.api_url + 'login',{}, httpOptions2);
     }
 
     /**
@@ -120,6 +121,8 @@ export class AuthenticationService {
         // return getFirebaseBackend()!.logout();
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
+        localStorage.removeItem('nivel');
+        localStorage.removeItem('rol');
         this.currentUserSubject.next(null!);
     }
 
