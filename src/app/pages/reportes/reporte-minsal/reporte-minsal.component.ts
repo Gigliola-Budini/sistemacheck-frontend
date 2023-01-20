@@ -23,6 +23,7 @@ import { DatesService } from "src/app/core/services/dates.service";
 // import { ProductService } from "../../../core/services/rest-api.service";
 import { RestApiCheckService } from "src/app/core/services/rest-api-check.service";
 import { forEach } from 'lodash';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class ReporteMinsalComponent implements OnInit {
    total: Observable<number>;
    @ViewChildren(NgbdListSortableHeader) headers!: QueryList<NgbdListSortableHeader>;
    @ViewChild('asTablaMinsal') invoiceTable!: ElementRef;
+   @ViewChild('asHospitales') slcHospitales!: ElementRef;
    CustomersData!: ListModel[];
    masterSelected!:boolean;
    checkedList:any;
@@ -52,7 +54,6 @@ export class ReporteMinsalComponent implements OnInit {
    headersList: string[];
    headersListVRS?: string[];
    headersListFLUV?: string[];
-   hospitales?: any[];
    examenes: any[]= [];
    virus:any[] = [
    {codigo:'72365-0',nombre:'Influenza A',columNombre:'FLUA',tipo:1},
@@ -92,101 +93,18 @@ export class ReporteMinsalComponent implements OnInit {
    
     }
     cargando:any = false;
-  // dataEx:any[]=[
-  //     {
-  //       "annio": 2022, 
-  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
-  //       "edad": "0", 
-  //       "estado": "LA19020-9^Influenza B virusnegative^LN", 
-  //       "genero": "M", 
-  //       "pid": 151089, 
-  //       "resultado": "72365-0", 
-  //       "semana": 34, 
-  //       "tipoExamen": "CWE", 
-  //       "valides": "F", 
-  //       "valor": "0.04"
-  //     }, 
-  //     {
-  //       "annio": 2022, 
-  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
-  //       "edad": "0", 
-  //       "estado": "LA19017-5^Influenza A viruspositive^LN", 
-  //       "genero": "M", 
-  //       "pid": 151089, 
-  //       "resultado": "72365-0", 
-  //       "semana": 34, 
-  //       "tipoExamen": "CWE", 
-  //       "valides": "F", 
-  //       "valor": "238.74\n"
-  //     }, 
-  //     {
-  //       "annio": 2022, 
-  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
-  //       "edad": "1", 
-  //       "estado": "N", 
-  //       "genero": "M", 
-  //       "pid": 111111193, 
-  //       "resultado": "77390-3", 
-  //       "semana": 34, 
-  //       "tipoExamen": "", 
-  //       "valides": "F", 
-  //       "valor": "0.03"
-  //     }, 
-  //     {
-  //       "annio": 2023, 
-  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
-  //       "edad": "32", 
-  //       "estado": "A", 
-  //       "genero": "F", 
-  //       "pid": 111111193, 
-  //       "resultado": "77390-3", 
-  //       "semana": 34, 
-  //       "tipoExamen": "", 
-  //       "valides": "F", 
-  //       "valor": "0.03"
-  //     }, 
-  //     {
-  //       "annio": 2023, 
-  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
-  //       "edad": "67", 
-  //       "estado": "A", 
-  //       "genero": "F", 
-  //       "pid": 111111193, 
-  //       "resultado": "77390-3", 
-  //       "semana": 35, 
-  //       "tipoExamen": "", 
-  //       "valides": "F", 
-  //       "valor": "0.03"
-  //     }, 
-  //     {
-  //       "annio": 2022, 
-  //       "codigoExamen": "77390-3^Respiratyro Syncytial Virus^LN", 
-  //       "edad": "15", 
-  //       "estado": "A", 
-  //       "genero": "M", 
-  //       "pid": 111111193, 
-  //       "resultado": "77390-3", 
-  //       "semana": 37, 
-  //       "tipoExamen": "", 
-  //       "valides": "F", 
-  //       "valor": "0.03"
-  //     },
-  //     {
-  //       "annio": 2022, 
-  //       "codigoExamen": "72365-0^Influenza A/B^LN", 
-  //       "edad": "5", 
-  //       "estado": "LA19017-5^Influenza A viruspositive^LN", 
-  //       "genero": "F", 
-  //       "pid": 151089, 
-  //       "resultado": "72365-0", 
-  //       "semana": 32, 
-  //       "tipoExamen": "CWE", 
-  //       "valides": "F", 
-  //       "valor": "238.74\n"
-  //     }, 
-  //   ]
+    idHospital:any;
+    centrosSalud:any[];
+    serviciosSalud:any[];
+    idServicio:any
+    dataCentrosSalud:any[]
+    disableHospital:boolean= true;
   
-   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe, private datesServices:DatesService) {
+   constructor(private modalService: NgbModal,public service: ListService, private formBuilder: UntypedFormBuilder, private reporteService : RestApiCheckService, private datePipe: DatePipe, 
+    private datesServices:DatesService, private tokenService: TokenStorageService) {
+    let currentUser = this.tokenService.getUser()
+    this.idHospital = currentUser.idHospital
+
      this.invoicesList = service.countries$;
      this.total = service.total$;
      this.headersList = ["Establecimiento","Responsable de notificacion","Semana epidemiológica","VRS","FLUA ","FLUB", "ADV",	"PARAFLU 1"	,"MPV",	"VRS H < 1 año",	"VRS H 1 - 4 años",	"VRS H 5 - 14 años",	"VRS H 15 -54 años",
@@ -201,9 +119,9 @@ export class ReporteMinsalComponent implements OnInit {
       "P2 M > 65 años",  	"P3 H < 1 año5",	"P3 H 1 - 4 años",	"P3 H  5 - 14 años" , 	"P3 H  15 -54 años" , 	"P3 H 55 - 64 años" ,	"P3 H > 65 años",	"P3 M < 1 año6",	"P3 M  1 - 4 años",	"P3 M 5 - 14 años", 
       	"P3 M  15 -54 años",	"P3 M  55 - 64 años", 	"P3 M  > 65 años",	"MPV H < 1 año",	"MPV H  1 - 4 años", 	"P3 H 5 - 14 años",	"MPV H 15 -54 años",  	"MPV H  55 - 64 años", "	MPV H > 65 años", "MPV M < 1 año",	
         "MPV M  1 - 4 años",	"MPV M  5 - 14 años", 	"MPV M  15 -54 años",	"MPV M 55 - 64 años", 	"MPV M  > 65 años" ];
-      this.hospitales = [{idHospital:'2',nombre:'San Fernando'}]  
+     
       this.fechaFin = this.changeDate(this.today);
-      let fechaAux = this.datesServices.getDayOfCurrentWeek(new Date(),7)
+      let fechaAux = this.datesServices.getDayOfCurrentWeek(new Date(),1)
       this.fechaInicio = this.changeDate(fechaAux);
       // this.fechaFin = '2022/10/30'
       // this.fechaInicio = '2022/10/24'
@@ -225,7 +143,8 @@ export class ReporteMinsalComponent implements OnInit {
     //    this.content = this.invoices;
     //    this.invoices =  Object.assign([], x);   
     //  });
-
+    this.obtenerHospitales();
+    this.obtenerServiciosSalud()
     this.consultaReporteMinsal(this.fechaInicio, this.fechaFin)
     // this.consultaReporteMinsal('24/10/2022', '30/10/2022')
     //  this.reporteService.createHospital('Hospital TEST').subscribe({
@@ -235,6 +154,26 @@ export class ReporteMinsalComponent implements OnInit {
     //   error:this.handleError.bind(this)
     //  })
    }
+
+   obtenerHospitales(){
+    this.reporteService.getHospitales().subscribe({
+      next:(res:any)=>{
+        if(res.length){
+          this.dataCentrosSalud = res
+        }
+      }
+    })
+   }
+   obtenerServiciosSalud(){
+    this.reporteService.getServiciosSalud().subscribe({
+      next:(res:any)=>{
+        // console.log(res);
+        if(res.length){
+          this.serviciosSalud = res
+        }
+      }
+    })
+  }
 
    consultaReporteMinsal(fechaInicio:string, fechaFin:string){
       console.log(fechaInicio,fechaFin);
@@ -248,8 +187,9 @@ export class ReporteMinsalComponent implements OnInit {
         alert("las fechas no son válidas.")
         return
       }
+
       this.cargando = true;
-    this.reporteService.getReporteMinsal(fechaInicioAux,fechaFinAux).subscribe({
+    this.reporteService.getReporteMinsal(fechaInicioAux,fechaFinAux,this.idHospital).subscribe({
       next: async (res:any)=>{
         console.log(res);
         let resp:any = res;
@@ -262,66 +202,6 @@ export class ReporteMinsalComponent implements OnInit {
           // this.examenes = this.formatearDatos(this.dataEx)
         }
         this.cargando = false;
-        // else{
-          
-        //   alert('No se encontraron resultados')
-        // }
-        //else{
-        //   for (const elem in resp) {
-        //     // console.log(elem);
-            
-        //     filaAux.semana = elem.replace('_','')
-        //     // console.log(resp[elem]);
-        //     let examen:any = {}
-        //     for (const key in resp[elem][0]) {
-        //       if (Object.prototype.hasOwnProperty.call(resp[elem][0], key)) {
-        //         const element = resp[elem][0][key];
-        //         console.log(element,key);
-        //         let resulVirus= {}
-        //         if (key == "nombreHospital") {
-        //           filaAux.nombreHospital = element
-        //         }
-        //         let genero = key.substring(key.length-1,key.length)
-        //         let i = this.virus.findIndex((object)=> object.codigo == key.substring(0,key.length-2))
-        //         // console.log(typeof(element));
-                
-        //        if(i != -1){ 
-        //           if(typeof(element) != 'string' || key != "nombreHospital"){
-        //             if (this.virus[i].tipo = 1) {
-        //               if (genero == 'M') {
-        //                 filaAux[this.virus[i].columNombre].rangoEdadM = element
-        //                 filaAux[this.virus[i].columNombre].total = parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-        //               }else{
-        //                 filaAux[this.virus[i].columNombre].rangoEdadF = element
-        //                 filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-        //               }
-        //             }else{
-        //               filaAux[this.virus[i].columNombre].total =parseInt(filaAux[this.virus[i].columNombre].total) + parseInt(element.total)
-        //             }
-        //           }else{
-        //             filaAux.nombreHospital = element
-        //           }
-                  
-        //           console.log(filaAux);
-        //           }
-                
-        //         // await this.reporteService.getNameVirus(key.substring(0,key.length-2)).subscribe({
-        //         //   next: (res:any)=>{
-        //         //     console.log(res);
-                    
-        //         //     if(key == 'LA19020-9'){
-        //         //       if(genero = 'M'){
-  
-        //         //       }
-        //         //     }
-        //         //   }
-        //         // })
-                
-        //       }
-        //     }
-        //      this.examenes?.push(filaAux);
-        //   }
-       // }
        
       },
       error:this.handleError.bind(this)
@@ -337,6 +217,7 @@ export class ReporteMinsalComponent implements OnInit {
        filaAux = { 
         hospital: elem.nombreHospital,
         servicioSalud:elem.nombreServicioSalud,
+        encargado: elem.encargadoLab,
         anio: '',
        semana:'',
        examenes:{
@@ -436,6 +317,18 @@ export class ReporteMinsalComponent implements OnInit {
     }
     return i
    }
+   filtrarControlHospitales(){
+    //console.log(this.idServicio, this.idRol.value, typeof(this.idRol.value));
+    if(this.idServicio != ''){
+      this.disableHospital = false
+      this.centrosSalud = this.dataCentrosSalud.filter(elem => {
+        return (elem.fkServicioSalud).toString() == this.idServicio
+      })
+    }else{
+      this.centrosSalud = []
+      this.disableHospital = true
+    }
+  }
    handleError(error:any){
     console.log(error);
     this.cargando = false;

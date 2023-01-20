@@ -30,8 +30,9 @@ export class RestApiCheckService {
    }
 
   //Reportes
-  getReporteMinsal(desde:string, hasta:string){
-    // reporte?fechaDesde=01/01/2022&fechaHasta=30/12/2022
+  getReporteMinsal(desde:string, hasta:string,idHospital){
+    // Consulta buscar reportes por fecha y por id Hospital
+    // return this.http.get(`${ENV.api_url}reporte?fechaDesde=${desde}&fechaHasta=${hasta}&idHospital=${idHospital}&token=${this.token}`,httpOptions);
     return this.http.get(`${ENV.api_url}reporte?fechaDesde=${desde}&fechaHasta=${hasta}&token=${this.token}`,httpOptions);
   }
 

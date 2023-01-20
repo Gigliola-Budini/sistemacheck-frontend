@@ -16,7 +16,7 @@ export class DatesService {
   getDayOfCurrentWeek(d, day) {
     d = new Date(d);
     var dayaux = d.getDay(),
-    diff = d.getDate() - dayaux + (dayaux == 0 ? -day:0); // adjust when day is sunday
+    diff = d.getDate() - dayaux + (dayaux == 0 ? +7:day); // adjust when day is sunday
     console.log( d.getDate(), dayaux,day);
     
     return new Date(d.setDate(diff));
