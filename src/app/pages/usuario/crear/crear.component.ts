@@ -174,7 +174,6 @@ export class CrearComponent implements OnInit {
     })
   }
   filtrarControlHospitales(){
-    //console.log(this.idServicio, this.idRol.value, typeof(this.idRol.value));
     if(this.idServicio.status == 'VALID'){
       if(this.idRol.value == "3"  || this.idRol.value == "1" || this.idRol.value ==undefined){
         this.centrosSalud = []

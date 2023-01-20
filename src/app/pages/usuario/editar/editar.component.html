@@ -154,28 +154,20 @@
                 
             
             </div>
-            <div class="row">
-                <div class="col-xxl-2 offset-xxl-3 offset-md-2 col-sm-1">
-                    <div class="text-center my-5">    
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary " [disabled]="!userForm.valid" (click)="editarUsuario()">Editar Usuario</button>
+            <div class="row justify-content-center mt-2">
+                <div class="col-lg-5 col-md-8 my-4 ">
+                   
+                        <div class="hstack gap-3 ">
+                            
+                            <button type="submit" class="btn btn-primary w-50 me-2 ml-2" [disabled]="!userForm.valid" (click)="editarUsuario()">Editar Usuario</button>
+                            <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-50">Volver</button>
+                            <button type="button" class="btn btn-light w-50" *ngIf="habilitado == 1" (click)="deshabilitarUsuario()">Deshabilitar</button>
+                            <button type="button" class="btn btn-light w-50" *ngIf="habilitado == 0" (click)="habilitarUsuario()">Habilitar</button>
                         </div>
-                      </div>
+                   
                 </div> 
-                <div class="col-2">
-                    <div class="text-center my-5 ">
-                        <div class="d-grid gap-2 ">
-                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-sm">Volver</button>
-                        </div>
-                      </div>
-                </div>
-                <div class="col-2">
-                    <div class="text-center my-5">
-                        <div class="d-grid gap-2 ">
-                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 1" (click)="deshabilitarUsuario()">Deshabilitar</button>
-                          <button type="button" class="btn btn-light w-sm" *ngIf="habilitado == 0" (click)="habilitarUsuario()">Habilitar</button>
-                        </div>
-                      </div>
+                <div class="col-xxl-3 col-md-4">
+                    
                 </div>
                
             </div>

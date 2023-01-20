@@ -145,27 +145,11 @@
                         <div class="hstack gap-3 ">
                             <button type="submit" class="btn btn-primary w-50 me-2 ml-2" [disabled]="!userForm.valid || cargando  == true">
                                 Crear Usuario
-                                <!-- <span class="d-flex align-items-center">
-                                    <span class="flex-grow-1 me-2">
-                                        Crear Usuario...
-                                    </span>
-                                    <span class="spinner-border flex-shrink-0" *ngIf="cargando">
-                                        <span class="visually-hidden"> Crear Usuario...</span>
-                                    </span>
-                                </span>    -->
                             
                             </button>
                             <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light w-50">Volver</button>
                         </div>
                    
-                      <!-- <div class="text-center">
-                        
-                        <div class="d-grid gap-2 m-2">
-                        
-                          <button type="button" [routerLink]="'/usuarios/listar'" class="btn btn-light">Volver</button>
-                          
-                        </div>
-                      </div> -->
                 </div> 
                 <div class="col-xxl-3 col-md-4">
                     

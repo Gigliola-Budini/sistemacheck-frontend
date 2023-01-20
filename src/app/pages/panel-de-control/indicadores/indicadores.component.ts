@@ -119,7 +119,15 @@ export class IndicadoresComponent implements OnInit {
   }
 
   buscarIndicadores(fechaIni,fechaFin){
+    console.log(fechaIni, fechaIni);
+    let fechaFinAux = fechaFin
+    this.cargando = true
+    let tresMenses  = this.dateService.formatFechaEsp(this.dateService.sumarDias(new Date(fechaFin),-90))
+    console.log(tresMenses, fechaFin);
+    
     this.obtenerDatosIndicadores(this.dateService.formatFechaEsp(fechaIni), this.dateService.formatFechaEsp(fechaFin))
+    this.obtenerDatosGraficos(tresMenses,this.dateService.formatFechaEsp(fechaFin))
+    this.obtenerDatosIndicadoresEtereos(tresMenses,this.dateService.formatFechaEsp(fechaFin))
   }
   obtenerDatosIndicadores(fechaIni,fechaFin){
     // this.cargando = true
@@ -160,6 +168,7 @@ export class IndicadoresComponent implements OnInit {
         if(res.data){
           //this.statData = statData2
          //this.statData = this.setStateVirus(res.data[0].virus)
+         this.virusDatos =[]
          this.virusDatos = this.distibuirDatosEdad(res.data[0].virus)
          this._analyticsChart('["--vz-success", "--vz-danger", "--vz-warning", "--vz-primary", "--vz-secondary"]',this.virusDatos,this.virusGrafico[1] )
         }
@@ -284,6 +293,7 @@ selector(){
     
     let data=[]
     let serie = []
+    this.virusGrafico = []
     let rangos = ['menos 1 año','1 a 4 años','5 a 14 años','15 a 54 años','55 a 64 años','mas 65 años']
     // this.total = datos.total
     // this.totalPositivos = datos.totalPositivos
